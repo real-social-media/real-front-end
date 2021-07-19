@@ -18,6 +18,7 @@ import UserRowComponent from 'templates/UserRow'
 import CollapsableComponent from 'templates/Collapsable'
 import { Text, Caption, Switch } from 'react-native-paper'
 import dayjs from 'dayjs'
+import { joinTags, searchTags } from 'components/PostCreate/helpers'
 import { useHeader } from 'components/PostEdit/header'
 import FormKeywords from 'components/PostCreate/FormKeywords'
 import * as Validation from 'services/Validation'
@@ -235,32 +236,39 @@ export default withTranslation()(withTheme(({
   postsEditRequest,
   postsSingleGet,
   ...props
-}) => (
-  <Formik
-    initialValues={{
-      postType: postsSingleGet.data.postType,
-      postId: postsSingleGet.data.postId,
-      uri: path(['image', 'url1080p'])(postsSingleGet.data),
-      text: postsSingleGet.data.text,
-      expiresAt: postsSingleGet.data.expiresAt,
-      payment: String(postsSingleGet.data.payment),
-      commentsDisabled: postsSingleGet.data.commentsDisabled,
-      likesDisabled: postsSingleGet.data.likesDisabled,
-      sharingDisabled: postsSingleGet.data.sharingDisabled,
-      lifetime: getInitialLifetime(postsSingleGet.data.expiresAt),
-      albumId: path(['album', 'albumId'])(postsSingleGet.data),
-      keywords: postsSingleGet.data.keywords,
-    }}
-    validationSchema={formSchema}
-    onSubmit={postsEditRequest}
-    enableReinitialize
-  >
-    {(formikProps) => (
-      <PostEditForm
-        {...formikProps}
-        {...props}
-        loading={postsEdit.status === 'loading'}
-      />
-    )}
-  </Formik>
-)))
+}) => {
+  const handleSubmit = (values) => {
+    const keywords = joinTags(searchTags(values.text), values.keywords)
+    postsEditRequest({ ...values, keywords })
+  }
+
+  return (
+    <Formik
+      initialValues={{
+        postType: postsSingleGet.data.postType,
+        postId: postsSingleGet.data.postId,
+        uri: path(['image', 'url1080p'])(postsSingleGet.data),
+        text: postsSingleGet.data.text,
+        expiresAt: postsSingleGet.data.expiresAt,
+        payment: String(postsSingleGet.data.payment),
+        commentsDisabled: postsSingleGet.data.commentsDisabled,
+        likesDisabled: postsSingleGet.data.likesDisabled,
+        sharingDisabled: postsSingleGet.data.sharingDisabled,
+        lifetime: getInitialLifetime(postsSingleGet.data.expiresAt),
+        albumId: path(['album', 'albumId'])(postsSingleGet.data),
+        keywords: postsSingleGet.data.keywords,
+      }}
+      validationSchema={formSchema}
+      onSubmit={handleSubmit}
+      enableReinitialize
+    >
+      {(formikProps) => (
+        <PostEditForm
+          {...formikProps}
+          {...props}
+          loading={postsEdit.status === 'loading'}
+        />
+      )}
+    </Formik>
+  )
+}))

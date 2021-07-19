@@ -89,7 +89,22 @@ describe('FormKeywords', () => {
 
     await act(async () => fireEvent.press(within($keywords[0]).queryByAccessibilityLabel(TagsCloud.a11y.deleteBtn)))
     expect(setFieldValue).toHaveBeenCalledWith('text', 'c ccc c #cc #csdfd #gdc #d')
-    expect(setFieldValue).toHaveBeenCalledWith('keywords', ['cc', 'csdfd', 'gdc', 'd', 'a', 'b'])
+    expect(setFieldValue).toHaveBeenCalledWith('keywords', keywords)
+  })
+
+  it('close modal and submit value on done button press', async () => {
+    const { queryByAccessibilityLabel } = setup()
+    const $input = queryByAccessibilityLabel(a11y.autocomplete.input)
+
+    await act(async () => fireEvent.press(queryByAccessibilityLabel(a11y.openBtn)))
+
+    await act(async () => fireEvent.changeText($input, query))
+    await act(async () => jest.runAllTimers())
+
+    await act(async () => fireEvent.press(queryByAccessibilityLabel(a11y.doneBtn)))
+
+    expect(setFieldValue).toHaveBeenCalledWith('keywords', [query])
+    expect(queryByAccessibilityLabel(a11y.modal)).toHaveProp('visible', false)
   })
 
   describe('autocomplete', () => {

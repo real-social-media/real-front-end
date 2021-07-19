@@ -17,6 +17,7 @@ import RowsItemComponent from 'templates/RowsItem'
 import UserRowComponent from 'templates/UserRow'
 import CollapsableComponent from 'templates/Collapsable'
 import { Text, Caption, Switch } from 'react-native-paper'
+import { joinTags, searchTags } from 'components/PostCreate/helpers'
 import { useHeader } from 'components/PostCreate/header'
 import FormKeywords from 'components/PostCreate/FormKeywords'
 import * as Validation from 'services/Validation'
@@ -237,38 +238,45 @@ const FormWrapper = ({
   postsCreateRequest,
   cameraCapture,
   ...props
-}) => (
-  <Formik
-    initialValues={{
-      lifetime: null,
-      postType: props.postType,
-      likesDisabled: props.user.likesDisabled,
-      commentsDisabled: props.user.commentsDisabled,
-      sharingDisabled: props.user.sharingDisabled,
-      verificationHidden: props.user.verificationHidden,
-      text: path(['text'])(cameraCapture),
-      preview: [path(['preview'])(cameraCapture)],
-      images: [path(['uri'])(cameraCapture)],
-      takenInReal: path(['takenInReal'])(cameraCapture),
-      payment: path(['payment'])(cameraCapture),
-      imageFormat: path(['imageFormat'])(cameraCapture),
-      originalFormat: path(['originalFormat'])(cameraCapture),
-      originalMetadata: path(['originalMetadata'])(cameraCapture),
-      crop: path(['crop'])(cameraCapture),
-      keywords: [],
-    }}
-    validationSchema={formSchema}
-    onSubmit={postsCreateRequest}
-    enableReinitialize
-  >
-    {(formikProps) => (
-      <PostCreateForm
-        {...formikProps}
-        {...props}
-      />
-    )}
-  </Formik>
-)
+}) => {
+  const handleSubmit = (values) => {
+    const keywords = joinTags(searchTags(values.text), values.keywords)
+    postsCreateRequest({ ...values, keywords })
+  }
+
+  return (
+    <Formik
+      initialValues={{
+        lifetime: null,
+        postType: props.postType,
+        likesDisabled: props.user.likesDisabled,
+        commentsDisabled: props.user.commentsDisabled,
+        sharingDisabled: props.user.sharingDisabled,
+        verificationHidden: props.user.verificationHidden,
+        text: path(['text'])(cameraCapture),
+        preview: [path(['preview'])(cameraCapture)],
+        images: [path(['uri'])(cameraCapture)],
+        takenInReal: path(['takenInReal'])(cameraCapture),
+        payment: path(['payment'])(cameraCapture),
+        imageFormat: path(['imageFormat'])(cameraCapture),
+        originalFormat: path(['originalFormat'])(cameraCapture),
+        originalMetadata: path(['originalMetadata'])(cameraCapture),
+        crop: path(['crop'])(cameraCapture),
+        keywords: [],
+      }}
+      validationSchema={formSchema}
+      onSubmit={handleSubmit}
+      enableReinitialize
+    >
+      {(formikProps) => (
+        <PostCreateForm
+          {...formikProps}
+          {...props}
+        />
+      )}
+    </Formik>
+  )
+}
 
 FormWrapper.propTypes = {
   postsCreateRequest: PropTypes.any,

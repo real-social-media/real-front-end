@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { View, StyleSheet, TouchableOpacity, Modal, SafeAreaView } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Modal, SafeAreaView, Text } from 'react-native'
 import { withTranslation } from 'react-i18next'
 import TagsCloud from 'templates/TagsCloud'
 import TagsList from 'templates/TagsList'
 import TextInput from 'components/TextInput'
-import DefaultButton from 'components/Formik/Button/DefaultButton'
+import { joinTags, replaceAll, searchTags } from 'components/PostCreate/helpers'
 import * as keywordsAPI from 'store/ducks/keywords/api'
 import useAutocomplete from 'services/hooks/useAutocomplete'
 
@@ -13,18 +13,13 @@ export const a11y = {
   modal: 'Edit keywords modal',
   openBtn: 'Open keywords modal',
   closeBtn: 'Close keywords modal',
+  doneBtn: 'Submit keywords form and close modal',
   inputBtn: 'Keywords input placeholder',
   autocomplete: {
     input: 'Keywords autocomplete field',
     tagsCloud: 'Keywords list',
   },
 }
-
-const uniqueTags = (tags) => [...new Set(tags)]
-const joinTags = (...collections) => uniqueTags(collections.reduce((acc, item) => acc.concat(item), []))
-const removeHashtag = (str) => str.replace('#', '')
-const replaceAll = (search, replacement, str) => str.split(' ').map(item => item === search ? replacement : item).join(' ')
-const searchTags = (str = '') => uniqueTags(str.match(/[#]+[A-Za-z0-9-_]+/g)).map(removeHashtag)
 
 const FormKeywords = ({ t, values, setFieldValue }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -35,11 +30,11 @@ const FormKeywords = ({ t, values, setFieldValue }) => {
   const keywords = joinTags(searchTags(values.text), values.keywords)
 
   const handleAdd = (option) => {
-    setFieldValue('keywords', [...keywords, option])
+    setFieldValue('keywords', [...values.keywords, option])
   }
 
   const handleRemove = (option) => {
-    const value = keywords.filter((item) => item !== option)
+    const value = values.keywords.filter((item) => item !== option)
 
     setFieldValue('text', replaceAll(`#${option}`, option, values.text))
     setFieldValue('keywords', value)
@@ -53,11 +48,19 @@ const FormKeywords = ({ t, values, setFieldValue }) => {
     }
   }
 
-  const handleSubmit = (event) => {
-    const value = event?.nativeEvent?.text || ''
+  const handleSubmit = () => {
+    const value = autocomplete.search.trim()
 
-    handleAdd(value.trim())
+    if (value) {
+      handleAdd(value)
+    }
+
     autocomplete.clear()
+  }
+
+  const handleDone = () => {
+    handleSubmit()
+    handleCloseModal()
   }
 
   return (
@@ -75,6 +78,17 @@ const FormKeywords = ({ t, values, setFieldValue }) => {
       <Modal accessibilityLabel={a11y.modal} presentationStyle="formSheet" animationType="slide" visible={isModalOpen}>
         <SafeAreaView style={styles.modal}>
           <View style={styles.header}>
+            <View style={styles.heading}>
+              <TouchableOpacity accessibilityLabel={a11y.closeBtn} style={styles.closeBtn} onPress={handleCloseModal}>
+                <Text>{t('Close')}</Text>
+              </TouchableOpacity>
+              <Text style={styles.title} numberOfLines={1}>
+                {t('Search Terms')}
+              </Text>
+              <TouchableOpacity accessibilityLabel={a11y.doneBtn} style={styles.doneBtn} onPress={handleDone}>
+                <Text>{t('Done')}</Text>
+              </TouchableOpacity>
+            </View>
             <TextInput
               accessibilityLabel={a11y.autocomplete.input}
               style={styles.input}
@@ -98,9 +112,6 @@ const FormKeywords = ({ t, values, setFieldValue }) => {
               loading={autocomplete.state.status === 'loading'}
             />
           </View>
-          <View style={styles.footer}>
-            <DefaultButton accessibilityLabel={a11y.closeBtn} label={t('Close')} onPress={handleCloseModal} />
-          </View>
         </SafeAreaView>
       </Modal>
     </View>
@@ -109,7 +120,7 @@ const FormKeywords = ({ t, values, setFieldValue }) => {
 
 const styles = StyleSheet.create({
   header: {
-    paddingTop: 8,
+    paddingTop: 20,
     paddingHorizontal: 12,
     flexShrink: 0,
   },
@@ -125,6 +136,25 @@ const styles = StyleSheet.create({
   footer: {
     paddingHorizontal: 12,
     flexShrink: 0,
+  },
+  heading: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    marginBottom: 8,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: '600',
+    flex: 4,
+    textAlign: 'center',
+    flexShrink: 0,
+  },
+  closeBtn: {
+    flex: 1,
+  },
+  doneBtn: {
+    flex: 1,
+    alignItems: 'flex-end',
   },
 })
 
