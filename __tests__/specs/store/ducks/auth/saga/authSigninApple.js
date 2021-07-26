@@ -86,9 +86,9 @@ describe('authSigninApple', () => {
 
         .call(validateUserExistance, userPayload)
         .not.call(handleAnonymousSignin)
-        .not.call([queryService, 'apiRequest'], queries.linkAppleLogin, { appleIdToken: userPayload.token })
         .not.call([queryService, 'apiRequest'], queries.setFullname, { fullName: userPayload.fullName })
         .call([AwsAuth, 'federatedSignIn'], 'appleid.apple.com', credentials, userPayload)
+        .call([queryService, 'apiRequest'], queries.linkAppleLogin, { appleIdToken: userPayload.token })
         .put(actions.authGetUserRequest())
         .put(actions.authPrefetchRequest())
         .put(actions.authSigninAppleSuccess())

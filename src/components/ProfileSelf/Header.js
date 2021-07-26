@@ -1,16 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
-import * as navigationActions from 'navigation/actions'
+import { StyleSheet, Text, TouchableOpacity, Linking } from 'react-native'
 import { withTheme } from 'react-native-paper'
 
-const HeaderRight = ({ theme, navigation }) => {
+const formatPrice = (value) =>
+  parseFloat(value).toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  })
+
+const HeaderRight = ({ theme, walletTotal }) => {
   const styling = styles(theme)
-  const handlePress = navigationActions.navigatePayouts(navigation)
+  const handlePress = () => Linking.openURL('https://real.app/apps/coins')
 
   return (
     <TouchableOpacity onPress={handlePress}>
-      <Text style={styling.text}>$0.00</Text>
+      <Text style={styling.text}>{formatPrice(walletTotal)}</Text>
     </TouchableOpacity>
   )
 }
@@ -29,6 +34,11 @@ const styles = (theme) =>
 HeaderRight.propTypes = {
   theme: PropTypes.any,
   navigation: PropTypes.any,
+  walletTotal: PropTypes.string,
+}
+
+HeaderRight.defaultProps = {
+  walletTotal: '0',
 }
 
 export default withTheme(HeaderRight)

@@ -50,6 +50,7 @@ const Profile = ({
   usersFollowRequest,
   usersUnfollow,
   usersUnfollowRequest,
+  walletGetRequest,
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
@@ -74,6 +75,7 @@ const Profile = ({
     loadInit: (extra) => {
       postsGetRequest(extra)
       albumsGetRequest(extra)
+      walletGetRequest && walletGetRequest()
     },
     loadMore: postsGetMoreRequest,
     extra: { userId: path(['data', 'userId'])(usersGetProfile) },
@@ -228,6 +230,7 @@ Profile.propTypes = {
   albumsGet: PropTypes.any,
   albumsGetRequest: PropTypes.any,
   albumsGetMoreRequest: PropTypes.any,
+  walletGetRequest: PropTypes.func,
 }
 
 export default withTranslation()(withTheme(Profile))

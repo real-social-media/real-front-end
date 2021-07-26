@@ -21,6 +21,7 @@ const TextGrowing = ({
   onSubmitEditing,
   disabled,
   inputRef,
+  onKeyPress,
 }) => {
   const styling = styles(theme)
 
@@ -59,6 +60,7 @@ const TextGrowing = ({
         maxLength={255}
         scrollEnabled={true}
         onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
+        onKeyPress={onKeyPress}
       />
     </View>
   )
@@ -89,6 +91,7 @@ TextGrowing.propTypes = {
   onSubmitEditing: PropTypes.any,
   disabled: PropTypes.any,
   inputRef: PropTypes.any,
+  onKeyPress: PropTypes.func,
 }
 
 export default withTheme(TextGrowing)

@@ -1,7 +1,9 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
-import { renderWithProviders, fireEvent, sleep } from 'tests/utils'
+import { check, openSettings, RESULTS } from 'react-native-permissions'
+import { renderWithProviders, fireEvent, sleep, act } from 'tests/utils'
+import { a11y } from 'components/PostType'
 import PostTypeScreen from 'screens/PostTypeScreen'
 import { VERIFICATION_TYPE } from 'components/Verification'
 import useLibrary from 'services/providers/Camera/useLibrary'
@@ -36,31 +38,35 @@ describe('PostType screen', () => {
     dispatch.mockClear()
     navigation.navigate.mockClear()
     navigation.popToTop.mockClear()
+    openSettings.mockClear()
   })
 
-  it('redirect to camera screen on Photo button tab', () => {
+  it('redirect to camera screen on Photo button tab', async () => {
     const { getByText } = setup()
 
     fireEvent.press(getByText('Photo'))
     expect(navigation.popToTop).toHaveBeenCalled()
     expect(navigation.navigate).toHaveBeenCalledWith('Camera', { multiple: true })
+    await act(sleep)
   })
 
-  it('Redirect anonymous user', () => {
+  it('Redirect anonymous user', async () => {
     authSelector.authUser.mockReturnValueOnce({ userStatus: 'ANONYMOUS' })
 
     const { getByText } = setup()
 
     fireEvent.press(getByText('Photo'))
     testNavigate(navigation, 'App.Root.ProfileUpgrade')
+    await act(sleep)
   })
 
-  it('redirect to text post create form on Text button tab', () => {
+  it('redirect to text post create form on Text button tab', async () => {
     const { getByText } = setup()
 
     fireEvent.press(getByText('Text'))
     expect(navigation.popToTop).toHaveBeenCalled()
     testNavigate(navigation, 'PostCreate', { type: 'TEXT_ONLY' })
+    await act(sleep)
   })
 
   it('redirect to verification screen only first time when user create a post from gallery', async () => {
@@ -74,7 +80,7 @@ describe('PostType screen', () => {
 
     fireEvent.press(getByText('Gallery'))
 
-    await sleep()
+    await act(sleep)
 
     expect(navigation.popToTop).toHaveBeenCalled()
     expect(navigation.navigate).toHaveBeenCalled()
@@ -100,28 +106,30 @@ describe('PostType screen', () => {
 
     fireEvent.press(getByText('Gallery'))
 
-    await sleep()
+    await act(sleep)
 
     expect(navigation.popToTop).toHaveBeenCalled()
     expect(navigation.navigate).not.toHaveBeenCalled()
     expect(handleLibrarySnap).toHaveBeenCalledWith()
   })
 
-  it('should close popup on close button tap', () => {
+  it('should close popup on close button tap', async () => {
     const { getByText } = setup()
 
-    fireEvent.press(getByText('x close'))
+    fireEvent.press(getByText('Close'))
     expect(navigation.popToTop).toHaveBeenCalled()
+    await act(sleep)
   })
 
-  it('should close popup on outside click', () => {
+  it('should close popup on outside click', async () => {
     const { getByTestId } = setup()
 
     fireEvent.press(getByTestId(testIDs.backdrop))
     expect(navigation.popToTop).toHaveBeenCalled()
+    await act(sleep)
   })
 
-  it('should provide handleProcessedPhoto for useLibrary hook', () => {
+  it('should provide handleProcessedPhoto for useLibrary hook', async () => {
     setup()
 
     expect(useLibrary).toHaveBeenCalled()
@@ -132,5 +140,23 @@ describe('PostType screen', () => {
     handleProcessedPhoto(payload)
     expect(dispatch).toHaveBeenCalledWith(cameraActions.cameraCaptureRequest(payload))
     testNavigate(navigation, 'PostCreate', { type: 'IMAGE' })
+    await act(sleep)
+  })
+
+  it('not display permission manage by default', async () => {
+    const { queryByAccessibilityLabel } = setup()
+
+    expect(queryByAccessibilityLabel(a11y.permission)).toBeFalsy()
+    await act(sleep)
+  })
+
+  it('display manage permission when permission limited', async () => {
+    check.mockResolvedValueOnce(RESULTS.LIMITED)
+    const { queryByAccessibilityLabel } = setup()
+
+    await act(sleep)
+
+    fireEvent.press(queryByAccessibilityLabel(a11y.permission))
+    expect(openSettings).toHaveBeenCalled()
   })
 })

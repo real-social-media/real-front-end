@@ -35,6 +35,12 @@ export const amplifyConfig = () => {
       aws_appsync_authenticationType: Config.AWS_APPSYNC_AUTHENTICATION_TYPE,
       aws_appsync_apiKey: 'null',
       graphql_headers: () => headers,
+      endpoints: [
+        {
+            name: 'REAL_TRANSACTIONS_API',
+            endpoint: Config.REAL_TRANSACTIONS_API,
+        },
+      ],
     },
   }
 

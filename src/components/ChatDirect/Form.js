@@ -25,10 +25,23 @@ const ChatDirectForm = ({
 }) => {
   const styling = styles(theme)
 
+  const handleSubmitOnEnter = ({ nativeEvent }) => {
+    if (nativeEvent.altKey && nativeEvent.key === 'Enter') {
+      nativeEvent.preventDefault()
+      handleSubmit()
+    }
+  }
+
   return (
     <View style={styling.root}>
       <View style={styling.input}>
-        <Field name="text" component={TextGrowing} placeholder={t('Send a message')} hideError />
+        <Field
+          name="text"
+          component={TextGrowing}
+          placeholder={t('Send a message')}
+          onKeyPress={handleSubmitOnEnter}
+          hideError
+        />
       </View>
       <View style={styling.button}>
         <DefaultButton label={t('Send')} onPress={handleSubmit} loading={loading} disabled={loading} />

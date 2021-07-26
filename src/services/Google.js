@@ -45,7 +45,7 @@ export const signin = async () => {
 
   return {
     token: userInfo.idToken,
-    expires_at: parseInt(tokeninfo.exp, 10),
+    expires_at: parseInt(tokeninfo.exp, 10) * 1000,
     user: userInfo.user,
   }
 }
@@ -57,7 +57,7 @@ export const refresh = async () => {
 
   return {
     token: userInfo.idToken,
-    expires_at: parseInt(tokeninfo.exp, 10),
+    expires_at: parseInt(tokeninfo.exp, 10) * 1000,
     user: userInfo.user,
   }
 }

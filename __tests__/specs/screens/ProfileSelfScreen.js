@@ -7,6 +7,7 @@ import * as albumsActions from 'store/ducks/albums/actions'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
 import * as authActions from 'store/ducks/auth/actions'
+import * as walletActions from 'store/ducks/wallet/actions'
 
 const user = {
   userId: 'id123',
@@ -52,6 +53,12 @@ describe('ProfileSelfScreen', () => {
       expect(dispatch).toHaveBeenCalledWith(postsActions.postsGetRequest({ userId: 'id123' }))
     })
 
+    it('fetch wallet', () => {
+      setup()
+
+      expect(dispatch).toHaveBeenCalledWith(walletActions.walletGetRequest())
+    })
+
     it('request data for user from route params', () => {
       const params = { userId: '23' }
       useRoute.mockReturnValue({ params })
@@ -69,7 +76,6 @@ describe('ProfileSelfScreen', () => {
       setup()
 
       expect(dispatch).toHaveBeenCalledWith(authActions.authGetUserRequest())
-      expect(dispatch).toHaveBeenCalledTimes(1)
     })
 
     it('set username as screen title', () => {

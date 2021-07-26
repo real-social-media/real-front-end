@@ -770,7 +770,7 @@
 				CODE_SIGN_ENTITLEMENTS = REAL/REAL.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 529;
+				CURRENT_PROJECT_VERSION = 532;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = YA5Y244F5C;
 				INFOPLIST_FILE = REAL/Info.plist;
@@ -861,7 +861,7 @@
 					"\"${PODS_ROOT}/CocoaLibEvent/lib\"",
 					"\"${PODS_ROOT}/OpenSSL-Universal/ios/lib\"",
 				);
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.12.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -873,6 +873,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "REAL-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -887,7 +888,7 @@
 				CODE_SIGN_ENTITLEMENTS = REAL/REALRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 529;
+				CURRENT_PROJECT_VERSION = 532;
 				DEVELOPMENT_TEAM = YA5Y244F5C;
 				INFOPLIST_FILE = REAL/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -976,7 +977,7 @@
 					"\"${PODS_ROOT}/CocoaLibEvent/lib\"",
 					"\"${PODS_ROOT}/OpenSSL-Universal/ios/lib\"",
 				);
-				MARKETING_VERSION = 1.11.1;
+				MARKETING_VERSION = 1.12.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -987,6 +988,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "REAL-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

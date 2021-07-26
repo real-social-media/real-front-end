@@ -1,6 +1,6 @@
 {
   "name": "real",
-  "version": "1.11.1",
+  "version": "1.12.0",
   "private": true,
   "scripts": {
     "postinstall": "patch-package",
@@ -100,7 +100,7 @@
     "react-native-modal": "^11.5.6",
     "react-native-offline": "^5.7.0",
     "react-native-paper": "^4.9.1",
-    "react-native-permissions": "^2.2.0",
+    "react-native-permissions": "^3.0.4",
     "react-native-picker-select": "^8.0.0",
     "react-native-reanimated": "^2.1.0",
     "react-native-safe-area-context": "^3.1.7",
