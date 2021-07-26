@@ -102,6 +102,7 @@ describe('Capture Errors', () => {
       testBlackListAction('POSTS_REPORT_POST_VIEWS_FAILURE')
       testBlackListAction('USERS_REPORT_SCREEN_VIEWS_FAILURE')
       testBlackListAction('THEMES_CHECK_DEFAULT_FAILURE')
+      testBlackListAction('WALLET_GET_FAILURE')
     })
   })
 })

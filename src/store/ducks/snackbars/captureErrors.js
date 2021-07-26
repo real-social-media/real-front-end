@@ -7,6 +7,7 @@ import * as usersConstants from 'store/ducks/users/constants'
 import * as cacheConstants from 'store/ducks/cache/constants'
 import * as postsConstants from 'store/ducks/posts/constants'
 import * as themesConstants from 'store/ducks/themes/constants'
+import * as walletConstants from 'store/ducks/wallet/constants'
 import * as Logger from 'services/Logger'
 import { CancelRequestOnSignoutError, UserInNotActiveError, NetworkError, stringifyFailureAction } from 'store/errors'
 import messages from 'store/messages'
@@ -23,6 +24,7 @@ const BLACKLIST = [
   postsConstants.POSTS_REPORT_POST_VIEWS_FAILURE,
   usersConstants.USERS_REPORT_SCREEN_VIEWS_FAILURE,
   themesConstants.THEMES_CHECK_DEFAULT_FAILURE,
+  walletConstants.WALLET_GET_FAILURE,
 ]
 
 const getMessageCode = pathOr(DEFAULT_CODE, ['meta', 'messageCode'])
