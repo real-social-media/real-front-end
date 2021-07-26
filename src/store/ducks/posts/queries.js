@@ -70,6 +70,7 @@ export const addTextOnlyPost = `
     $sharingDisabled: Boolean,
     $verificationHidden: Boolean,
     $payment: Float,
+    $keywords: [String!],
   ) {
     addPost (
       postId: $postId,
@@ -82,6 +83,7 @@ export const addTextOnlyPost = `
       sharingDisabled: $sharingDisabled,
       verificationHidden: $verificationHidden,
       payment: $payment,
+      keywords: $keywords,
     ) {
       ...postFragment
     }
@@ -107,6 +109,7 @@ export const addPhotoPost = `
     $verificationHidden: Boolean,
     $setAsUserPhoto: Boolean,
     $payment: Float,
+    $keywords: [String!],
   ) {
     addPost (
       postId: $postId,
@@ -120,6 +123,7 @@ export const addPhotoPost = `
       verificationHidden: $verificationHidden,
       setAsUserPhoto: $setAsUserPhoto,
       payment: $payment,
+      keywords: $keywords,
       imageInput: {
         takenInReal: $takenInReal,
         imageFormat: $imageFormat,
@@ -170,6 +174,7 @@ export const editPost = `
     $sharingDisabled: Boolean,
     $verificationHidden: Boolean,
     $payment: Float,
+    $keywords: [String!],
   ) {
     editPost (
       postId: $postId,
@@ -179,6 +184,7 @@ export const editPost = `
       sharingDisabled: $sharingDisabled,
       verificationHidden: $verificationHidden,
       payment: $payment,
+      keywords: $keywords,
     ) {
       ...postFragment
     }

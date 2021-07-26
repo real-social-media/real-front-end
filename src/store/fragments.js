@@ -163,6 +163,7 @@ export const postFragment = `
     viewedByCount
     viewedStatus
     payment
+    keywords
   }
 
   fragment postFragment on Post {

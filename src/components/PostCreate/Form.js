@@ -17,11 +17,18 @@ import RowsItemComponent from 'templates/RowsItem'
 import UserRowComponent from 'templates/UserRow'
 import CollapsableComponent from 'templates/Collapsable'
 import { Text, Caption, Switch } from 'react-native-paper'
+import { joinTags, searchTags } from 'components/PostCreate/helpers'
 import { useHeader } from 'components/PostCreate/header'
+import FormKeywords from 'components/PostCreate/FormKeywords'
 import * as Validation from 'services/Validation'
 
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
+
+export const a11y = {
+  payment:'Toggle Payment per view',
+  keywords: 'Toggle Search Terms',
+}
 
 const formSchema = Yup.object().shape({
   lifetime: Yup.string().nullable(),
@@ -151,13 +158,25 @@ const PostCreateForm = ({
         style={styling.input}
         title={t('Payment per view')}
         helper={t('Auto by default')}
-        accessibilityLabel={t('Toggle Payment per view')}
+        accessibilityLabel={a11y.payment}
       >
         <Field
           {...Validation.getInputTypeProps('payment')}
           name="payment"
           component={TextField}
           placeholder={t('$0-100 REAL coins')}
+        />
+      </CollapsableComponent>
+
+      <CollapsableComponent
+        style={styling.input}
+        title={t('Search Terms')}
+        helper={t('Add tags for search optimization')}
+        accessibilityLabel={a11y.keywords}
+      >
+        <FormKeywords
+          values={values}
+          setFieldValue={setFieldValue}
         />
       </CollapsableComponent>
 
@@ -219,37 +238,45 @@ const FormWrapper = ({
   postsCreateRequest,
   cameraCapture,
   ...props
-}) => (
-  <Formik
-    initialValues={{
-      lifetime: null,
-      postType: props.postType,
-      likesDisabled: props.user.likesDisabled,
-      commentsDisabled: props.user.commentsDisabled,
-      sharingDisabled: props.user.sharingDisabled,
-      verificationHidden: props.user.verificationHidden,
-      text: path(['text'])(cameraCapture),
-      preview: [path(['preview'])(cameraCapture)],
-      images: [path(['uri'])(cameraCapture)],
-      takenInReal: path(['takenInReal'])(cameraCapture),
-      payment: path(['payment'])(cameraCapture),
-      imageFormat: path(['imageFormat'])(cameraCapture),
-      originalFormat: path(['originalFormat'])(cameraCapture),
-      originalMetadata: path(['originalMetadata'])(cameraCapture),
-      crop: path(['crop'])(cameraCapture),
-    }}
-    validationSchema={formSchema}
-    onSubmit={postsCreateRequest}
-    enableReinitialize
-  >
-    {(formikProps) => (
-      <PostCreateForm
-        {...formikProps}
-        {...props}
-      />
-    )}
-  </Formik>
-)
+}) => {
+  const handleSubmit = (values) => {
+    const keywords = joinTags(searchTags(values.text), values.keywords)
+    postsCreateRequest({ ...values, keywords })
+  }
+
+  return (
+    <Formik
+      initialValues={{
+        lifetime: null,
+        postType: props.postType,
+        likesDisabled: props.user.likesDisabled,
+        commentsDisabled: props.user.commentsDisabled,
+        sharingDisabled: props.user.sharingDisabled,
+        verificationHidden: props.user.verificationHidden,
+        text: path(['text'])(cameraCapture),
+        preview: [path(['preview'])(cameraCapture)],
+        images: [path(['uri'])(cameraCapture)],
+        takenInReal: path(['takenInReal'])(cameraCapture),
+        payment: path(['payment'])(cameraCapture),
+        imageFormat: path(['imageFormat'])(cameraCapture),
+        originalFormat: path(['originalFormat'])(cameraCapture),
+        originalMetadata: path(['originalMetadata'])(cameraCapture),
+        crop: path(['crop'])(cameraCapture),
+        keywords: [],
+      }}
+      validationSchema={formSchema}
+      onSubmit={handleSubmit}
+      enableReinitialize
+    >
+      {(formikProps) => (
+        <PostCreateForm
+          {...formikProps}
+          {...props}
+        />
+      )}
+    </Formik>
+  )
+}
 
 FormWrapper.propTypes = {
   postsCreateRequest: PropTypes.any,
