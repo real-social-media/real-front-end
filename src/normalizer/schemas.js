@@ -14,20 +14,6 @@ const userSchema = new schema.Entity(
 /**
  *
  */
-const imageSchema = new schema.Entity(
-  'images',
-  {},
-  {
-    idAttribute: (value) => {
-      try { return value.url.split('?')[0] }
-      catch (err) { return value }
-    },
-  },
-)
-
-/**
- *
- */
 const postSchema = new schema.Entity(
   'posts',
   {},
@@ -93,7 +79,6 @@ commentSchema.define({
 })
 
 albumSchema.define({
-  art: imageSchema,
   ownedBy: userSchema,
   posts: {
     items: [postSchema],
@@ -117,7 +102,6 @@ chatSchema.define({
 })
 
 postSchema.define({
-  image: imageSchema,
   album: albumSchema,
   postedBy: userSchema,
   textTaggedUsers: [{
@@ -129,7 +113,6 @@ postSchema.define({
 })
 
 userSchema.define({
-  photo: imageSchema,
   stories: {
     items: [postSchema],
   },

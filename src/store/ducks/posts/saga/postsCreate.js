@@ -36,6 +36,7 @@ const postUploadDefaultValues = (post) => ({
   originalMetadata: post.originalMetadata || '',
   imageFormat: post.imageFormat || 'JPEG',
   crop: post.crop || null,
+  keywords: post.keywords || [],
 })
 
 /**

@@ -59,7 +59,6 @@ const initializeStore = ({ navigationRef }) => {
       'ENTITIES_POSTS_MERGE',
       'ENTITIES_COMMENTS_MERGE',
       'ENTITIES_USERS_MERGE',
-      'ENTITIES_IMAGES_MERGE',
       'ENTITIES_CHATS_MERGE',
       'ENTITIES_MESSAGES_MERGE',
 

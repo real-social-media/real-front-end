@@ -12,6 +12,7 @@ import users from 'store/ducks/users/reducer'
 import cache from 'store/ducks/cache/reducer'
 import entities from 'store/ducks/entities/reducer'
 import contacts from 'store/ducks/contacts/reducer'
+import wallet from 'store/ducks/wallet/reducer'
 import dating from 'store/ducks/dating/reducer'
 import promocodes from 'store/ducks/promocodes/reducer'
 import { reducer as network } from 'react-native-offline'
@@ -96,6 +97,7 @@ const appReducer = combineReducers({
   dating,
   promocodes,
   cache,
+  wallet,
   entities,
 })
 

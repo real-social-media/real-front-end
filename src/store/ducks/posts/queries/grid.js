@@ -45,6 +45,7 @@ export const gridPostFragment = `
     postType
     postedAt
     payment
+    keywords
     expiresAt
     text
     likesDisabled

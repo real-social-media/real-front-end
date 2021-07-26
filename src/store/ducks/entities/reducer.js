@@ -17,9 +17,6 @@ export const initialState = {
   users: {
     updatedAt: now,
   },
-  images: {
-    updatedAt: now,
-  },
   chats: {
     updatedAt: now,
   },
@@ -48,7 +45,6 @@ const entitiesAlbumsMerge = createMergeReducer('albums')
 const entitiesPostsMerge = createMergeReducer('posts')
 const entitiesCommentsMerge = createMergeReducer('comments')
 const entitiesUsersMerge = createMergeReducer('users')
-const entitiesImagesMerge = createMergeReducer('images')
 const entitiesChatsMerge = createMergeReducer('chats')
 const entitiesMessagesMerge = createMergeReducer('messages')
 
@@ -57,7 +53,6 @@ export default handleActions({
   [constants.ENTITIES_POSTS_MERGE]: entitiesPostsMerge,
   [constants.ENTITIES_COMMENTS_MERGE]: entitiesCommentsMerge,
   [constants.ENTITIES_USERS_MERGE]: entitiesUsersMerge,
-  [constants.ENTITIES_IMAGES_MERGE]: entitiesImagesMerge,
   [constants.ENTITIES_CHATS_MERGE]: entitiesChatsMerge,
   [constants.ENTITIES_MESSAGES_MERGE]: entitiesMessagesMerge,
 }, initialState)

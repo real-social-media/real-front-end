@@ -18,10 +18,6 @@ export function* entitiesMerge({ entities }) {
     yield put(entitiesActions.entitiesCommentsMerge({ data: entities.comments }))
   }
 
-  if (entities.images) {
-    yield put(entitiesActions.entitiesImagesMerge({ data: entities.images }))
-  }
-
   if (entities.messages) {
     yield put(entitiesActions.entitiesMessagesMerge({ data: entities.messages }))
   }
