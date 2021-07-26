@@ -8,6 +8,7 @@ import themes from 'store/ducks/themes/saga'
 import analytics from 'store/ducks/analytics/saga'
 import users from 'store/ducks/users/saga'
 import logger from 'store/ducks/logger/saga'
+import wallet from 'store/ducks/wallet/saga'
 import snackbars from 'store/ducks/snackbars/saga'
 
 import auth from 'store/ducks/auth/saga'
@@ -32,6 +33,7 @@ export default () =>
     .concat(themes())
     .concat(subscriptions())
     .concat(contactsGrantBonusRequest())
+    .concat(wallet())
 
     .concat(users())
     .concat(promocodes())

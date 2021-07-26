@@ -11,6 +11,7 @@ import * as entities from 'store/ducks/entities/reducer'
 import * as contacts from 'store/ducks/contacts/reducer'
 import * as dating from 'store/ducks/dating/reducer'
 import * as promocodes from 'store/ducks/promocodes/reducer'
+import * as wallet from 'store/ducks/wallet/reducer'
 import rootReducer from 'store/reducers'
 import * as entitiesActions from 'store/ducks/entities/actions'
 import * as authActions from 'store/ducks/auth/actions'
@@ -34,6 +35,7 @@ const initialState = {
   cache: cache.initialState,
   entities: entities.initialState,
   promocodes: promocodes.initialState,
+  wallet: wallet.initialState,
 }
 
 const data = { 1: { id: 1 }, 2: { id: 2 } }
