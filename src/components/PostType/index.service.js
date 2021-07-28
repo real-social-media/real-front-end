@@ -32,14 +32,14 @@ const PostTypeService = ({ children }) => {
     },
   })
 
-  const handleProcessedPhoto = (payload) => {
+  const handleProcessedMedia = (payload) => {
     dispatch(cameraActions.cameraCaptureRequest(payload))
     navigationActions.navigatePostCreate(navigation, { type: 'IMAGE' })
   }
 
+  const library = useLibrary({ handleProcessedMedia })
   const handleManageAccess = () => openSettings()
 
-  const library = useLibrary({ handleProcessedPhoto })
   const handleClose = () => navigation.popToTop()
 
   const handleLibrarySnap = async () => {

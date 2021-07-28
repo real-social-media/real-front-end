@@ -32,7 +32,7 @@ const PickerItem = (ref) =>
     )
   }
 
-const Picker = ({ t, setPhotoSize }) => {
+const Picker = ({ t, setMediaSize }) => {
   const styling = styles
   const pickerRef = useRef(null)
 
@@ -42,8 +42,8 @@ const Picker = ({ t, setPhotoSize }) => {
         firstItem={0}
         ref={pickerRef}
         data={[
-          { title: t('Rectangle'), handleChange: () => setPhotoSize('4:3') },
-          { title: t('Square'), handleChange: () => setPhotoSize('1:1') },
+          { title: t('Rectangle'), handleChange: () => setMediaSize('4:3') },
+          { title: t('Square'), handleChange: () => setMediaSize('1:1') },
         ]}
         renderItem={PickerItem(pickerRef)}
         sliderWidth={Layout.window.width - 24}
@@ -54,8 +54,8 @@ const Picker = ({ t, setPhotoSize }) => {
         contentContainerCustomStyle={styling.contentContainerCustomStyle}
         slideStyle={styling.slideStyle}
         onSnapToItem={(index) => {
-          if (index === 1) setPhotoSize('1:1')
-          if (index === 0) setPhotoSize('4:3')
+          if (index === 1) setMediaSize('1:1')
+          if (index === 0) setMediaSize('4:3')
         }}
         inactiveSlideScale={1}
         inactiveSlideOpacity={0.5}
@@ -69,7 +69,7 @@ const Picker = ({ t, setPhotoSize }) => {
 }
 
 Picker.propTypes = {
-  setPhotoSize: PropTypes.any,
+  setMediaSize: PropTypes.func,
   t: PropTypes.any,
 }
 

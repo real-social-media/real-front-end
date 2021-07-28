@@ -27,6 +27,9 @@ const useProfilePhoto = (props) => {
   const { handleLibrarySnap } = useLibrary({
     handleProcessedPhoto,
     multiple,
+    customPickerOptions: {
+      mediaType: 'photo',
+    },
   })
 
   const navigateCamera = navigationActions.navigateCamera(

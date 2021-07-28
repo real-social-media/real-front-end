@@ -49,10 +49,10 @@ export const getCameraBonds = (aspect) => {
   return { top: 0, bottom: 0 }
 }
 
-export const getPhotoDimensions = ({ snappedPhoto, photoSize }) => {
+export const getPhotoDimensions = ({ snappedPhoto, mediaSize }) => {
   const scaleFactor = snappedPhoto.width / Layout.window.width
 
-  if (photoSize === '4:3') {
+  if (mediaSize === '4:3') {
     return {
       offset: {
         x: 0,
@@ -65,7 +65,7 @@ export const getPhotoDimensions = ({ snappedPhoto, photoSize }) => {
     }
   }
 
-  if (photoSize === '1:1') {
+  if (mediaSize === '1:1') {
     return {
       offset: {
         x: 0,

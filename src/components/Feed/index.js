@@ -42,7 +42,13 @@ const Feed = ({
     multiplier: 3,
   })
 
-  const { onViewableItemsFocusRef, viewabilityConfigRef } = useViewable()
+  const {
+    postInView,
+    onViewableItemsFocusRef,
+    viewabilityConfigRef,
+  } = useViewable({
+    viewAreaCoveragePercentThreshold: 60,
+  })
 
   const renderBookmark = () => <BookmarkComponent postsGetTrendingPosts={postsGetTrendingPosts} />
 
@@ -64,12 +70,12 @@ const Feed = ({
               createTextPostRef={createTextPostRef(post)}
               textPostRef={getTextPostRef(post)}
               feedRef={feedRef}
+              autoPlay={postInView === post.postId}
             />
           )}
         </PostServiceComponent>
       </React.Fragment>
-    ),
-    [data],
+    ), [data],
   )
 
   const renderActivityIndicator = () => <ActivityIndicator accessibilityLabel="Loader" tintColor={theme.colors.border} />

@@ -27,11 +27,11 @@ export const autoKeyboardClose = () => {
 /**
  * react-native-image-crop-picker request object
  */
-export const cropperOptions = (state, snappedPhoto) => ({
+export const cropperOptions = (state, snappedMedia) => ({
   avoidEmptySpaceAroundImage: false,
-  path: snappedPhoto.path || snappedPhoto.uri,
-  width: getScreenAspectRatio(state.photoSize, snappedPhoto.width).x,
-  height: getScreenAspectRatio(state.photoSize, snappedPhoto.width).y,
+  path: snappedMedia.path || snappedMedia.uri,
+  width: getScreenAspectRatio(state.mediaSize, snappedMedia.width).x,
+  height: getScreenAspectRatio(state.mediaSize, snappedMedia.width).y,
   includeExif: true,
   compressImageQuality: 1,
 })
@@ -39,20 +39,36 @@ export const cropperOptions = (state, snappedPhoto) => ({
 /**
  * graphql request object
  */
-const originalMetadata = snappedPhoto => ({
-  ...snappedPhoto.exif,
-  creationDate: snappedPhoto.creationDate,
-  modificationDate: snappedPhoto.modificationDate,
-  adjustmentData: snappedPhoto.adjustmentData,
+const originalMetadata = snappedMedia => ({
+  ...snappedMedia.exif,
+  creationDate: snappedMedia.creationDate,
+  modificationDate: snappedMedia.modificationDate,
+  adjustmentData: snappedMedia.adjustmentData,
 })
 
-export const requestPayload = (type = 'gallery') => (state, snappedPhoto, croppedPhoto) => ({
-  uri: (snappedPhoto.uri || snappedPhoto.path).replace('file://', ''),
-  preview: (croppedPhoto.path || croppedPhoto.path).replace('file://', ''),
-  originalFormat: snappedPhoto.extension || 'jpg',
-  imageFormat: snappedPhoto.format || 'JPEG',
-  crop: formatCropCoordinates(croppedPhoto.cropRect),
-  originalMetadata: JSON.stringify(originalMetadata(snappedPhoto)),
+export const requestPayload = (type = 'gallery') => (state, snappedMedia, croppedMedia) => ({
+  uri: (snappedMedia.uri || snappedMedia.path).replace('file://', ''),
+  preview: (croppedMedia.path || croppedMedia.path).replace('file://', ''),
+  originalFormat: snappedMedia.extension || 'jpg',
+  imageFormat: snappedMedia.format || 'JPEG',
+  crop: formatCropCoordinates(croppedMedia.cropRect),
+  originalMetadata: JSON.stringify(originalMetadata(snappedMedia)),
   takenInReal: type === 'camera',
-  photoSize: state.photoSize,
+  mediaSize: state.mediaSize,
 })
+
+export const mediaType = (originalFormat) => {
+  const images = ['jpg', 'jpeg', 'heic', 'png']
+  if (images.includes(originalFormat))
+    return 'IMAGE'
+
+  const videos = ['mp4', 'mov']
+  if (videos.includes(originalFormat))
+    return 'VIDEO'
+
+  throw new Error('Unsupported format')
+}
+
+export const isMedia = (type) => {
+  return ['IMAGE', 'VIDEO'].includes(type)
+}

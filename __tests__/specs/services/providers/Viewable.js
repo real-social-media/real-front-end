@@ -13,6 +13,11 @@ const viewableItems = [
   { item: { postId: '4', payment: 0.00002, viewedStatus: 'NOT_VIEWED' } },
 ]
 
+const defaultConfig = {
+  viewAreaCoveragePercentThreshold: 30,
+  waitForInteraction: false,
+}
+
 /**
  * Mock Functions
  */
@@ -24,6 +29,29 @@ useDispatch.mockReturnValue(dispatch)
 describe('Viewable provider', () => {
   afterEach(() => {
     dispatch.mockClear()
+  })
+
+  describe('with custom viewable config', () => {
+    it('should return default config', () => {
+      const { result } = renderHook(() => useViewable())
+      const config = result.current.viewabilityConfigRef.current
+      expect(config).toEqual(defaultConfig)
+    })
+
+    it('should override default config', () => {
+      const newConfig = {
+        viewAreaCoveragePercentThreshold: 50,
+        minimumViewTime: 1000,
+      }
+
+      const { result } = renderHook(() => useViewable(newConfig))
+
+      const config = result.current.viewabilityConfigRef.current
+      expect(config).toEqual({
+        waitForInteraction: false,
+        ...newConfig,
+      })
+    })
   })
 
   describe('filter unpaid posts', () => {

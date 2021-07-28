@@ -3,14 +3,13 @@ import { eventChannel, END } from 'redux-saga'
 import path from 'ramda/src/path'
 import compose from 'ramda/src/compose'
 import toLower from 'ramda/src/toLower'
-import replace from 'ramda/src/replace'
 import * as actions from 'store/ducks/posts/actions'
 import RNFS from 'react-native-fs'
 import filePath from 'path'
 
 function initPostsCreateUploadChannel({ image, uploadUrl, payload }) {
   const getName = (image) => {
-    return compose(replace('.heic', ''), replace('.jpg', ''), toLower, filePath.basename)(image)
+    return filePath.basename(image).replace(/\.[^/.]+$/, '').toLowerCase()
   }
 
   const getFilename = (image) => {
@@ -22,20 +21,21 @@ function initPostsCreateUploadChannel({ image, uploadUrl, payload }) {
   }
 
   const getFiletype = (image) => {
-    if (toLower(image.imageFormat) === 'heic') {
+    if (toLower(image.imageFormat) === 'heic')
       return 'image/heic'
-    }
-    return 'image/jpeg'
+
+    if (toLower(image.imageFormat) === 'jpg' || toLower(image.imageFormat) === 'jpeg')
+      return 'image/jpeg'
+
+    return 'video/mp4'
   }
 
-  const files = [
-    {
-      name: getName(image),
-      filename: getFilename(image),
-      filepath: getFilepath(image),
-      filetype: getFiletype(payload),
-    },
-  ]
+  const files = [{
+    name: getName(image),
+    filename: getFilename(image),
+    filepath: getFilepath(image),
+    filetype: getFiletype(payload),
+  }]
 
   const handleRequest = (emitter) => (response) => {
     const jobId = response.jobId
@@ -105,9 +105,9 @@ function initPostsCreateUploadChannel({ image, uploadUrl, payload }) {
 /**
  *
  */
-function* postsUploadRequest(imageUploadUrl, post) {
+function* postsUploadRequest(uploadUrl, post) {
   const channel = yield call(initPostsCreateUploadChannel, {
-    uploadUrl: imageUploadUrl,
+    uploadUrl: uploadUrl,
     image: path(['images', 0])(post),
     payload: post,
   })

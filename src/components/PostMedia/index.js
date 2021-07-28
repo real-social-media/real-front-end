@@ -86,6 +86,7 @@ const PostMedia = ({
             actionSheetRef={actionSheetRefs.current[post.postId]}
             createTextPostRef={element => textPostRefs.current[post.postId] = element}
             textPostRef={textPostRefs.current[post.postId]}
+            autoPlay
           />
         )}
       />

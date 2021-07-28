@@ -9,6 +9,7 @@ import PostCreateForm from 'components/PostCreate/Form'
 import FormLifetime from 'components/PostCreate/FormLifetime'
 import FormAlbums from 'components/PostCreate/FormAlbums'
 import { withTheme } from 'react-native-paper'
+import { isMedia } from 'services/providers/Camera/helpers'
 
 const PostCreateComponent = ({
   theme,
@@ -44,7 +45,7 @@ const PostCreateComponent = ({
           </View>
         ) : null}
 
-        {type === 'IMAGE' && cameraCapture ? (
+        {isMedia(type) && cameraCapture ? (
           <View style={styling.form}>
             <PostCreateForm
               user={user}

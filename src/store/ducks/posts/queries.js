@@ -92,7 +92,7 @@ export const addTextOnlyPost = `
 `
 
 export const addPhotoPost = `
-  mutation AddMediaPost(
+  mutation addPhotoPost(
     $postId: ID!,
     $postType: PostType,
     $albumId: ID,
@@ -131,6 +131,37 @@ export const addPhotoPost = `
         originalMetadata: $originalMetadata,
         crop: $crop,
       }
+    ) {
+      ...postFragment
+    }
+  }
+  ${postFragment}
+`
+
+export const addVideoPost = `
+  mutation addVideoPost(
+    $postId: ID!,
+    $postType: PostType,
+    $albumId: ID,
+    $lifetime: String,
+    $text: String,
+    $commentsDisabled: Boolean,
+    $likesDisabled: Boolean,
+    $sharingDisabled: Boolean,
+    $verificationHidden: Boolean,
+    $setAsUserPhoto: Boolean,
+  ) {
+    addPost (
+      postId: $postId,
+      postType: $postType,
+      albumId: $albumId,
+      lifetime: $lifetime,
+      text: $text,
+      commentsDisabled: $commentsDisabled,
+      likesDisabled: $likesDisabled,
+      sharingDisabled: $sharingDisabled,
+      verificationHidden: $verificationHidden,
+      setAsUserPhoto: $setAsUserPhoto,
     ) {
       ...postFragment
     }

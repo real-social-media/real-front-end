@@ -9,6 +9,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import * as postsActions from 'store/ducks/posts/actions'
 import path from 'ramda/src/path'
 import { VERIFICATION_TYPE } from 'components/Verification'
+import { isMedia } from 'services/providers/Camera/helpers'
 
 const PostCreateService = ({
   children,
@@ -31,7 +32,7 @@ const PostCreateService = ({
     if (post.postType === 'TEXT_ONLY') {
       navigationActions.navigateHome(navigation)
     }
-    if (post.postType === 'IMAGE' && cameraCaptureLength === 1) {
+    if (isMedia(post.postType) && cameraCaptureLength === 1) {
       navigationActions.navigateHome(navigation)
     }
   }

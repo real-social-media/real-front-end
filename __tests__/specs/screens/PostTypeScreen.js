@@ -134,10 +134,10 @@ describe('PostType screen', () => {
 
     expect(useLibrary).toHaveBeenCalled()
 
-    const { handleProcessedPhoto } = useLibrary.mock.calls[0][0]
+    const { handleProcessedMedia } = useLibrary.mock.calls[0][0]
     const payload = [{ preview: 'preview' }]
 
-    handleProcessedPhoto(payload)
+    handleProcessedMedia(payload)
     expect(dispatch).toHaveBeenCalledWith(cameraActions.cameraCaptureRequest(payload))
     testNavigate(navigation, 'PostCreate', { type: 'IMAGE' })
     await act(sleep)

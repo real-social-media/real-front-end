@@ -1,0 +1,2 @@
+export const TOGGLE_SOUND = 'TOGGLE_SOUND'
+export const MAX_VIDEO_RECORD_DURATION = 15

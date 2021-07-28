@@ -1,12 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, TouchableOpacity, StyleSheet, Animated, Pressable } from 'react-native'
 import UploadIcon from 'assets/svg/camera/Upload'
 import FlipIcon from 'assets/svg/camera/Flip'
 import FlashOnIcon from 'assets/svg/camera/FlashOn'
 import FlashOffIcon from 'assets/svg/camera/FlashOff'
+import { AnimatedCircularProgress } from 'react-native-circular-progress'
 
 import { withTheme } from 'react-native-paper'
+import { MAX_VIDEO_RECORD_DURATION } from 'store/ducks/player/constants'
 
 const Shutter = ({
   theme,
@@ -14,7 +16,11 @@ const Shutter = ({
   handleFlipToggle,
   handleLibrarySnap,
   handleCameraSnap,
+  handleVideoRecord,
+  onRecordingEnd,
   handleFlashToggle,
+  recordedDuration,
+  shutterButtonScaleRef,
 }) => {
   const styling = styles(theme)
 
@@ -28,8 +34,22 @@ const Shutter = ({
         </TouchableOpacity>
         <View style={styling.item} />
 
-        <TouchableOpacity style={styling.capture} onPress={handleCameraSnap}>
-        </TouchableOpacity>
+        <Pressable
+          onPress={handleCameraSnap}
+          onLongPress={handleVideoRecord}
+          onPressOut={onRecordingEnd}
+        >
+          <Animated.View
+            style={[styling.capture, styling.shutterButtonScale(shutterButtonScaleRef.current)]}
+          >
+            <AnimatedCircularProgress
+              size={80}
+              width={10}
+              fill={recordedDuration * 100 / MAX_VIDEO_RECORD_DURATION}
+              tintColor="#e74c3c"
+            />
+          </Animated.View>
+        </Pressable>
 
         <TouchableOpacity style={styling.item} onPress={handleFlipToggle}>
           <FlipIcon
@@ -82,6 +102,13 @@ const styles = theme => StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  shutterButtonScale: (shutterButtonScale) => ({
+    transform: [
+      {
+        scale: shutterButtonScale,
+      },
+    ],
+  }),
 })
 
 Shutter.propTypes = {
@@ -91,6 +118,10 @@ Shutter.propTypes = {
   handleCameraSnap: PropTypes.any,
   handleFlashToggle: PropTypes.any,
   handleLibrarySnap: PropTypes.func,
+  handleVideoRecord: PropTypes.func,
+  onRecordingEnd: PropTypes.func,
+  recordedDuration: PropTypes.func,
+  shutterButtonScaleRef: PropTypes.any,
 }
 
 export default withTheme(Shutter)

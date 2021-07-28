@@ -16,6 +16,24 @@ export const imageFragment = `
   }
 `
 
+export const videoFragment = `
+  fragment videoFragment on Video {
+    urlMasterM3U8
+    accessCookies {
+      domain
+      path
+      expiresAt
+      policy
+      signature
+      keyPairId
+    }
+    resolutions {
+      width
+      height
+    }
+  }
+`
+
 export const userFragment = `
   fragment rootUser on User {
     userId
@@ -94,6 +112,9 @@ export const userFragment = `
         image {
           ...imageFragment
         }
+        video {
+          ...videoFragment
+        }
         isVerified
         likeStatus
         onymousLikeCount
@@ -109,6 +130,7 @@ export const userFragment = `
   }
 
   ${imageFragment}
+  ${videoFragment}
 `
 
 export const commentFragment = `
@@ -150,6 +172,10 @@ export const postFragment = `
       ...imageFragment
     }
     imageUploadUrl
+    video {
+      ...videoFragment
+    }
+    videoUploadUrl
     isVerified
     likeStatus
     commentsCount

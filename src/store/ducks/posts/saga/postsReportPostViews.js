@@ -1,4 +1,4 @@
-import { all, put, fork, take, flush, actionChannel, delay, call, select } from 'redux-saga/effects'
+import { all, put, fork, take, flush, actionChannel, call, select, delay } from 'redux-saga/effects'
 import { buffers } from 'redux-saga'
 import path from 'ramda/src/path'
 import uniq from 'ramda/src/uniq'

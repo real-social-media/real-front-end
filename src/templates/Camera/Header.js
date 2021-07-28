@@ -1,25 +1,34 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, TouchableOpacity, StyleSheet, Text } from 'react-native'
 import CloseIcon from 'assets/svg/camera/Close'
 import * as navigationActions from 'navigation/actions'
 
 import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
+import secondsToDuration from 'services/helpers/secondsToDuration'
 
 const Header = ({
   theme,
   content,
+  recordedDuration,
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
 
-
   return (
     <View style={styling.root}>
-      <View style={styling.content}>
-        {content}
-      </View>
+      {recordedDuration > 0 ? (
+        <View style={styling.timerWrapper}>
+          <Text style={styling.timerText}>{secondsToDuration(recordedDuration)}</Text>
+        </View>
+      ) : null}
+
+      {content !== undefined ? (
+        <View style={styling.content}>
+          {content}
+        </View>
+      ) : null}
 
       <View style={styling.action}>
         <View style={styling.actionItem} />
@@ -56,11 +65,20 @@ const styles = theme => StyleSheet.create({
   actionItem: {
     paddingHorizontal: theme.spacing.base,
   },
+  timerWrapper: {
+    position: 'absolute',
+    zIndex: 2,
+  },
+  timerText: {
+    color: '#fff',
+    textAlign: 'center',
+  },
 })
 
 Header.propTypes = {
   theme: PropTypes.any,
   content: PropTypes.any,
+  recordedDuration: PropTypes.number,
 }
 
 export default withTheme(Header)

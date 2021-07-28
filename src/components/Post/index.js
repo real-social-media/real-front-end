@@ -11,6 +11,7 @@ import AlbumComponent from 'components/Post/Album'
 import CommentComponent from 'components/Post/Comment'
 import DescriptionComponent from 'components/Post/Description'
 import HeaderComponent from 'components/Post/Header'
+import VideoPlayer from 'components/VideoPlayer'
 import UnlockComponent from 'components/Post/Unlock'
 
 import ListItemComponent from 'templates/ListItem'
@@ -23,6 +24,7 @@ import * as navigationActions from 'navigation/actions'
 import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { unpaid } from 'services/providers/Viewable'
+import { isMedia } from 'services/providers/Camera/helpers'
 
 const PostComponent = ({
   theme,
@@ -45,6 +47,7 @@ const PostComponent = ({
 
   feedRef,
   changeAvatarRequest,
+  autoPlay,
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
@@ -85,7 +88,7 @@ const PostComponent = ({
       />
 
       <View style={styling.inner}>
-        {post.postType === 'TEXT_ONLY' ?
+        {post.postType === 'TEXT_ONLY' ? (
           <ViewShot ref={createTextPostRef} onCapture={onCapture}>
             <TextOnlyComponent
               text={post.text}
@@ -94,9 +97,9 @@ const PostComponent = ({
               <TouchableOpacity style={styling.next} onPress={handleScrollNext} />
             </TextOnlyComponent>
           </ViewShot>
-        : null}
+        ) : null}
 
-        {post.postType === 'IMAGE' ?
+        {post.postType === 'IMAGE' ? (
           <ListItemComponent
             post={post}
             feedRef={feedRef}
@@ -113,20 +116,36 @@ const PostComponent = ({
               resizeMode="contain"
               hideLabel={false}
             />
-
             <TouchableOpacity style={styling.prev} onPress={handleScrollPrev} />
             <TouchableOpacity style={styling.next} onPress={handleScrollNext} />
           </ListItemComponent>
-        : null}
+        ) : null}
 
-        {unpaid(post) ?
+        {post.postType === 'VIDEO' ? (
+          <VideoPlayer
+            poster={post.image.url}
+            source={{
+              uri: post.video.urlMasterM3U8,
+              headers: {
+                Cookie: `CloudFront-Key-Pair-Id=${post.video.accessCookies.keyPairId}; CloudFront-Policy=${post.video.accessCookies.policy}; CloudFront-Signature=${post.video.accessCookies.signature}`,
+              },
+            }}
+            resolution={{
+              width: post.video.resolutions[0].width,
+              height: post.video.resolutions[0].height,
+            }}
+            playing={autoPlay}
+          />
+        ) : null}
+
+        {unpaid(post) ? (
           <UnlockComponent payment={post.payment} postId={post.postId} />
-        : null}
+        ) : null}
       </View>
 
-      {albumLength > 1 ?
+      {albumLength > 1 ? (
         <AlbumComponent post={post} />
-      : null}
+      ) : null}
 
       <ActionComponent
         user={user}
@@ -141,11 +160,11 @@ const PostComponent = ({
         user={user}
       />
 
-      {post.postType === 'IMAGE' ?
+      {isMedia(post.postType) ? (
         <DescriptionComponent
           post={post}
         />
-      : null}
+      ) : null}
 
       <CommentComponent post={post} />
     </View>
@@ -178,6 +197,7 @@ const styles = theme => StyleSheet.create({
 
 PostComponent.defaultProps = {
   postsGet: {},
+  autoPlay: false,
 }
 
 PostComponent.propTypes = {
@@ -202,6 +222,7 @@ PostComponent.propTypes = {
   createTextPostRef: PropTypes.any,
   textPostRef: PropTypes.any,
   changeAvatarRequest: PropTypes.func,
+  autoPlay: PropTypes.bool,
 }
 
 export default withTheme(PostComponent)
