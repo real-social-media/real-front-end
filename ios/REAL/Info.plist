@@ -89,6 +89,8 @@
 	<string>REAL needs contacts permissions to enable find &amp; invite friends</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>REAL needs location permissions to tag your photo uploads and enable dating</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Real needs microphone permission to enable video recording</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>REAL wants to save photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -111,7 +113,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Real needs microphone permission to enable video recording</string>
 </dict>
 </plist>
