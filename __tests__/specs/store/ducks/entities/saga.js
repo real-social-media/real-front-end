@@ -11,7 +11,6 @@ describe('Entities saga', () => {
       .not.put(entitiesActions.entitiesPostsMerge({ data: {} }))
       .not.put(entitiesActions.entitiesUsersMerge({ data: {} }))
       .not.put(entitiesActions.entitiesCommentsMerge({ data: {} }))
-      .not.put(entitiesActions.entitiesImagesMerge({ data: {} }))
       .not.put(entitiesActions.entitiesMessagesMerge({ data: {} }))
       .not.put(entitiesActions.entitiesChatsMerge({ data: {} }))
 
@@ -24,9 +23,8 @@ describe('Entities saga', () => {
       posts: { b: 2 },
       users: { c: 3 },
       comments: { f: 4 },
-      images: { g: 5 },
-      messages: { k: 6 },
-      chats: { p: 7 },
+      messages: { k: 5 },
+      chats: { p: 6 },
     }
 
     await expectSaga(entitiesMerge, { entities })
@@ -34,7 +32,6 @@ describe('Entities saga', () => {
       .put(entitiesActions.entitiesPostsMerge({ data: entities.posts }))
       .put(entitiesActions.entitiesUsersMerge({ data: entities.users }))
       .put(entitiesActions.entitiesCommentsMerge({ data: entities.comments }))
-      .put(entitiesActions.entitiesImagesMerge({ data: entities.images }))
       .put(entitiesActions.entitiesMessagesMerge({ data: entities.messages }))
       .put(entitiesActions.entitiesChatsMerge({ data: entities.chats }))
 

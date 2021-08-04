@@ -21,15 +21,6 @@ export const linkAppleLogin = `
   ${usersSingle.singleUserFragment}
 `
 
-export const linkFacebookLogin = `
-  mutation linkFacebookLogin($facebookAccessToken: String!) {
-    linkFacebookLogin(facebookAccessToken: $facebookAccessToken) {
-      ...singleUserFragment
-    }
-  }
-  ${usersSingle.singleUserFragment}
-`
-
 export const linkGoogleLogin = `
   mutation linkGoogleLogin($googleIdToken: String!) {
     linkGoogleLogin(googleIdToken: $googleIdToken) {

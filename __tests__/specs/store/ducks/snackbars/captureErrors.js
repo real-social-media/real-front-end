@@ -4,15 +4,13 @@ import { expectSaga } from 'redux-saga-test-plan'
 import { testAsRootSaga } from 'tests/utils/helpers'
 import { showMessage } from 'react-native-flash-message'
 import { createFailureAction } from 'store/errors'
-import Config from 'react-native-config'
 import snackbars from 'store/ducks/snackbars/saga'
 import * as authActions from 'store/ducks/auth/actions'
 import * as Logger from 'services/Logger'
-import { CancelRequestOnSignoutError, UserInNotActiveError, stringifyFailureAction } from 'store/errors'
+import { CancelRequestOnSignoutError, UserInNotActiveError } from 'store/errors'
 
 jest.spyOn(Alert, 'alert')
 jest.mock('react-native-flash-message', () => ({ showMessage: jest.fn() }))
-jest.mock('react-native-config', () => ({ ENVIRONMENT: 'production' }))
 
 const error = new Error('Error')
 const failureAction = createFailureAction('ACTION_FAILURE')
@@ -65,29 +63,6 @@ describe('Capture Errors', () => {
     })
   })
 
-  describe('debug mode', () => {
-    const action = failureAction(error)
-    const simulatePress = () => showMessage.mock.calls[0][0].onPress()
-
-    it('dev env', async () => {
-      Config.ENVIRONMENT = 'development'
-      await expectSaga(testAsRootSaga(snackbars)).dispatch(failureAction(error)).silentRun()
-
-      simulatePress()
-      expect(Config.ENVIRONMENT).toBe('development')
-      expect(Alert.alert).toHaveBeenCalledWith(stringifyFailureAction(action))
-      Config.ENVIRONMENT = 'production'
-    })
-
-    it('prod env', async () => {
-      expect(Config.ENVIRONMENT).toBe('production')
-      await expectSaga(testAsRootSaga(snackbars)).dispatch(failureAction(error)).silentRun()
-
-      simulatePress()
-      expect(Alert.alert).not.toHaveBeenCalled()
-    })
-  })
-
   describe('prevent show a message', () => {
     it('anonymous user', async () => {
       const message = 'User is not ACTIVE'
@@ -127,6 +102,7 @@ describe('Capture Errors', () => {
       testBlackListAction('POSTS_REPORT_POST_VIEWS_FAILURE')
       testBlackListAction('USERS_REPORT_SCREEN_VIEWS_FAILURE')
       testBlackListAction('THEMES_CHECK_DEFAULT_FAILURE')
+      testBlackListAction('WALLET_GET_FAILURE')
     })
   })
 })

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import useToggle from 'react-use/lib/useToggle'
-import { TouchableOpacity, SafeAreaView, StyleSheet, View, Image, Modal } from 'react-native'
+import { ScrollView, SafeAreaView, StyleSheet, View, Image, Modal } from 'react-native'
 import { Text } from 'react-native-paper'
 import SpaceshipIcon from 'assets/svg/verification/Spaceship'
 import CameraIcon from 'assets/svg/verification/Camera'
@@ -13,7 +13,6 @@ import DefaultButton from 'components/Formik/Button/DefaultButton'
 
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
-import testIDs from './test-ids'
 
 export const VERIFICATION_TYPE = {
   HOME: 'HOME',
@@ -29,24 +28,13 @@ export const a11y = {
   ELAModal: 'More details modal',
 }
 
-const Verification = ({
-  t,
-  theme,
-  handleBackAction,
-  handleHideAction,
-  handleContinueAction,
-  handleClose,
-  actionType,
-  urlELA,
-}) => {
+const Verification = ({ t, theme, handleBackAction, handleHideAction, handleContinueAction, actionType, urlEla }) => {
   const styling = styles(theme)
   const [isELAopen, toggleELA] = useToggle(false)
 
   return (
-    <View style={styling.root}>
-      <TouchableOpacity testID={testIDs.backdrop} style={styling.backdrop} onPress={handleClose} />
-
-      <SafeAreaView style={styling.component}>
+    <ScrollView style={styling.root}>
+      <SafeAreaView>
         <View style={styling.heading}>
           <View style={styling.info}>
             <SpaceshipIcon fill={theme.colors.text} />
@@ -57,7 +45,7 @@ const Verification = ({
           </Text>
         </View>
 
-        {urlELA && (
+        {urlEla && (
           <>
             <DefaultButton
               onPress={toggleELA}
@@ -67,13 +55,18 @@ const Verification = ({
               mode="outlined"
               size="compact"
             />
-            <Modal accessibilityLabel={a11y.ELAModal} presentationStyle="formSheet" animationType="slide" visible={isELAopen}>
+            <Modal
+              accessibilityLabel={a11y.ELAModal}
+              presentationStyle="formSheet"
+              animationType="slide"
+              visible={isELAopen}
+            >
               <View style={styling.elaModal}>
                 <Image
                   style={styling.elaImage}
                   resizeMode="cover"
                   accessibilityLabel={a11y.ELAImage}
-                  source={{ uri: urlELA }}
+                  source={{ uri: urlEla }}
                 />
                 <DefaultButton accessibilityLabel={a11y.closeELABtn} onPress={toggleELA} label={t('Close')} />
               </View>
@@ -166,7 +159,7 @@ const Verification = ({
           </View>
         ) : null}
       </SafeAreaView>
-    </View>
+    </ScrollView>
   )
 }
 
@@ -174,21 +167,8 @@ const styles = (theme) =>
   StyleSheet.create({
     root: {
       flex: 1,
-      justifyContent: 'flex-end',
+      paddingBottom: 24,
     },
-    backdrop: {
-      position: 'absolute',
-      top: 0,
-      bottom: 0,
-      left: 0,
-      right: 0,
-      backgroundColor: 'rgba(52, 52, 52, 0.5)',
-    },
-    component: {
-      borderRadius: 24,
-      backgroundColor: theme.colors.backgroundSecondary,
-    },
-
     info: {
       alignItems: 'center',
       paddingBottom: 12,
@@ -272,7 +252,7 @@ const styles = (theme) =>
 Verification.propTypes = {
   theme: PropTypes.any,
   t: PropTypes.any,
-  urlELA: PropTypes.string,
+  urlEla: PropTypes.string,
   handleBackAction: PropTypes.func,
   handleHideAction: PropTypes.func,
   handleContinueAction: PropTypes.func,
@@ -281,7 +261,7 @@ Verification.propTypes = {
 }
 
 Verification.defaultProps = {
-  urlELA: null,
+  urlEla: null,
 }
 
 export default withTranslation()(withTheme(Verification))

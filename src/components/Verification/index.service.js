@@ -13,6 +13,7 @@ const VerificationService = ({ children }) => {
   const actionType = path(['params', 'actionType'], route)
   const handleNext = path(['params', 'handleNext'], route)
   const showHeader = path(['params', 'showHeader'], route)
+  const urlEla = path(['params', 'urlEla'], route)
 
   useEffect(() => {
     if (showHeader) {
@@ -43,6 +44,7 @@ const VerificationService = ({ children }) => {
     handleClose,
     navigation,
     actionType,
+    urlEla,
   })
 }
 

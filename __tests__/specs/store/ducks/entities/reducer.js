@@ -27,14 +27,12 @@ describe('Entities reducer', () => {
       .put(entitiesActions.entitiesPostsMerge({ data }))
       .put(entitiesActions.entitiesCommentsMerge({ data }))
       .put(entitiesActions.entitiesUsersMerge({ data }))
-      .put(entitiesActions.entitiesImagesMerge({ data }))
       .put(entitiesActions.entitiesChatsMerge({ data }))
       .put(entitiesActions.entitiesMessagesMerge({ data }))
       .expect(entitiesSelector, {
         albums: { ...data, updatedAt },
         chats: { ...data, updatedAt },
         comments: { ...data, updatedAt },
-        images: { ...data, updatedAt },
         messages: { ...data, updatedAt },
         posts: { ...data, updatedAt },
         users: { ...data, updatedAt },

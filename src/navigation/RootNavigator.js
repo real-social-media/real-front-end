@@ -26,6 +26,7 @@ const RootNavigator = () => {
   const stackScreenCardProps = navigationOptions.stackScreenCardProps({ theme })
   const stackScreenModalProps = navigationOptions.stackScreenModalProps
 
+
   useEffect(() => {
     dispatch(themesActions.themesCheckDefaultRequest())
   }, [])
@@ -71,7 +72,7 @@ const RootNavigator = () => {
       <Stack.Screen
         name="Verification"
         component={VerificationScreen}
-        {...stackScreenModalProps}
+        {...stackScreenPageProps({ options: { title: 'Trending Tips' } })}
       />
 
       <Stack.Screen

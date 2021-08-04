@@ -86,9 +86,9 @@ describe('authSigninGoogle', () => {
 
         .call(validateUserExistance, userPayload)
         .not.call(handleAnonymousSignin)
-        .not.call([queryService, 'apiRequest'], queries.linkGoogleLogin, { googleIdToken: userPayload.token })
         .not.call([queryService, 'apiRequest'], queries.setFullname, { fullName: userPayload.name })
         .call([AwsAuth, 'federatedSignIn'], 'google', credentials, userPayload)
+        .call([queryService, 'apiRequest'], queries.linkGoogleLogin, { googleIdToken: userPayload.token })
 
         .put(actions.authGetUserRequest())
         .put(actions.authPrefetchRequest())

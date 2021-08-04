@@ -5,6 +5,7 @@ export const singleAlbumFragment = `
     url480p
     url1080p
     url4k
+    urlEla
     width
     height
     colors {
@@ -47,6 +48,7 @@ export const singleAlbumPostFragment = `
     url480p
     url1080p
     url4k
+    urlEla
     width
     height
     colors {

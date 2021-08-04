@@ -5,6 +5,7 @@ export const listUserFragment = `
     url480p
     url1080p
     url4k
+    urlEla
     width
     height
     colors {

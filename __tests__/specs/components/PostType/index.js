@@ -1,6 +1,7 @@
 import React from 'react'
-import { renderWithProviders, fireEvent } from 'tests/utils'
-import PostType from 'components/PostType'
+import { RESULTS } from 'react-native-permissions'
+import { renderWithProviders, fireEvent, within } from 'tests/utils'
+import PostType, { a11y } from 'components/PostType'
 import testIDs from 'components/PostType/test-ids'
 
 const setup = (props) => renderWithProviders(<PostType {...props} />)
@@ -22,7 +23,7 @@ describe('PostType component', () => {
 
     expect(handleClose).not.toHaveBeenCalled()
 
-    fireEvent.press(getByText('x close'))
+    fireEvent.press(getByText('Close'))
     expect(handleClose).toHaveBeenCalled()
   })
 
@@ -54,5 +55,25 @@ describe('PostType component', () => {
 
     fireEvent.press(getByText('Text'))
     expect(handleTextPostTab).toHaveBeenCalled()
+  })
+
+  it('not display permission manage by default', () => {
+    const { queryByAccessibilityLabel } = setup()
+
+    expect(queryByAccessibilityLabel(a11y.permission)).toBeFalsy()
+  })
+
+  it('display manage permission when permission limited', () => {
+    const handleManageAccess = jest.fn()
+    const { queryByAccessibilityLabel } = setup({ handleManageAccess, permission: RESULTS.LIMITED })
+    const $permission = queryByAccessibilityLabel(a11y.permission)
+
+    expect($permission).toBeTruthy()
+    expect(
+      within($permission).getByText('You’ve given REAL access to only a select number of photos. Manage'),
+    ).toBeTruthy()
+
+    fireEvent.press($permission)
+    expect(handleManageAccess).toHaveBeenCalled()
   })
 })

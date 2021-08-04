@@ -45,6 +45,7 @@ function* googleSignInFlow(userPayload) {
   }
 
   yield call([AwsAuth, 'federatedSignIn'], 'google', credentials, userPayload)
+  yield call([queryService, 'apiRequest'], queries.linkGoogleLogin, { googleIdToken: userPayload.token })
   yield call(authorize)
 }
 

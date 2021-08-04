@@ -1,8 +1,17 @@
 import UrlPattern from 'url-pattern'
-import { Linking } from 'react-native'
+import Config from 'react-native-config'
+import { Linking, Platform } from 'react-native'
 import * as navigationActions from 'navigation/actions'
 import * as Logger from 'services/Logger'
 import { NotSupportedInAppCardError } from 'store/errors'
+
+export const getStoreLink = () => {
+  if (Platform.OS === 'ios') {
+    return `itms-apps://itunes.apple.com/app/id${Config.APPSTORE_ID}`
+  } else {
+    return `https://apps.apple.com/us/app/${Config.APPSTORE_NAME}/id${Config.APPSTORE_ID}`
+  }
+}
 
 const options = { segmentValueCharset: ':a-zA-Z0-9_-' }
 

@@ -10,7 +10,7 @@ import * as updatesActions from 'store/ducks/updates/actions'
 
 jest.mock('services/Query', () => ({ httpRequest: jest.fn() }))
 jest.mock('react-native-device-info', () => ({ getBundleId: jest.fn(), getVersion: jest.fn() }))
-jest.mock('react-native-config', () => ({ ENVIRONMENT: 'production', APPSTORE_ID: 'APPSTORE_ID' }))
+jest.mock('react-native-config', () => ({ ENVIRONMENT: 'production', APPSTORE_ID: 'APPSTORE_ID', APPSTORE_NAME: 'APPSTORE_NAME' }))
 jest.spyOn(Alert, 'alert')
 jest.spyOn(Linking, 'openURL')
 

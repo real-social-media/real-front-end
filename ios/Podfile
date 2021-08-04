@@ -10,11 +10,12 @@ target 'REAL' do
   permissions_path = '../node_modules/react-native-permissions/ios'
   pod 'RNCPushNotificationIOS', :path => '../node_modules/@react-native-community/push-notification-ios'
   pod 'CodePush', :path => '../node_modules/react-native-code-push'
-  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications.podspec"
-  pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
-  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
-  pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts.podspec"
-  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse.podspec"
+  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
+  pod 'Permission-PhotoLibraryAddOnly', :path => "#{permissions_path}/PhotoLibraryAddOnly"
+  pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts"
+  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
   pod 'react-native-contacts', :path => '../node_modules/react-native-contacts'
   pod 'RSKImageCropper', '2.0.0'
   pod 'GoogleSignIn', '~> 5.0.0'

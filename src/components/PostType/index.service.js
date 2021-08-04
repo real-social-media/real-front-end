@@ -1,6 +1,8 @@
-import { useContext } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch } from 'react-redux'
+import useAppState from 'services/AppState'
+import { PERMISSIONS, RESULTS, check, openSettings } from 'react-native-permissions'
 import * as navigationActions from 'navigation/actions'
 import * as cameraActions from 'store/ducks/camera/actions'
 import useLibrary from 'services/providers/Camera/useLibrary'
@@ -12,11 +14,30 @@ const PostTypeService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const { user } = useContext(AuthContext)
+  const [permission, setPermission] = useState(RESULTS.DENIED)
+
+  const checkPermissions = () => {
+    check(PERMISSIONS.IOS.PHOTO_LIBRARY)
+      .then((result) => setPermission(result))
+      .catch(() => {})
+  }
+
+  useEffect(() => {
+    checkPermissions()
+  }, [])
+
+  useAppState({
+    onForeground: () => {
+      checkPermissions()
+    },
+  })
 
   const handleProcessedPhoto = (payload) => {
     dispatch(cameraActions.cameraCaptureRequest(payload))
     navigationActions.navigatePostCreate(navigation, { type: 'IMAGE' })
   }
+
+  const handleManageAccess = () => openSettings()
 
   const library = useLibrary({ handleProcessedPhoto })
   const handleClose = () => navigation.popToTop()
@@ -47,6 +68,8 @@ const PostTypeService = ({ children }) => {
   }
 
   return children({
+    permission,
+    handleManageAccess,
     handleLibrarySnap,
     handlePhotoTab,
     handleTextPostTab,

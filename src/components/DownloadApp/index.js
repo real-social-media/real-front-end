@@ -4,14 +4,14 @@ import { TouchableOpacity, SafeAreaView, StyleSheet, View, Linking } from 'react
 import { Text } from 'react-native-paper'
 import DownloadIcon from 'assets/svg/other/Download'
 import AppStoreIcon from 'assets/svg/other/AppStore'
-import Config from 'react-native-config'
 import color from 'color'
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
+import * as LinkingService from 'services/Linking'
 
 const DownloadApp = ({ t, theme, handleClose }) => {
   const styling = styles(theme)
-  const navigateToAppStore = () => Linking.openURL(`itms-apps://itunes.apple.com/app/id${Config.APPSTORE_ID}`)
+  const navigateToAppStore = () => Linking.openURL(LinkingService.getStoreLink())
 
   return (
     <View style={styling.root}>

@@ -1,7 +1,6 @@
 import React from 'react'
 import { renderWithProviders, fireEvent, act } from 'tests/utils'
 import Verification, { VERIFICATION_TYPE, a11y } from 'components/Verification'
-import testIDs from 'components/Verification/test-ids'
 
 const setup = (props) => renderWithProviders(<Verification {...props} />)
 
@@ -31,16 +30,6 @@ describe('Verification Screen', () => {
 
     getByText('You’re perfect the way you are.')
     getByText('On REAL, you’re more likely to go viral by being yourself!')
-  })
-
-  it('should close popup on backdrop tab', () => {
-    const handleClose = jest.fn()
-    const { getByTestId } = setup({ handleClose })
-
-    expect(handleClose).not.toHaveBeenCalled()
-
-    fireEvent.press(getByTestId(testIDs.backdrop))
-    expect(handleClose).toHaveBeenCalled()
   })
 
   describe('actionType: BACK', () => {
@@ -162,15 +151,15 @@ describe('Verification Screen', () => {
     })
 
     it('toggle ELA image', async () => {
-      const urlELA = 'urlELA.jpg'
-      const { queryByAccessibilityLabel } = setup({ urlELA })
+      const urlEla = 'urlEla.jpg'
+      const { queryByAccessibilityLabel } = setup({ urlEla })
       const $openELABtn = queryByAccessibilityLabel(a11y.openELABtn)
       const $image = queryByAccessibilityLabel(a11y.ELAImage)
       const $modal = queryByAccessibilityLabel(a11y.ELAModal)
 
       expect($openELABtn).toBeTruthy()
       expect($image).toBeTruthy()
-      expect($image).toHaveProp('source', { uri: urlELA })
+      expect($image).toHaveProp('source', { uri: urlEla })
       expect($modal).toHaveProp('visible', false)
 
       await act(async () => fireEvent.press($openELABtn))

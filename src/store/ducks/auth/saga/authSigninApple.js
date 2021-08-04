@@ -45,6 +45,7 @@ function* appleSignInFlow(userPayload) {
   }
 
   yield call([AwsAuth, 'federatedSignIn'], 'appleid.apple.com', credentials, userPayload)
+  yield call([queryService, 'apiRequest'], queries.linkAppleLogin, { appleIdToken: userPayload.token })
   yield call(authorize)
 }
 

@@ -9,6 +9,7 @@ import * as authSelector from 'store/ducks/auth/selectors'
 import * as albumsSelector from 'store/ducks/albums/selectors'
 import * as albumsReducer from 'store/ducks/albums/reducer'
 import * as usersActions from 'store/ducks/users/actions'
+import * as walletActions from 'store/ducks/wallet/actions'
 
 const user = {
   userId: 'id123',
@@ -60,6 +61,12 @@ describe('ProfileScreen', () => {
       expect(dispatch).toHaveBeenCalledWith(albumsActions.albumsGetRequest(params))
       expect(dispatch).toHaveBeenCalledWith(postsActions.postsGetRequest(params))
       expect(dispatch).toHaveBeenCalledWith(usersActions.usersGetProfileRequest(params))
+    })
+
+    it('not fetch wallet for not owner', () => {
+      setup()
+
+      expect(dispatch).not.toHaveBeenCalledWith(walletActions.walletGetRequest())
     })
 
     it('not get profile for empty userId', () => {

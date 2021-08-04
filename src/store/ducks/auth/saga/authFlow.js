@@ -4,12 +4,12 @@ import * as constants from 'store/ducks/auth/constants'
 import authorize from 'store/ducks/auth/saga/authorize'
 
 /**
- * The currentSession method will automatically refresh the accessToken
+ * The currentUserCredentials method will automatically refresh the accessToken
  * and idToken if tokens are expired and a valid refreshToken presented.
  */
 function* refreshTokens() {
   const AwsAuth = yield getContext('AwsAuth')
-  yield AwsAuth.currentSession()
+  yield AwsAuth.currentUserCredentials()
 }
 
 function* handleAuthFlowRequest() {

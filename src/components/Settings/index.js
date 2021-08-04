@@ -130,10 +130,7 @@ const Settings = ({
         )}
       </RowsComponent>
       <Caption style={styling.helper}>{`v${appVersion}`}</Caption>
-      <ProfileDeleteComponent
-        usersDelete={usersDelete}
-        usersDeleteRequest={usersDeleteRequest}
-      />
+      <ProfileDeleteComponent usersDelete={usersDelete} usersDeleteRequest={usersDeleteRequest} />
     </ScrollView>
   )
 }

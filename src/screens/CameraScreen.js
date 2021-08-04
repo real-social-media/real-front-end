@@ -1,4 +1,5 @@
 import React from 'react'
+import { useIsFocused } from '@react-navigation/native'
 import CameraComponent from 'components/Camera'
 import CameraServiceComponent from 'components/Camera/index.service'
 import PermissionsComponent from 'components/Permissions'
@@ -32,4 +33,8 @@ class CameraScreen extends React.Component {
   }
 }
 
-export default CameraScreen
+export default function(props) {
+  const isFocused = useIsFocused()
+
+  return isFocused ? <CameraScreen {...props} /> : null
+}

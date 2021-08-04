@@ -5,6 +5,7 @@ import Config from 'react-native-config'
 import * as Logger from 'services/Logger'
 import * as queryService from 'services/Query'
 import * as constants from 'store/ducks/updates/constants'
+import * as LinkingService from 'services/Linking'
 
 export function isNewerThan(v1, v2) {
   v1 = v1.split('.').map((i) => parseInt(i, 10))
@@ -49,7 +50,7 @@ function showUpdateAlert() {
   const subtitle = 'Please update REAL to continue'
   const updateBtn = {
     text: 'Update Now',
-    onPress: () => Linking.openURL(`itms-apps://itunes.apple.com/app/id${Config.APPSTORE_ID}`),
+    onPress: () => Linking.openURL(LinkingService.getStoreLink()),
     style: 'cancel',
   }
 

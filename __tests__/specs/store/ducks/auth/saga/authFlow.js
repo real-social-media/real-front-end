@@ -8,7 +8,7 @@ import authorize from 'store/ducks/auth/saga/authorize'
 /**
  * Mock Function
  */
-const AwsAuth = { currentSession: jest.fn().mockResolvedValue({ authenticated: true }) }
+const AwsAuth = { currentUserCredentials: jest.fn().mockResolvedValue({ authenticated: true }) }
 const navigation = { navigate: jest.fn(), reset: jest.fn() }
 
 /**
@@ -39,7 +39,7 @@ describe('Auth flow', () => {
 
   it('failure', async () => {
     const error = new Error('Error')
-    AwsAuth.currentSession.mockRejectedValueOnce(error)
+    AwsAuth.currentUserCredentials.mockRejectedValueOnce(error)
 
     await setupSaga()
       .put(actions.authFlowFailure(error))

@@ -1,13 +1,28 @@
-import { Linking } from 'react-native'
+import { Linking, Platform } from 'react-native'
 import * as LinkingService from 'services/Linking'
 import { testNavigate, testPushAction } from 'tests/utils/helpers'
 import * as Logger from 'services/Logger'
 
 jest.spyOn(Linking, 'openURL')
+jest.mock('react-native-config', () => ({ APPSTORE_ID: 'APPSTORE_ID', APPSTORE_NAME: 'APPSTORE_NAME' }))
 
 const baseUrl = 'https:/real.app'
 const userId = 'us-east-1:6b33c0d0-cc30-4083-92a1-043f7cd313ce'
 const postId = '1bb30c92-ff1d-4d38-98b7-73942557dfbd'
+
+describe('store link', () => {
+  it('itms-apps schema on ios', () => {
+    expect(Platform.OS).toBe('ios')
+    expect(LinkingService.getStoreLink()).toBe('itms-apps://itunes.apple.com/app/idAPPSTORE_ID')
+  })
+
+  it('https schema on web', () => {
+    Platform.OS = 'web'
+
+    expect(LinkingService.getStoreLink()).toBe('https://apps.apple.com/us/app/APPSTORE_NAME/idAPPSTORE_ID')
+    Platform.OS = 'ios'
+  })
+})
 
 describe('deeplinkPath determines provided post params', () => {
   it('Chats', () => {
