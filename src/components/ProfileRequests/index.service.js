@@ -8,7 +8,7 @@ const ProfileFollowerService = ({ children }) => {
   const dispatch = useDispatch()
   const user = useSelector(authSelector.authUser)
   const userId = user.userId
-  const usersGetPendingFollowers = useSelector(usersSelector.usersGetPendingFollowersSelector())
+  const usersGetPendingFollowers = useSelector(usersSelector.usersGetPendingFollowersSelector)
   const usersFollow = useSelector(usersSelector.usersFollow)
   const usersUnfollow = useSelector(usersSelector.usersUnfollow)
 

@@ -15,7 +15,7 @@ const ProfilePhotoGridService = ({ children }) => {
   const navigation = useNavigation()
   const route = useRoute()
   const user = useSelector(authSelector.authUser)
-  const usersImagePostsGet = useSelector(usersSelector.usersImagePostsGetSelector())
+  const usersImagePostsGet = useSelector(usersSelector.usersImagePostsGetSelector)
   const usersChangeAvatar = useSelector(usersSelector.usersChangeAvatar)
 
   const usersImagePostsGetRequest = () => dispatch(usersActions.usersImagePostsGetRequest({ userId: user.userId, isVerified: true }))
