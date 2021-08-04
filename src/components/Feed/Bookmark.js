@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import {
   StyleSheet,
@@ -24,8 +24,7 @@ const Bookmark = ({
   const styling = styles(theme)
   const navigation = useNavigation()
 
-  const postsGetTrendingPostsSelector = useCallback(postsSelector.postsGetTrendingPostsSelector(), [])
-  const postsGetTrendingPosts = useSelector(postsGetTrendingPostsSelector)
+  const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector)
 
   return (
     <TouchableOpacity accessibilityLabel="Explore Page Banner" style={styling.root} onPress={() => navigationActions.navigateSearch(navigation)}>
@@ -34,7 +33,7 @@ const Bookmark = ({
       </View>
 
       <ScrollView style={styling.posts} horizontal>
-        {(path(['data'])(postsGetTrendingPosts) || []).filter(item => item.postType !== 'TEXT_ONLY').slice(0, 12).map((post, key) => (
+        {(path(['data'])(postsGetTrendingPosts) || []).filter(item => item.postType !== 'TEXT_ONLY').map((post, key) => (
           <Avatar
             key={key}
             thumbnailSource={{ uri: path(['image', 'url64p'])(post) }}

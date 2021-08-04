@@ -16,8 +16,7 @@ const SearchService = ({ children }) => {
   const usersSearch = useSelector(usersSelector.usersSearchSelector())
   const usersGetTrendingUsers = useSelector(usersSelector.usersGetTrendingUsersSelector())
 
-  const postsGetTrendingPostsSelector = useCallback(postsSelector.postsGetTrendingPostsSelector(), [])
-  const postsGetTrendingPosts = useSelector(postsGetTrendingPostsSelector)
+  const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector)
 
   /**
    * FlatList feed ref, used for scroll to top on tab bar press

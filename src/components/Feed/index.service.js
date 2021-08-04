@@ -11,11 +11,8 @@ import * as authSelector from 'store/ducks/auth/selectors'
 const FeedService = ({ children }) => {
   const dispatch = useDispatch()
 
-  const postsFeedGetSelector = useCallback(postsSelector.postsFeedGetSelector(), [])
-  const postsFeedGet = useSelector(postsFeedGetSelector)
-
-  const postsCreateSelector = useCallback(postsSelector.postsCreate, [])
-  const postsCreate = useSelector(postsCreateSelector)
+  const postsFeedGet = useSelector(postsSelector.postsFeedGetSelector)
+  const postsCreate = useSelector(postsSelector.postsCreate)
 
   const userId = useSelector(authSelector.authUserId)
 
