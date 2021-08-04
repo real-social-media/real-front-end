@@ -13,10 +13,10 @@ const PostMediaService = ({ children }) => {
   const route = useRoute()
   const postId = route.params.postId
   const postUserId = route.params.userId
-  
+
   const postsSingleGetSelector = useCallback(postsSelector.postsSingleGetSelector(postId), [postId])
   const postsSingleGet = useSelector(postsSingleGetSelector)
-  
+
   const postsDelete = useSelector(state => state.posts.postsDelete)
   const postsArchive = useSelector(state => state.posts.postsArchive)
   const username = path(['data', 'postedBy', 'username'])(postsSingleGet)

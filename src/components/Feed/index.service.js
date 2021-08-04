@@ -64,7 +64,7 @@ const FeedService = ({ children }) => {
   /**
    * You are all caught up separator position
    */
-  const bookmarkSeparatorIndex = useMemo(() => 
+  const bookmarkSeparatorIndex = useMemo(() =>
     pathOr([], ['data'])(postsFeedGet).findIndex(post => post.viewedStatus === 'VIEWED')
   , [postsFeedGet.data])
 
