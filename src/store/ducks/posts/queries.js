@@ -273,6 +273,18 @@ export const trendingPosts = `
   ${grid.gridPostFragment}
 `
 
+export const similarPosts = `
+  query similarPosts($postId: ID!, $limit: Int, $nextToken: String = null) {
+    similarPosts(postId: $postId, limit: $limit, nextToken: $nextToken) {
+      items {
+        ...gridPostFragment
+      }
+      nextToken
+    }
+  }
+  ${grid.gridPostFragment}
+`
+
 export const viewedBy = `
   query viewedBy($postId: ID!, $limit: Int, $nextToken: String) {
     post(postId: $postId) {

@@ -170,4 +170,66 @@ describe('Posts reducer', () => {
       })
     })
   })
+
+  describe('postsSimilar', () => {
+    const data = [{ id: 1 }]
+    const meta = { nextToken: 'nextToken' }
+    const payload = { postId: '1' }
+
+    it('initial state', () => {
+      const state = reducer(undefined, { type: 'MOCK_ACTION' })
+
+      expect(selectors.postsSimilarRoot(state)).toEqual({
+        data: [],
+        status: 'idle',
+        payload: {},
+        meta: {},
+      })
+    })
+
+    it('loading', () => {
+      const state = reducer(undefined, actions.postsSimilarRequest(payload))
+
+      expect(selectors.postsSimilarRoot(state)).toEqual({
+        data: [],
+        status: 'loading',
+        payload,
+        meta: {},
+      })
+    })
+
+    it('success', () => {
+      const state = reducer(undefined, actions.postsSimilarSuccess({ data, meta }))
+
+      expect(selectors.postsSimilarRoot(state)).toEqual({
+        data,
+        status: 'success',
+        payload: {},
+        meta,
+      })
+    })
+
+    it('error state', () => {
+      const error = new Error('Error')
+      const state = reducer(undefined, actions.postsSimilarFailure(error))
+
+      expect(selectors.postsSimilarRoot(state)).toEqual({
+        data: [],
+        status: 'failure',
+        payload: {},
+        meta: {},
+      })
+    })
+
+    it('idle', () => {
+      const state = applyActions([actions.postsSimilarSuccess({ data, meta }), actions.postsSimilarIdle()], reducer)
+
+      expect(selectors.postsSimilarRoot(state)).toEqual({
+        data: [],
+        status: 'idle',
+        payload: {},
+        meta: {},
+      })
+    })
+  })
 })

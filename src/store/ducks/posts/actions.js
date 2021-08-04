@@ -188,3 +188,19 @@ export const commentsFlagFailure = createFailureAction(constants.COMMENTS_FLAG_F
 export const postsPayRequest = createAction(constants.POSTS_PAY_REQUEST)
 export const postsPaySuccess = createAction(constants.POSTS_PAY_SUCCESS)
 export const postsPayFailure = createFailureAction(constants.POSTS_PAY_FAILURE)
+
+/**
+ *
+ */
+export const postsSimilarIdle = createAction(constants.POSTS_SIMILAR_IDLE)
+export const postsSimilarRequest = createAction(constants.POSTS_SIMILAR_REQUEST)
+export const postsSimilarSuccess = createAction(constants.POSTS_SIMILAR_SUCCESS)
+export const postsSimilarFailure = createFailureAction(constants.POSTS_SIMILAR_FAILURE)
+
+/**
+ *
+ */
+export const postsSimilarMoreIdle = createAction(constants.POSTS_SIMILAR_MORE_IDLE)
+export const postsSimilarMoreRequest = createAction(constants.POSTS_SIMILAR_MORE_REQUEST)
+export const postsSimilarMoreSuccess = createAction(constants.POSTS_SIMILAR_MORE_SUCCESS)
+export const postsSimilarMoreFailure = createFailureAction(constants.POSTS_SIMILAR_MORE_FAILURE)

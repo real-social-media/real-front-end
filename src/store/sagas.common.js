@@ -20,8 +20,6 @@ import datingMatchApprove from 'store/ducks/dating/saga/datingMatchApprove'
 import datingMatchReject from 'store/ducks/dating/saga/datingMatchReject'
 
 import posts from 'store/ducks/posts/saga'
-import postsReportPostViews from 'store/ducks/posts/saga/postsReportPostViews'
-import postsGetTrendingPosts from 'store/ducks/posts/saga/postsGetTrendingPosts'
 
 export default () =>
   []
@@ -42,8 +40,6 @@ export default () =>
     .concat(signup())
 
     .concat(posts())
-    .concat(postsReportPostViews())
-    .concat(postsGetTrendingPosts())
 
     .concat(datingMatchedUsers())
     .concat(datingConfirmedUsers())
