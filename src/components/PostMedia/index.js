@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect, memo } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import {
   StyleSheet,
   ScrollView,
   RefreshControl,
 } from 'react-native'
-import equals from 'ramda/src/equals'
 import PostComponent from 'components/Post'
 import NativeError from 'templates/NativeError'
 import useViewable from 'services/providers/Viewable'
@@ -129,7 +128,4 @@ PostMedia.propTypes = {
   textPostRefs: PropTypes.any,
 }
 
-export default memo(
-  withTranslation()(withTheme(PostMedia)),
-  (prevProps, nextProps) => equals(prevProps.post, nextProps.post),
-)
+export default withTranslation()(withTheme(PostMedia))
