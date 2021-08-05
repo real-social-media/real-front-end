@@ -86,9 +86,6 @@ const PostMedia = ({
         postsDislikeRequest={postsDislikeRequest}
         priorityIndex={1}
 
-        handleScrollPrev={null}
-        handleScrollNext={null}
-
         createActionSheetRef={createActionSheetRef}
         actionSheetRef={actionSheetRefs.current[post.postId]}
         createTextPostRef={createTextPostRef}
@@ -106,10 +103,6 @@ const styles = theme => StyleSheet.create({
     flexWrap: 'wrap',
   },
 })
-
-PostMedia.defaultProps = {
-  postsGet: {},
-}
 
 PostMedia.propTypes = {
   theme: PropTypes.any,

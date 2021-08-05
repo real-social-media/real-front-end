@@ -63,7 +63,6 @@ const PostMediaService = ({ children }) => {
 
   return children({
     postsSingleGet,
-    postsSingleGetRequest,
     actionSheetRefs,
     textPostRefs,
   })
