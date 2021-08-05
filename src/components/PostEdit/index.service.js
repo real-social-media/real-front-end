@@ -28,7 +28,7 @@ const PostEditService = ({ children }) => {
   }, [])
 
   const postsSingleGetRequest = ({ postId }) =>
-    dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
+    dispatch(postsActions.postsSingleGetRequest({ postId }))
 
   const postsEditRequest = (payload) =>
     dispatch(postsActions.postsEditRequest({ ...payload, userId: postUserId }))
@@ -36,7 +36,7 @@ const PostEditService = ({ children }) => {
   useEffectWhenFocused(() => {
     if(!postId || !postUserId) return
 
-    dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
+    dispatch(postsActions.postsSingleGetRequest({ postId }))
   }, [postId])
 
   useEffectWhenFocused(() => {

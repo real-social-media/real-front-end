@@ -20,7 +20,7 @@ const ShareService = ({ children }) => {
   useEffectWhenFocused(() => {
     if (!postId || !postUserId) return
 
-    dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
+    dispatch(postsActions.postsSingleGetRequest({ postId }))
   }, [postId, postUserId])
 
   useEffectWhenFocused(() => {

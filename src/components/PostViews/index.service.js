@@ -23,9 +23,9 @@ const PostViewsService = ({ children }) => {
     dispatch(postsActions.postsViewsGetMoreRequest(payload))
 
   useEffectWhenFocused(() => {
-    if(!postId || !userId) return
+    if(!postId) return
 
-    dispatch(postsActions.postsSingleGetRequest({ postId, userId }))
+    dispatch(postsActions.postsSingleGetRequest({ postId }))
   }, [postId])
 
   useEffectWhenFocused(() => {
