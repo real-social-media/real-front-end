@@ -21,7 +21,6 @@ const Feed = ({
 
   handleScrollPrev,
   handleScrollNext,
-  postsGetTrendingPosts,
 
   bookmarkSeparatorIndex,
   feedRef,
@@ -44,38 +43,44 @@ const Feed = ({
 
   const { onViewableItemsFocusRef, viewabilityConfigRef } = useViewable()
 
-  const renderBookmark = () => <BookmarkComponent postsGetTrendingPosts={postsGetTrendingPosts} />
+  const renderBookmark = useCallback(() => <BookmarkComponent />, [])
 
-  const renderItem = useCallback(
-    ({ item: post, index }) => (
-      <React.Fragment>
-        {bookmarkSeparatorIndex === index ? renderBookmark() : null}
+  const renderItem = useCallback(({ item: post, index }) => (
+    <React.Fragment>
+      {bookmarkSeparatorIndex === index ? renderBookmark() : null}
 
-        <PostServiceComponent>
-          {(postProps) => (
-            <PostComponent
-              {...postProps}
-              post={post}
-              priorityIndex={index}
-              handleScrollPrev={handleScrollPrev(index)}
-              handleScrollNext={handleScrollNext(index)}
-              createActionSheetRef={createActionSheetRef(post)}
-              actionSheetRef={getActionSheetRef(post)}
-              createTextPostRef={createTextPostRef(post)}
-              textPostRef={getTextPostRef(post)}
-              feedRef={feedRef}
-            />
-          )}
-        </PostServiceComponent>
-      </React.Fragment>
-    ),
-    [data],
-  )
+      <PostServiceComponent>
+        {(postProps) => (
+          <PostComponent
+            {...postProps}
+            post={post}
+            priorityIndex={index}
+            handleScrollPrev={handleScrollPrev(index)}
+            handleScrollNext={handleScrollNext(index)}
+            createActionSheetRef={createActionSheetRef(post)}
+            actionSheetRef={getActionSheetRef(post)}
+            createTextPostRef={createTextPostRef(post)}
+            textPostRef={getTextPostRef(post)}
+            feedRef={feedRef}
+          />
+        )}
+      </PostServiceComponent>
+    </React.Fragment>
+  ), [data])
 
-  const renderActivityIndicator = () => <ActivityIndicator accessibilityLabel="Loader" tintColor={theme.colors.border} />
-  const renderFooter = () => isEmpty ? null : scroll.loadingmore ? renderActivityIndicator() : renderBookmark()
-  const renderLoader = () => scroll.refreshing ? renderActivityIndicator() : null
-  const renderEmpty = () =>
+  const renderActivityIndicator = useCallback(() =>
+    <ActivityIndicator accessibilityLabel="Loader" tintColor={theme.colors.border} />
+  , [])
+
+  const renderFooter = useCallback(() =>
+    isEmpty ? null : scroll.loadingmore ? renderActivityIndicator() : renderBookmark()
+  , [isEmpty, scroll.loadingmore])
+
+  const renderLoader = useCallback(() =>
+    scroll.refreshing ? renderActivityIndicator() : null
+  , [scroll.refreshing])
+
+  const renderEmpty = useCallback(() =>
     isEmpty ? (
       <View>
         <Placeholder />
@@ -84,6 +89,7 @@ const Feed = ({
     ) : (
       renderLoader()
     )
+  , [isEmpty, scroll.refreshing])
 
   return (
     <View testID={testIDs.root} style={styling.root}>
@@ -135,7 +141,6 @@ Feed.propTypes = {
   postsFeedGetMoreRequest: PropTypes.any,
   handleScrollPrev: PropTypes.any,
   handleScrollNext: PropTypes.any,
-  postsGetTrendingPosts: PropTypes.any,
   bookmarkSeparatorIndex: PropTypes.any,
   createActionSheetRef: PropTypes.any,
   getActionSheetRef: PropTypes.any,

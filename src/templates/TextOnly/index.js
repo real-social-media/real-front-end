@@ -11,7 +11,6 @@ import { withTheme } from 'react-native-paper'
 
 const TextComponent = ({
   theme,
-  children,
   text,
 }) => {
   const styling = styles(theme)
@@ -23,7 +22,6 @@ const TextComponent = ({
         style={styling.gradient}
       />
       <Text style={styling.text}>{text}</Text>
-      {children}
     </View>
   )
 }
@@ -52,7 +50,6 @@ const styles = theme => StyleSheet.create({
 
 TextComponent.propTypes = {
   theme: PropTypes.any,
-  children: PropTypes.any,
   text: PropTypes.any,
 }
 

@@ -1,9 +1,8 @@
-import React from 'react'
+import React, { useCallback, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import {
   StyleSheet,
-  View,
-  FlatList,
+  ScrollView,
   RefreshControl,
 } from 'react-native'
 import PostComponent from 'components/Post'
@@ -12,7 +11,6 @@ import useViewable from 'services/providers/Viewable'
 
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
-import isEmpty from 'ramda/src/isEmpty'
 
 const PostMedia = ({
   t,
@@ -28,23 +26,45 @@ const PostMedia = ({
   postsDislikeRequest,
   postsSingleGet,
 
-  handleScrollNext,
-  handleScrollPrev,
-
-  feedRef,
   actionSheetRefs,
   textPostRefs,
 }) => {
   const styling = styles(theme)
-  const data = isEmpty(postsSingleGet.data) ? [] : [postsSingleGet.data]
+  const post = postsSingleGet.data
+
+  const createActionSheetRef = useCallback(element => actionSheetRefs.current[post.postId] = element, [post.postId])
+  const createTextPostRef = useCallback(element => textPostRefs.current[post.postId] = element, [post.postId])
 
   const {
     onViewableItemsFocusRef,
-    viewabilityConfigRef,
   } = useViewable()
 
+  /**
+   * Simulate behaviour from FlatList of onViewableItemsChanged to trigger post views
+   */
+  useEffect(() => {
+    if (post.postId) {
+      onViewableItemsFocusRef.current({ viewableItems: [{ item: post }] })
+    }
+  }, [post.postId])
+
+  /**
+   * This will be a very rare case since post will be already in the normalized
+   * entities state by the time we navigate to it, only use case might be when
+   * navigating to the post with deeplink
+   */
+  if (!post.postId) return null
+
   return (
-    <View style={styling.root}>
+    <ScrollView
+      style={styling.root}
+      refreshControl={
+        <RefreshControl
+          tintColor={theme.colors.border}
+          refreshing={postsSingleGet.status === 'loading'}
+        />
+      }
+    >
       <NativeError
         handleCancelPress={() => {}}
         titleText={t('All good!')}
@@ -54,42 +74,27 @@ const PostMedia = ({
         triggerOn="success"
       />
 
-      <FlatList
-        bounces={false}
-        ref={feedRef}
-        keyExtractor={item => item.postId}
-        data={data}
-        refreshControl={
-          <RefreshControl
-            tintColor={theme.colors.border}
-            refreshing={postsSingleGet.status === 'loading'}
-          />
-        }
-        onViewableItemsChanged={onViewableItemsFocusRef.current}
-        viewabilityConfig={viewabilityConfigRef.current}
-        renderItem={({ item: post, index }) => (
-          <PostComponent
-            user={user}
-            post={post}
-            postsArchiveRequest={postsArchiveRequest}
-            postsRestoreArchivedRequest={postsRestoreArchivedRequest}
-            postsFlagRequest={postsFlagRequest}
-            postsDeleteRequest={postsDeleteRequest}
-            changeAvatarRequest={changeAvatarRequest}
-            postsOnymouslyLikeRequest={postsOnymouslyLikeRequest}
-            postsDislikeRequest={postsDislikeRequest}
-            priorityIndex={index}
+      <PostComponent
+        user={user}
+        post={post}
+        postsArchiveRequest={postsArchiveRequest}
+        postsRestoreArchivedRequest={postsRestoreArchivedRequest}
+        postsFlagRequest={postsFlagRequest}
+        postsDeleteRequest={postsDeleteRequest}
+        changeAvatarRequest={changeAvatarRequest}
+        postsOnymouslyLikeRequest={postsOnymouslyLikeRequest}
+        postsDislikeRequest={postsDislikeRequest}
+        priorityIndex={1}
 
-            handleScrollPrev={handleScrollPrev(index)}
-            handleScrollNext={handleScrollNext(index)}
-            createActionSheetRef={element => actionSheetRefs.current[post.postId] = element}
-            actionSheetRef={actionSheetRefs.current[post.postId]}
-            createTextPostRef={element => textPostRefs.current[post.postId] = element}
-            textPostRef={textPostRefs.current[post.postId]}
-          />
-        )}
+        handleScrollPrev={null}
+        handleScrollNext={null}
+
+        createActionSheetRef={createActionSheetRef}
+        actionSheetRef={actionSheetRefs.current[post.postId]}
+        createTextPostRef={createTextPostRef}
+        textPostRef={textPostRefs.current[post.postId]}
       />
-    </View>
+    </ScrollView>
   )
 }
 const styles = theme => StyleSheet.create({
@@ -109,7 +114,6 @@ PostMedia.defaultProps = {
 PostMedia.propTypes = {
   theme: PropTypes.any,
   user: PropTypes.any,
-  feedRef: PropTypes.any,
   postsArchiveRequest: PropTypes.any,
   postsFlag: PropTypes.any,
   postsFlagRequest: PropTypes.any,
@@ -117,14 +121,9 @@ PostMedia.propTypes = {
   changeAvatarRequest: PropTypes.func,
   postsOnymouslyLikeRequest: PropTypes.any,
   postsDislikeRequest: PropTypes.any,
-  usersGetFollowedUsersWithStories: PropTypes.any,
-  usersGetFollowedUsersWithStoriesRequest: PropTypes.any,
   t: PropTypes.any,
   postsRestoreArchivedRequest: PropTypes.any,
   postsSingleGet: PropTypes.any,
-  postsGetTrendingPosts: PropTypes.any,
-  handleScrollNext: PropTypes.any,
-  handleScrollPrev: PropTypes.any,
   actionSheetRefs: PropTypes.any,
   textPostRefs: PropTypes.any,
 }

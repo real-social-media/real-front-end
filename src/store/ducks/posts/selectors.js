@@ -25,7 +25,7 @@ export const postsGetSelector = (userId) => createDeepEqualSelector(
  */
 const postsGetUnreadComments = () => path(['posts', 'postsGetUnreadComments'])
 
-export const postsGetUnreadCommentsSelector = () => createDeepEqualSelector(
+export const postsGetUnreadCommentsSelector = createDeepEqualSelector(
   [postsGetUnreadComments(), entitiesSelector],
   (postsGetUnreadComments, entities) => {
     const denormalized = normalizer.denormalizePostsGet(postsGetUnreadComments.data, entities)
@@ -38,7 +38,7 @@ export const postsGetUnreadCommentsSelector = () => createDeepEqualSelector(
  */
 const postsGetArchived = () => path(['posts', 'postsGetArchived'])
 
-export const postsGetArchivedSelector = () => createDeepEqualSelector(
+export const postsGetArchivedSelector = createDeepEqualSelector(
   [postsGetArchived(), entitiesSelector],
   (postsGetArchived, entities) => {
     const denormalized = normalizer.denormalizePostsGet(postsGetArchived.data, entities)
@@ -51,7 +51,7 @@ export const postsGetArchivedSelector = () => createDeepEqualSelector(
  */
 const postsFeedGet = () => path(['posts', 'postsFeedGet'])
 
-export const postsFeedGetSelector = () => createDeepEqualSelector(
+export const postsFeedGetSelector = createDeepEqualSelector(
   [postsFeedGet(), entitiesSelector],
   (postsFeedGet, entities) => {
     const denormalized = normalizer.denormalizePostsGet(postsFeedGet.data, entities)
@@ -120,7 +120,7 @@ export const postsLikesGetSelector = (postId) => createDeepEqualSelector(
 export const postsGetTrendingPosts = () => path(['posts', 'postsGetTrendingPosts'])
 export const postsGetTrendingPostsFilters = compose(path(['filters']), postsGetTrendingPosts())
 
-export const postsGetTrendingPostsSelector = () => createDeepEqualSelector(
+export const postsGetTrendingPostsSelector = createDeepEqualSelector(
   [postsGetTrendingPosts(), entitiesSelector],
   (postsGetTrendingPosts, entities) => {
     const denormalized = normalizer.denormalizePostsGet(postsGetTrendingPosts.data, entities)

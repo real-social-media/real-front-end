@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as usersActions from 'store/ducks/users/actions'
@@ -10,12 +10,13 @@ import * as authSelector from 'store/ducks/auth/selectors'
 
 const FeedService = ({ children }) => {
   const dispatch = useDispatch()
-  const postsFeedGet = useSelector(postsSelector.postsFeedGetSelector())
+
+  const postsFeedGet = useSelector(postsSelector.postsFeedGetSelector)
   const postsCreate = useSelector(postsSelector.postsCreate)
-  const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector())
+
   const userId = useSelector(authSelector.authUserId)
 
-  const updateRelatedData = () => {
+  const updateRelatedData = useCallback(() => {
     dispatch(usersActions.usersGetCardsRequest())
 
     if (userId) {
@@ -24,17 +25,18 @@ const FeedService = ({ children }) => {
       dispatch(usersActions.usersGetPendingFollowersRequest({ userId }))
       dispatch(chatActions.chatGetChatsRequest())
     }
-  }
+  }, [userId])
 
-  const loadInit = (payload) => {
+  const loadInit = useCallback((payload) => {
     dispatch(postsActions.postsFeedGetRequest(payload))
     updateRelatedData()
-  }
+  }, [])
 
-  const postsFeedGetMoreRequest = (payload) =>
+  const postsFeedGetMoreRequest = useCallback((payload) =>
     dispatch(postsActions.postsFeedGetMoreRequest(payload))
+  , [])
 
-  const handleScrollPrev = (index) => () => {
+  const handleScrollPrev = useCallback((index) => () => {
     try {
       feedRef.current.scrollToIndex({
         index: index - 1,
@@ -43,9 +45,9 @@ const FeedService = ({ children }) => {
     } catch (error) {
       // ignore
     }
-  }
+  }, [])
 
-  const handleScrollNext = (index) => () => {
+  const handleScrollNext = useCallback((index) => () => {
     try {
       feedRef.current.scrollToIndex({
         index: index + 1,
@@ -54,13 +56,14 @@ const FeedService = ({ children }) => {
     } catch (error) {
       // ignore
     }
-  }
+  }, [])
 
   /**
    * You are all caught up separator position
    */
-  const bookmarkSeparatorIndex = pathOr([], ['data'])(postsFeedGet)
-    .findIndex(post => post.viewedStatus === 'VIEWED')
+  const bookmarkSeparatorIndex = useMemo(() =>
+    pathOr([], ['data'])(postsFeedGet).findIndex(post => post.viewedStatus === 'VIEWED')
+  , [postsFeedGet.data])
 
   /**
    * FlatList feed ref, used for scroll to top on tab bar press
@@ -78,28 +81,33 @@ const FeedService = ({ children }) => {
    */
   const textPostRefs = useRef({})
 
-  const createActionSheetRef = post => element => {
+  const createActionSheetRef = useCallback(post => element => {
     if (!actionSheetRefs.current[post.postId]) {
       actionSheetRefs.current[post.postId] = element
     }
-  }
+  }, [])
 
-  const getActionSheetRef = post => actionSheetRefs.current[post.postId]
+  const getActionSheetRef = useCallback(
+    post => actionSheetRefs.current[post.postId]
+  , [])
 
-  const createTextPostRef = post => element => {
-    if (!textPostRefs.current[post.postId]) {
-      textPostRefs.current[post.postId] = element
+  const createTextPostRef = useCallback(
+    post => element => {
+      if (!textPostRefs.current[post.postId]) {
+        textPostRefs.current[post.postId] = element
+      }
     }
-  }
+  , [])
 
-  const getTextPostRef = post => textPostRefs.current[post.postId]
+  const getTextPostRef = useCallback(
+    post => textPostRefs.current[post.postId]
+  , [])
 
   return children({
     postsFeedGet,
     loadInit,
     postsFeedGetMoreRequest,
     postsCreate,
-    postsGetTrendingPosts,
     handleScrollPrev,
     handleScrollNext,
     bookmarkSeparatorIndex,

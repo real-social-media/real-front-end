@@ -67,9 +67,6 @@ const PostComponent = ({
 
   return (
     <View style={styling.root}>
-      <TouchableOpacity style={styling.prev} onPress={handleScrollPrev} />
-      <TouchableOpacity style={styling.next} onPress={handleScrollNext} />
-
       <HeaderComponent
         user={user}
         post={post}
@@ -87,12 +84,7 @@ const PostComponent = ({
       <View style={styling.inner}>
         {post.postType === 'TEXT_ONLY' ?
           <ViewShot ref={createTextPostRef} onCapture={onCapture}>
-            <TextOnlyComponent
-              text={post.text}
-            >
-              <TouchableOpacity style={styling.prev} onPress={handleScrollPrev} />
-              <TouchableOpacity style={styling.next} onPress={handleScrollNext} />
-            </TextOnlyComponent>
+            <TextOnlyComponent text={post.text} />
           </ViewShot>
         : null}
 
@@ -112,11 +104,16 @@ const PostComponent = ({
               priorityIndex={priorityIndex}
               resizeMode="contain"
               hideLabel={false}
-            />
-
-            <TouchableOpacity style={styling.prev} onPress={handleScrollPrev} />
-            <TouchableOpacity style={styling.next} onPress={handleScrollNext} />
+              />
           </ListItemComponent>
+        : null}
+
+        {handleScrollPrev ?
+          <TouchableOpacity style={styling.prev} onPress={handleScrollPrev} />
+        : null}
+
+        {handleScrollNext ?
+          <TouchableOpacity style={styling.next} onPress={handleScrollNext} />
         : null}
 
         {unpaid(post) ?
@@ -177,7 +174,8 @@ const styles = theme => StyleSheet.create({
 })
 
 PostComponent.defaultProps = {
-  postsGet: {},
+  handleScrollPrev: null,
+  handleScrollNext: null,
 }
 
 PostComponent.propTypes = {
@@ -185,18 +183,15 @@ PostComponent.propTypes = {
   user: PropTypes.any,
   feedRef: PropTypes.any,
   postsArchiveRequest: PropTypes.any,
-  postsFlag: PropTypes.any,
   postsFlagRequest: PropTypes.any,
   postsDeleteRequest: PropTypes.any,
   postsOnymouslyLikeRequest: PropTypes.any,
   postsDislikeRequest: PropTypes.any,
-  usersGetFollowedUsersWithStories: PropTypes.any,
-  usersGetFollowedUsersWithStoriesRequest: PropTypes.any,
   post: PropTypes.any,
   postsRestoreArchivedRequest: PropTypes.any,
   priorityIndex: PropTypes.any,
-  handleScrollPrev: PropTypes.any,
-  handleScrollNext: PropTypes.any,
+  handleScrollPrev: PropTypes.func,
+  handleScrollNext: PropTypes.func,
   createActionSheetRef: PropTypes.any,
   actionSheetRef: PropTypes.any,
   createTextPostRef: PropTypes.any,

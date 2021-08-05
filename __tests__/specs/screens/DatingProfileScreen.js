@@ -117,7 +117,7 @@ describe('DatingProfileScreen', () => {
       const posts = [{ a: 1 }, { b: 2 }]
       const usersImagePostsGetSelector = jest
         .spyOn(usersSelector, 'usersImagePostsGetSelector')
-        .mockReturnValue(() => ({ data: posts }))
+        .mockReturnValue({ data: posts })
 
       setup()
 

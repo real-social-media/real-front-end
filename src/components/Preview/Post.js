@@ -32,9 +32,7 @@ const PostPreview = ({
       />
 
       {text ?
-        <TextOnlyComponent
-          text={text}
-        />
+        <TextOnlyComponent text={text} />
       : null}
 
       {!text && !renderUri ?

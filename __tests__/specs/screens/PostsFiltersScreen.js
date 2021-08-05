@@ -8,7 +8,7 @@ import * as postsActions from 'store/ducks/posts/actions'
 import PostsFiltersScreen from 'screens/PostsFiltersScreen'
 import { SearchFeedProvider } from 'components/Search/Context'
 
-jest.mock('react-redux', () => ({ useDispatch: jest.fn(), useSelector: (i) => i }))
+jest.mock('react-redux', () => ({ useDispatch: jest.fn(), useSelector: (i) => i() }))
 jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn(), useScrollToTop: jest.fn() }))
 jest.mock('store/ducks/posts/selectors', () => ({ postsGetTrendingPostsSelector: jest.fn() }))
 

@@ -13,7 +13,7 @@ const DatingProfileService = ({ children }) => {
   const navigation = useNavigation()
   const user = useSelector(authSelector.authUser)
   const usersSetUserDatingStatus = useSelector(usersSelector.usersSetUserDatingStatus)
-  const usersImagePostsGet = useSelector(usersSelector.usersImagePostsGetSelector())
+  const usersImagePostsGet = useSelector(usersSelector.usersImagePostsGetSelector)
 
   const usersSetUserDatingStatusRequest = () =>
     dispatch(usersActions.usersSetUserDatingStatusRequest({ status: 'ENABLED' }))

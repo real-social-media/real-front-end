@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react'
+import { useEffect, useContext, useState, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as usersActions from 'store/ducks/users/actions'
 import * as postsActions from 'store/ducks/posts/actions'
@@ -13,29 +13,32 @@ const SearchService = ({ children }) => {
   const dispatch = useDispatch()
   const { feedRef, formFocus, handleFormFocus } = useContext(SearchFeedContext)
   const user = useSelector(authSelector.authUser)
-  const usersSearch = useSelector(usersSelector.usersSearchSelector())
-  const usersGetTrendingUsers = useSelector(usersSelector.usersGetTrendingUsersSelector())
-  const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector())
+  const usersSearch = useSelector(usersSelector.usersSearchSelector)
+  const usersGetTrendingUsers = useSelector(usersSelector.usersGetTrendingUsersSelector)
+
+  const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector)
 
   /**
    * FlatList feed ref, used for scroll to top on tab bar press
    */
   useScrollToTop(feedRef)
 
-  const usersSearchRequest = ({ searchToken }) => {
+  const usersSearchRequest = useCallback(({ searchToken }) => {
     dispatch(usersActions.usersFollowIdle({}))
     dispatch(usersActions.usersUnfollowIdle({}))
     dispatch(usersActions.usersSearchRequest({ searchToken: toLower(searchToken || '') }))
-  }
+  }, [])
 
   /**
    * Trending Filters
    */
-  const postsGetTrendingPostsRequest = () =>
+  const postsGetTrendingPostsRequest = useCallback(() =>
     dispatch(postsActions.postsGetTrendingPostsRequest())
+  , [])
 
-  const postsGetTrendingPostsMoreRequest = (payload) =>
+  const postsGetTrendingPostsMoreRequest = useCallback((payload) =>
     dispatch(postsActions.postsGetTrendingPostsMoreRequest({ ...payload }))
+  , [])
 
   useEffect(() => {
     dispatch(usersActions.usersGetTrendingUsersRequest({ limit: 30 }))

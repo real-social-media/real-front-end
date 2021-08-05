@@ -1,8 +1,8 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as postsSelector from 'store/ducks/posts/selectors'
-import { useNavigation, useScrollToTop, useRoute } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import path from 'ramda/src/path'
 import * as navigationActions from 'navigation/actions'
 import { useEffectWhenFocused } from 'services/hooks'
@@ -13,10 +13,12 @@ const PostMediaService = ({ children }) => {
   const route = useRoute()
   const postId = route.params.postId
   const postUserId = route.params.userId
-  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector(postId))
+
+  const postsSingleGetSelector = useCallback(postsSelector.postsSingleGetSelector(postId), [postId])
+  const postsSingleGet = useSelector(postsSingleGetSelector)
+
   const postsDelete = useSelector(state => state.posts.postsDelete)
   const postsArchive = useSelector(state => state.posts.postsArchive)
-  const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector())
   const username = path(['data', 'postedBy', 'username'])(postsSingleGet)
 
   useEffectWhenFocused(() => {
@@ -27,8 +29,9 @@ const PostMediaService = ({ children }) => {
     }
   }, [username])
 
-  const postsSingleGetRequest = ({ postId }) =>
+  const postsSingleGetRequest = useCallback(({ postId }) =>
     dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
+  , [])
 
   useEffect(() => {
     if (!postId || !postUserId) return
@@ -48,32 +51,6 @@ const PostMediaService = ({ children }) => {
     postsArchive.status,
   ])
 
-  const handleScrollPrev = (index) => () => {
-    try {
-      feedRef.current.scrollToIndex({
-        index: index - 1,
-      })
-    } catch (error) {
-      // ignore
-    }
-  }
-
-  const handleScrollNext = (index) => () => {
-    try {
-      feedRef.current.scrollToIndex({
-        index: index + 1,
-      })
-    } catch (error) {
-      // ignore
-    }
-  }
-
-  /**
-   * FlatList feed ref, used for scroll to top on tab bar press
-   */
-  const feedRef = useRef(null)
-  useScrollToTop(feedRef)
-
   /**
    * Post header dropdown ref, used for header actions dropdown
    */
@@ -86,11 +63,7 @@ const PostMediaService = ({ children }) => {
 
   return children({
     postsSingleGet,
-    postsGetTrendingPosts,
     postsSingleGetRequest,
-    feedRef,
-    handleScrollPrev,
-    handleScrollNext,
     actionSheetRefs,
     textPostRefs,
   })

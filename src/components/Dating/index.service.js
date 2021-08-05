@@ -7,7 +7,7 @@ import path from 'ramda/src/path'
 
 const DatingService = ({ children }) => {
   const dispatch = useDispatch()
-  const datingMatchedUsers = useSelector(datingSelector.datingMatchedUsersSelector())
+  const datingMatchedUsers = useSelector(datingSelector.datingMatchedUsersSelector)
 
   useFocusEffect(React.useCallback(() => {
     datingMatchedUsersRequest()
