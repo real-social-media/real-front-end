@@ -10,6 +10,8 @@ import { Subheading } from 'react-native-paper'
 import Avatar from 'templates/Avatar'
 import path from 'ramda/src/path'
 import * as navigationActions from 'navigation/actions'
+import { useSelector } from 'react-redux'
+import * as postsSelector from 'store/ducks/posts/selectors'
 
 import { withTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
@@ -18,10 +20,11 @@ import { withTranslation } from 'react-i18next'
 const Bookmark = ({
   t,
   theme,
-  postsGetTrendingPosts,
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
+
+  const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector)
 
   return (
     <TouchableOpacity accessibilityLabel="Explore Page Banner" style={styling.root} onPress={() => navigationActions.navigateSearch(navigation)}>

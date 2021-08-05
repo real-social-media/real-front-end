@@ -12,9 +12,9 @@ import { useEffectWhenFocused } from 'services/hooks'
 const ChatService = ({ children }) => {
   const dispatch = useDispatch()
   const user = useSelector(authSelector.authUser)
-  const usersSearch = useSelector(usersSelector.usersSearchSelector())
-  const chatGetChats = useSelector(chatSelector.chatGetChatsSelector())
-  const usersGetPendingFollowers = useSelector(usersSelector.usersGetPendingFollowersSelector())
+  const usersSearch = useSelector(usersSelector.usersSearchSelector)
+  const chatGetChats = useSelector(chatSelector.chatGetChatsSelector)
+  const usersGetPendingFollowers = useSelector(usersSelector.usersGetPendingFollowersSelector)
   const usersAcceptFollowerUser = useSelector(state => state.users.usersAcceptFollowerUser)
 
   useEffect(() => {

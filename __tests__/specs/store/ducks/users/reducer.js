@@ -44,7 +44,7 @@ describe('Users reducer', () => {
   })
 
   describe('usersImagePostsGet', () => {
-    const selector = selectors.usersImagePostsGetSelector()
+    const selector = selectors.usersImagePostsGetSelector
 
     it('initial state', () => {
       const state = reducer(undefined, { type: 'MOCK' })

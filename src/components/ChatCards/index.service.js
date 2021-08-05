@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 
 const ChatCardsService = ({ children }) => {
   const navigation = useNavigation()
-  const postsGetUnreadComments = useSelector(postsSelector.postsGetUnreadCommentsSelector())
+  const postsGetUnreadComments = useSelector(postsSelector.postsGetUnreadCommentsSelector)
 
   const handleCardPress = ({ post }) =>
     navigationActions.navigateComments(navigation, { post })()

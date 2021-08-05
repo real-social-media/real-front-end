@@ -44,7 +44,7 @@ describe('PostMediaScreen', () => {
       ReactRedux.useDispatch.mockRestore()
     })
 
-    it('not fetch single post with unvalid params', () => {
+    it('is not fetching single post with invalid params', () => {
       useRoute.mockReturnValueOnce({ params: {} })
       const dispatch = jest.fn()
       jest.spyOn(ReactRedux, 'useDispatch').mockReturnValue(dispatch)

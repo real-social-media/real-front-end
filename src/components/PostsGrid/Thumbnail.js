@@ -85,9 +85,7 @@ const PostsGridThumbnail = ({
         : null}
 
         {post.postType === 'TEXT_ONLY' ?
-          <TextOnlyComponent
-            text={post.text}
-          />
+          <TextOnlyComponent text={post.text} />
         : null}
       </GridItemComponent>
     </View>

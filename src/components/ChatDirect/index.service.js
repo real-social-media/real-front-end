@@ -19,7 +19,7 @@ const ChatDirectService = ({ children }) => {
   const userId = route.params.userId
 
   const user = useSelector(authSelector.authUser)
-  const usersGetTrendingUsers = useSelector(usersSelector.usersGetTrendingUsersSelector())
+  const usersGetTrendingUsers = useSelector(usersSelector.usersGetTrendingUsersSelector)
   const chatCreateDirect = useSelector(state => state.chat.chatCreateDirect)
   const chatAddMessage = useSelector(state => state.chat.chatAddMessage)
   const chatFlagMessage = useSelector(state => state.chat.chatFlagMessage)

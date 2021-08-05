@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import {
   View,
@@ -60,9 +60,9 @@ const SearchComponent = ({
   const isEmpty = !path(['data', 'length'])(postsGetTrendingPosts)
   const isLoading = path(['status'])(postsGetTrendingPosts) === 'loading'
 
-  const renderItem = ({ item: post, index: priorityIndex }) => (
+  const renderItem = useCallback(({ item: post, index: priorityIndex }) => (
     <PostsGridThumbnailComponent post={post} priorityIndex={priorityIndex} thread="posts/trending" />
-  )
+  ), [])
 
   return (
     <View style={styling.root}>

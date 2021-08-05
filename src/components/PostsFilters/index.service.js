@@ -9,7 +9,7 @@ const PostsFiltersService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const { scrollToTop } = useContext(SearchFeedContext)
-  const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector())
+  const postsGetTrendingPosts = useSelector(postsSelector.postsGetTrendingPostsSelector)
   const initialValues = postsGetTrendingPosts.filters
 
   const handleClose = () => navigation.popToTop()
