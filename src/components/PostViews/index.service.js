@@ -12,7 +12,7 @@ const PostViewsService = ({ children }) => {
   const postId = route.params.postId
   const userId = route.params.userId
   const postsViewsGet = useSelector(postsSelector.postsViewsGetSelector(postId))
-  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector(postId))
+  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector)
   const usersFollow = useSelector(usersSelector.usersFollow)
   const usersUnfollow = useSelector(usersSelector.usersUnfollow)
 

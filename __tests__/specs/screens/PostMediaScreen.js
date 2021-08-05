@@ -71,7 +71,7 @@ describe('PostMediaScreen', () => {
     beforeAll(() => {
       jest
         .spyOn(postsSelector, 'postsSingleGetSelector')
-        .mockReturnValue(() => ({ data, status: 'success',  payload: params, meta: {} }))
+        .mockReturnValue({ data, status: 'success', payload: params, meta: {} })
     })
 
     afterAll(() => {

@@ -25,7 +25,7 @@ const CommentsService = ({ children }) => {
   const commentsDelete = useSelector(state => state.posts.commentsDelete)
   const commentsFlag = useSelector(state => state.posts.commentsFlag)
   const postsCommentsGet = useSelector(postsSelector.postsCommentsGetSelector(postId))
-  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector(postId))
+  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector)
 
   const commentsRef = useRef()
   const formRef = useRef()

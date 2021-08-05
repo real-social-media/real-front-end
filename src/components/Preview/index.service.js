@@ -14,7 +14,7 @@ export const PostPreviewService = ({ children }) => {
   const userId = path(['params', 'userId'])(route)
   const renderUri = path(['params', 'renderUri'])(route)
 
-  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector(postId))
+  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector)
 
   /**
    * Load post data only if not loaded previously

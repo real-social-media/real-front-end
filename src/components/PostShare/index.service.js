@@ -12,7 +12,7 @@ const ShareService = ({ children }) => {
   const route = useRoute()
   const postId = path(['params', 'postId'])(route)
   const postUserId = path(['params', 'userId'])(route)
-  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector(postId))
+  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector)
   const postsShare = useSelector((state) => state.posts.postsShare)
 
   const postsShareRequest = (payload) => dispatch(postsActions.postsShareRequest(payload))
