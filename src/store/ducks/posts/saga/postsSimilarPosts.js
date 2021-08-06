@@ -6,20 +6,35 @@ import * as queryService from 'services/Query'
 import * as normalizer from 'normalizer/schemas'
 import { entitiesMerge } from 'store/ducks/entities/saga'
 
+function* fetchSimilarPosts({ postId }) {
+  const response = yield call([queryService, 'apiRequest'], queries.similarPosts, { postId })
+  const { items, nextToken } = response.data.similarPosts
+  const normalized = normalizer.normalizePostsGet(items)
+
+  yield call(entitiesMerge, normalized)
+
+  return { data: normalized.result, meta: { nextToken } }
+}
+
 function* postsSimilarRequest(req) {
   try {
-    const response = yield call([queryService, 'apiRequest'], queries.similarPosts, {
-      postId: req.payload.postId,
-      limit: 20,
-    })
-    const { items, nextToken } = response.data.similarPosts
-    const normalized = normalizer.normalizePostsGet(items)
-
-    yield call(entitiesMerge, normalized)
-    yield put(actions.postsSimilarSuccess({ data: normalized.result, meta: { nextToken } }))
+    const response = yield call(fetchSimilarPosts, req.payload)
+    yield put(actions.postsSimilarSuccess(response))
   } catch (error) {
     yield put(actions.postsSimilarFailure(error))
   }
 }
 
-export default () => [takeLatest(constants.POSTS_SIMILAR_REQUEST, postsSimilarRequest)]
+function* postsSimilarMoreRequest(req) {
+  try {
+    const response = yield call(fetchSimilarPosts, req.payload)
+    yield put(actions.postsSimilarMoreSuccess(response))
+  } catch (error) {
+    yield put(actions.postsSimilarMoreFailure(error))
+  }
+}
+
+export default () => [
+  takeLatest(constants.POSTS_SIMILAR_REQUEST, postsSimilarRequest),
+  takeLatest(constants.POSTS_SIMILAR_MORE_REQUEST, postsSimilarMoreRequest),
+]

@@ -274,8 +274,8 @@ export const trendingPosts = `
 `
 
 export const similarPosts = `
-  query similarPosts($postId: ID!, $limit: Int, $nextToken: String = null) {
-    similarPosts(postId: $postId, limit: $limit, nextToken: $nextToken) {
+  query similarPosts($postId: ID!, $nextToken: String = null) {
+    similarPosts(postId: $postId, nextToken: $nextToken) {
       items {
         ...gridPostFragment
       }

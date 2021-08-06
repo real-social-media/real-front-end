@@ -143,7 +143,7 @@ export const postsShare = path(['posts', 'postsShare'])
  *
  */
 export const postsSimilarRoot = path(['posts', 'postsSimilar'])
-export const postsSimilarSelector = () => createDeepEqualSelector(
+export const postsSimilarSelector = createDeepEqualSelector(
   [postsSimilarRoot, entitiesSelector],
   (postsSimilar, entities) => {
     const denormalized = normalizer.denormalizePostsGet(postsSimilar.data, entities)
