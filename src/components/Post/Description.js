@@ -25,7 +25,7 @@ const Description = ({
   }
 
   return (
-    <TouchableOpacity style={styling.root} onPress={navigationActions.navigateComments(navigation, { postId: post.postId, userId: post.postedBy.userId })}>
+    <TouchableOpacity style={styling.root} onPress={navigationActions.navigateComments(navigation, { postId: post.postId })}>
       <Text style={styling.text} numberOfLines={4} ellipsizeMode="tail">
         {[
           /**

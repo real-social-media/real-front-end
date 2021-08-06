@@ -10,7 +10,6 @@ const PostViewsService = ({ children }) => {
   const dispatch = useDispatch()
   const route = useRoute()
   const postId = route.params.postId
-  const userId = route.params.userId
   const postsViewsGet = useSelector(postsSelector.postsViewsGetSelector(postId))
   const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector)
   const usersFollow = useSelector(usersSelector.usersFollow)

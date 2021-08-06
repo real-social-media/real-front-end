@@ -23,11 +23,11 @@ const Action = ({ t, theme, user, post, postsOnymouslyLikeRequest, postsDislikeR
 
   const handleLikeRequest = () => {
     setLikeStatus('ONYMOUSLY_LIKED')
-    postsOnymouslyLikeRequest({ postId: post.postId, userId: post.postedBy.userId })
+    postsOnymouslyLikeRequest({ postId: post.postId })
   }
   const handleDisikeRequest = () => {
     setLikeStatus('NOT_LIKED')
-    postsDislikeRequest({ postId: post.postId, userId: post.postedBy.userId })
+    postsDislikeRequest({ postId: post.postId })
   }
 
   const [likeButtonVisibility, commentButtonVisibility, shareButtonVisibility, seenByVisibility] = useMemo(
@@ -65,7 +65,6 @@ const Action = ({ t, theme, user, post, postsOnymouslyLikeRequest, postsDislikeR
             style={styling.actionLeftIcon}
             onPress={navigationActions.navigateComments(navigation, {
               postId: post.postId,
-              userId: post.postedBy.userId,
             })}
           >
             <BubbleIcon fill={theme.colors.primaryIcon} />
@@ -83,10 +82,7 @@ const Action = ({ t, theme, user, post, postsOnymouslyLikeRequest, postsDislikeR
         <TouchableOpacity
           testID={testIDs.action.seenByBtn}
           style={styling.actionRight}
-          onPress={() => navigationActions.navigatePostViews(navigation, {
-            postId: post.postId,
-            userId: post.postedBy.userId,
-          })}
+          onPress={() => navigationActions.navigatePostViews(navigation, { postId: post.postId })}
         >
           <Caption>{t('Seen by {{viewedByCount}} people', { viewedByCount: post.viewedByCount })}</Caption>
         </TouchableOpacity>

@@ -11,17 +11,16 @@ const ShareService = ({ children }) => {
   const navigation = useNavigation()
   const route = useRoute()
   const postId = path(['params', 'postId'])(route)
-  const postUserId = path(['params', 'userId'])(route)
   const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector)
   const postsShare = useSelector((state) => state.posts.postsShare)
 
   const postsShareRequest = (payload) => dispatch(postsActions.postsShareRequest(payload))
 
   useEffectWhenFocused(() => {
-    if (!postId || !postUserId) return
+    if (!postId) return
 
     dispatch(postsActions.postsSingleGetRequest({ postId }))
-  }, [postId, postUserId])
+  }, [postId])
 
   useEffectWhenFocused(() => {
     if (postsShare.status === 'success') {

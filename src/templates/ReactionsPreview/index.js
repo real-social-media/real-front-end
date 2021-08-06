@@ -32,7 +32,7 @@ const ReactionsPreviewTemplate = ({
   }
 
   return (
-    <TouchableOpacity testID={testIDs.root} onPress={() => navigationActions.navigatePostLikes(navigation, { postId: post.postId, userId: post.postedBy.userId })}>
+    <TouchableOpacity testID={testIDs.root} onPress={() => navigationActions.navigatePostLikes(navigation, { postId: post.postId })}>
       <View style={styling.root}>
         <View style={styling.row}>
           <View style={styling.profile}>
