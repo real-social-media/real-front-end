@@ -1,9 +1,8 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useRef, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as postsSelector from 'store/ducks/posts/selectors'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import path from 'ramda/src/path'
 import * as navigationActions from 'navigation/actions'
 import { useEffectWhenFocused } from 'services/hooks'
 
@@ -12,12 +11,12 @@ const PostMediaService = ({ children }) => {
   const navigation = useNavigation()
   const route = useRoute()
   const postId = route.params.postId
-  const postUserId = route.params.userId
 
   const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector)
   const postsDelete = useSelector(state => state.posts.postsDelete)
   const postsArchive = useSelector(state => state.posts.postsArchive)
-  const username = path(['data', 'postedBy', 'username'])(postsSingleGet)
+
+  const postsSingleGetRequest = () => dispatch(postsActions.postsSingleGetRequest({ postId }))
 
   useEffectWhenFocused(() => {
     if (username) {
@@ -27,15 +26,9 @@ const PostMediaService = ({ children }) => {
     }
   }, [username])
 
-  const postsSingleGetRequest = useCallback(({ postId }) =>
-    dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
-  , [])
-
   useEffect(() => {
-    if (!postId || !postUserId) return
-
-    postsSingleGetRequest({ postId })
-  }, [postId, postUserId])
+    postsSingleGetRequest()
+  }, [])
 
   useEffectWhenFocused(() => {
     if (postsDelete.status === 'loading') {
@@ -60,9 +53,11 @@ const PostMediaService = ({ children }) => {
   const textPostRefs = useRef([])
 
   return children({
+    postsSimilar,
     postsSingleGet,
     actionSheetRefs,
     textPostRefs,
+    postsSingleGetRequest,
   })
 }
 

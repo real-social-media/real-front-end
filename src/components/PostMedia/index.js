@@ -1,20 +1,11 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import {
-  StyleSheet,
-  ScrollView,
-  RefreshControl,
-} from 'react-native'
 import PostComponent from 'components/Post'
 import NativeError from 'templates/NativeError'
-import useViewable from 'services/providers/Viewable'
-
-import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
 
 const PostMedia = ({
   t,
-  theme,
   user,
   postsArchiveRequest,
   postsRestoreArchivedRequest,
@@ -25,11 +16,10 @@ const PostMedia = ({
   postsOnymouslyLikeRequest,
   postsDislikeRequest,
   postsSingleGet,
-
   actionSheetRefs,
   textPostRefs,
+  postsSingleGetRequest,
 }) => {
-  const styling = styles(theme)
   const post = postsSingleGet.data
 
   const createActionSheetRef = useCallback(element => actionSheetRefs.current[post.postId] = element, [post.postId])
@@ -61,6 +51,7 @@ const PostMedia = ({
       refreshControl={
         <RefreshControl
           tintColor={theme.colors.border}
+          onRefresh={postsSingleGetRequest}
           refreshing={postsSingleGet.status === 'loading'}
         />
       }
@@ -73,7 +64,6 @@ const PostMedia = ({
         status={postsFlag.status}
         triggerOn="success"
       />
-
       <PostComponent
         user={user}
         post={post}
@@ -85,7 +75,6 @@ const PostMedia = ({
         postsOnymouslyLikeRequest={postsOnymouslyLikeRequest}
         postsDislikeRequest={postsDislikeRequest}
         priorityIndex={1}
-
         createActionSheetRef={createActionSheetRef}
         actionSheetRef={actionSheetRefs.current[post.postId]}
         createTextPostRef={createTextPostRef}
@@ -94,17 +83,9 @@ const PostMedia = ({
     </ScrollView>
   )
 }
-const styles = theme => StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: theme.colors.backgroundPrimary,
-  },
-  uploading: {
-    flexWrap: 'wrap',
-  },
-})
 
 PostMedia.propTypes = {
+  t: PropTypes.any,
   theme: PropTypes.any,
   user: PropTypes.any,
   postsArchiveRequest: PropTypes.any,
@@ -114,11 +95,11 @@ PostMedia.propTypes = {
   changeAvatarRequest: PropTypes.func,
   postsOnymouslyLikeRequest: PropTypes.any,
   postsDislikeRequest: PropTypes.any,
-  t: PropTypes.any,
   postsRestoreArchivedRequest: PropTypes.any,
   postsSingleGet: PropTypes.any,
   actionSheetRefs: PropTypes.any,
   textPostRefs: PropTypes.any,
+  postsSingleGetRequest: PropTypes.func,
 }
 
-export default withTranslation()(withTheme(PostMedia))
+export default withTranslation()(PostMedia)
