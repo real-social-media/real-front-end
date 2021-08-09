@@ -47,3 +47,34 @@ describe('postsSimilarPosts', () => {
       .silentRun()
   })
 })
+
+describe('postsSimilarMore', () => {
+  afterEach(() => {
+    queryService.apiRequest.mockClear()
+  })
+
+  it('success', async () => {
+    const items = [{ postId: '1' }, { postId: '2' }]
+    const response = { data: { similarPosts: { items, nextToken: 'nextToken' } } }
+    queryService.apiRequest.mockResolvedValueOnce(response)
+
+    await expectSaga(testAsRootSaga(postsSimilarPosts))
+      .call([queryService, 'apiRequest'], queries.similarPosts, payload)
+      .put(actions.postsSimilarMoreSuccess({ data: ['1', '2'], meta: { nextToken: 'nextToken' } }))
+      .call(entitiesMerge, normalizer.normalizePostsGet(response.data.similarPosts.items))
+
+      .dispatch(actions.postsSimilarMoreRequest(payload))
+      .silentRun()
+  })
+
+  it('failure', async () => {
+    const error = new Error('Error')
+    queryService.apiRequest.mockRejectedValueOnce(error)
+
+    await expectSaga(testAsRootSaga(postsSimilarPosts))
+      .put(actions.postsSimilarMoreFailure(error))
+
+      .dispatch(actions.postsSimilarMoreRequest(payload))
+      .silentRun()
+  })
+})
