@@ -1,5 +1,5 @@
 import React from 'react'
-import Post from 'components/Post'
+import { PostComponent } from 'components/Post'
 import { a11y } from 'components/Post/Unlock'
 import { renderWithStore, fireEvent } from 'tests/utils'
 import * as postsActions from 'store/ducks/posts/actions'
@@ -26,9 +26,9 @@ jest.mock('react-native-view-shot', () => jest.fn().mockReturnValue(null))
 jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn() }))
 jest.mock('components/Cache', () => jest.fn().mockReturnValue(null))
 
-const setup = (props = {}) => renderWithStore(<Post {...requiredProps} {...props} />)
+const setup = (props = {}) => renderWithStore(<PostComponent {...requiredProps} {...props} />)
 
-describe('Post component', () => {
+describe('PostComponent', () => {
   describe('unlock', () => {
     it('default payment per view', () => {
       const post = { ...textPost, payment: 0.00001, viewedStatus: 'NOT_VIEWED' }

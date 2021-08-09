@@ -15,7 +15,6 @@ const ListItemTemplate = ({
   theme,
   children,
   post,
-  feedRef,
 }) => {
   const styling = styles
   const image = path(['image'])(post)
@@ -31,7 +30,6 @@ const ListItemTemplate = ({
     <PinchZoom
       style={[styling.root, getDimensionsFromPostSize(image)]}
       image={image}
-      feedRef={feedRef}
     >
       <LinearGradient
         colors={[`${primaryGradient}`, `${theme.colors.backgroundSecondary}50`]}
@@ -86,7 +84,6 @@ ListItemTemplate.propTypes = {
   theme: PropTypes.any,
   children: PropTypes.any,
   post: PropTypes.any,
-  feedRef: PropTypes.any,
 }
 
 export default withTheme(ListItemTemplate)

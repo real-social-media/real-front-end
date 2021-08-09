@@ -1,14 +1,7 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import {
-  StyleSheet,
-  View,
-  RefreshControl,
-  FlatList,
-  ActivityIndicator,
-} from 'react-native'
-import PostComponent from 'components/Post'
-import PostsGridThumbnailComponent from 'components/PostsGrid/Thumbnail'
+import { StyleSheet, View, RefreshControl, FlatList, ActivityIndicator } from 'react-native'
+import Post from 'components/Post'
 import NativeError from 'templates/NativeError'
 import useViewable from 'services/providers/Viewable'
 import ScrollService from 'services/Scroll'
@@ -18,28 +11,22 @@ import { withTranslation } from 'react-i18next'
 const PostExplore = ({
   t,
   theme,
-  user,
-  postsArchiveRequest,
-  postsRestoreArchivedRequest,
   postsFlag,
-  postsFlagRequest,
-  postsDeleteRequest,
-  changeAvatarRequest,
-  postsOnymouslyLikeRequest,
-  postsDislikeRequest,
   postsSingleGet,
   postsSimilar,
   postsSingleGetRequest,
   postsSimilarRequest,
   postsSimilarMoreRequest,
-  actionSheetRefs,
-  textPostRefs,
+  feedRef,
+  handleScrollPrev,
+  handleScrollNext,
+  createActionSheetRef,
+  getActionSheetRef,
+  createTextPostRef,
+  getTextPostRef,
 }) => {
   const styling = styles(theme)
   const post = postsSingleGet.data
-
-  const createActionSheetRef = useCallback(element => actionSheetRefs.current[post.postId] = element, [post.postId])
-  const createTextPostRef = useCallback(element => textPostRefs.current[post.postId] = element, [post.postId])
 
   const scroll = ScrollService({
     resource: postsSimilar,
@@ -50,11 +37,7 @@ const PostExplore = ({
     loadMore: postsSimilarMoreRequest,
   })
 
-  const {
-    onViewableItemsThumbnailsRef,
-    onViewableItemsFocusRef,
-    viewabilityConfigRef,
-  } = useViewable()
+  const { onViewableItemsThumbnailsRef, onViewableItemsFocusRef, viewabilityConfigRef } = useViewable()
 
   /**
    * Simulate behaviour from FlatList of onViewableItemsChanged to trigger post views
@@ -74,7 +57,20 @@ const PostExplore = ({
    */
   if (!post.postId) return null
 
-  const PostHeader = () => (
+  const renderItem = ({ item: post, index }) => (
+    <Post
+      post={post}
+      priorityIndex={index}
+      handleScrollPrev={handleScrollPrev(index)}
+      handleScrollNext={handleScrollNext(index)}
+      createActionSheetRef={createActionSheetRef(post)}
+      actionSheetRef={getActionSheetRef(post)}
+      createTextPostRef={createTextPostRef(post)}
+      textPostRef={getTextPostRef(post)}
+    />
+  )
+
+  const ListHeaderComponent = () => (
     <View>
       <NativeError
         handleCancelPress={() => {}}
@@ -83,54 +79,26 @@ const PostExplore = ({
         actionText={t('Done')}
         status={postsFlag.status}
         triggerOn="success"
-        />
-      <PostComponent
-        user={user}
-        post={post}
-        postsArchiveRequest={postsArchiveRequest}
-        postsRestoreArchivedRequest={postsRestoreArchivedRequest}
-        postsFlagRequest={postsFlagRequest}
-        postsDeleteRequest={postsDeleteRequest}
-        changeAvatarRequest={changeAvatarRequest}
-        postsOnymouslyLikeRequest={postsOnymouslyLikeRequest}
-        postsDislikeRequest={postsDislikeRequest}
-        priorityIndex={1}
-        createActionSheetRef={createActionSheetRef}
-        actionSheetRef={actionSheetRefs.current[post.postId]}
-        createTextPostRef={createTextPostRef}
-        textPostRef={textPostRefs.current[post.postId]}
-        />
+      />
+      {renderItem({ item: post, index: 0 })}
     </View>
   )
 
   return (
     <FlatList
+      ref={feedRef}
       data={postsSimilar.data}
-      numColumns={3}
-      keyExtractor={item => item.postId}
-      renderItem={({ item: post, index: priorityIndex }) => (
-        <PostsGridThumbnailComponent
-          post={post}
-          priorityIndex={priorityIndex}
-          thread="posts/similar"
-        />
-      )}
-      refreshControl={(
+      keyExtractor={(item) => item.postId}
+      renderItem={renderItem}
+      refreshControl={
         <RefreshControl
           tintColor={theme.colors.border}
           onRefresh={scroll.handleRefresh}
           refreshing={scroll.refreshing}
         />
-      )}
-      ListHeaderComponent={(
-        <PostHeader />
-      )}
-      ListFooterComponent={(
-        <ActivityIndicator
-          animating={scroll.loadingmore}
-          color={theme.colors.border}
-        />
-      )}
+      }
+      ListHeaderComponent={<ListHeaderComponent />}
+      ListFooterComponent={<ActivityIndicator animating={scroll.loadingmore} color={theme.colors.border} />}
       ListFooterComponentStyle={styling.activity}
       onEndReached={scroll.handleLoadMore}
       onEndReachedThreshold={0.5}
@@ -139,38 +107,39 @@ const PostExplore = ({
     />
   )
 }
-const styles = theme => StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: theme.colors.backgroundPrimary,
-  },
-  uploading: {
-    flexWrap: 'wrap',
-  },
-  activity: {
-    padding: theme.spacing.base * 2,
-  },
-})
+
+const styles = (theme) =>
+  StyleSheet.create({
+    root: {
+      flex: 1,
+      backgroundColor: theme.colors.backgroundPrimary,
+    },
+    uploading: {
+      flexWrap: 'wrap',
+    },
+    activity: {
+      padding: theme.spacing.base * 2,
+    },
+  })
 
 PostExplore.propTypes = {
   t: PropTypes.any,
   theme: PropTypes.any,
-  user: PropTypes.any,
-  postsArchiveRequest: PropTypes.any,
   postsFlag: PropTypes.any,
-  postsFlagRequest: PropTypes.any,
-  postsDeleteRequest: PropTypes.any,
-  changeAvatarRequest: PropTypes.func,
-  postsOnymouslyLikeRequest: PropTypes.any,
-  postsDislikeRequest: PropTypes.any,
-  postsRestoreArchivedRequest: PropTypes.any,
   postsSingleGet: PropTypes.any,
+  postsSimilar: PropTypes.any,
   postsSingleGetRequest: PropTypes.func,
   postsSimilarRequest: PropTypes.func,
   postsSimilarMoreRequest: PropTypes.func,
-  postsSimilar: PropTypes.any,
   actionSheetRefs: PropTypes.any,
   textPostRefs: PropTypes.any,
+  feedRef: PropTypes.any,
+  handleScrollPrev: PropTypes.func,
+  handleScrollNext: PropTypes.func,
+  createActionSheetRef: PropTypes.any,
+  getActionSheetRef: PropTypes.any,
+  createTextPostRef: PropTypes.any,
+  getTextPostRef: PropTypes.any,
 }
 
 export default withTranslation()(withTheme(PostExplore))
