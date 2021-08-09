@@ -18,7 +18,7 @@ jest.mock('@react-navigation/native', () => ({
 const navigation = { navigate: jest.fn(), setOptions: jest.fn() }
 useNavigation.mockReturnValue(navigation)
 
-const params = { postId: 1, userId: '2' }
+const params = { postId: 1 }
 useRoute.mockReturnValue({ params })
 
 const setup = () => renderWithStore(<PostMediaScreen />)
@@ -38,7 +38,7 @@ describe('PostMediaScreen', () => {
 
       expect(dispatch).toHaveBeenCalledWith({
         type: 'POSTS_SINGLE_GET_REQUEST',
-        payload: { postId: 1, userId: '2' },
+        payload: { postId: 1 },
       })
 
       ReactRedux.useDispatch.mockRestore()
