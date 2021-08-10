@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { applyActions } from 'tests/utils/helpers'
+import { applyActions, testReducer } from 'tests/utils/helpers'
 import posts from 'store/ducks/posts/reducer'
 import * as actions from 'store/ducks/posts/actions'
 import * as selectors from 'store/ducks/posts/selectors'
@@ -167,6 +167,123 @@ describe('Posts reducer', () => {
         data: {},
         status: 'idle',
         payload: {},
+      })
+    })
+  })
+
+  describe('postsSimilar', () => {
+    const data = [{ id: 1 }]
+    const meta = { nextToken: 'nextToken' }
+    const payload = { postId: '1' }
+
+    it('initial state', () => {
+      const state = reducer(undefined, { type: 'MOCK_ACTION' })
+
+      expect(selectors.postsSimilarRoot(state)).toEqual({
+        data: [],
+        status: 'idle',
+        payload: {},
+        meta: {},
+      })
+    })
+
+    it('loading', () => {
+      const state = reducer(undefined, actions.postsSimilarRequest(payload))
+
+      expect(selectors.postsSimilarRoot(state)).toEqual({
+        data: [],
+        status: 'loading',
+        payload,
+        meta: {},
+      })
+    })
+
+    it('success', () => {
+      const state = reducer(undefined, actions.postsSimilarSuccess({ data, meta }))
+
+      expect(selectors.postsSimilarRoot(state)).toEqual({
+        data,
+        status: 'success',
+        payload: {},
+        meta,
+      })
+    })
+
+    it('failure', () => {
+      const error = new Error('Error')
+      const state = reducer(undefined, actions.postsSimilarFailure(error))
+
+      expect(selectors.postsSimilarRoot(state)).toEqual({
+        data: [],
+        status: 'failure',
+        payload: {},
+        meta: {},
+      })
+    })
+
+    it('idle', () => {
+      const state = applyActions([actions.postsSimilarSuccess({ data, meta }), actions.postsSimilarIdle()], reducer)
+
+      expect(selectors.postsSimilarRoot(state)).toEqual({
+        data: [],
+        status: 'idle',
+        payload: {},
+        meta: {},
+      })
+    })
+
+    describe('loading more', () => {
+      const moreData = [{ id: 2 }]
+      const moreMeta = { nextToken: 'nextToken1' }
+      const morePayload = { ...payload, nextToken: moreMeta.nextToken }
+
+      it('loading', () => {
+        expect(moreData).not.toEqual(data)
+        expect(moreMeta).not.toEqual(meta)
+
+        testReducer(reducer)
+          .put(actions.postsSimilarRequest(payload))
+          .put(actions.postsSimilarSuccess({ data, meta }))
+          .put(actions.postsSimilarMoreRequest(morePayload))
+
+          .expect(selectors.postsSimilarRoot, {
+            data,
+            status: 'loading',
+            payload,
+            meta,
+          })
+      })
+
+      it('success', () => {
+        testReducer(reducer)
+          .put(actions.postsSimilarRequest(payload))
+          .put(actions.postsSimilarSuccess({ data, meta }))
+          .put(actions.postsSimilarMoreRequest(morePayload))
+          .put(actions.postsSimilarMoreSuccess({ data: moreData, meta: moreMeta }))
+
+          .expect(selectors.postsSimilarRoot, {
+            data: [...data, ...moreData],
+            status: 'success',
+            payload,
+            meta: moreMeta,
+          })
+      })
+
+      it('failure', () => {
+        const error = new Error('Error')
+
+        testReducer(reducer)
+          .put(actions.postsSimilarRequest(payload))
+          .put(actions.postsSimilarSuccess({ data, meta }))
+          .put(actions.postsSimilarMoreRequest(morePayload))
+          .put(actions.postsSimilarMoreFailure(error))
+
+          .expect(selectors.postsSimilarRoot, {
+            data,
+            status: 'failure',
+            payload,
+            meta,
+          })
       })
     })
   })

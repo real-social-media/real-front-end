@@ -11,10 +11,9 @@ export const PostPreviewService = ({ children }) => {
   const route = useRoute()
 
   const postId = path(['params', 'postId'])(route)
-  const userId = path(['params', 'userId'])(route)
   const renderUri = path(['params', 'renderUri'])(route)
 
-  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector(postId))
+  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector)
 
   /**
    * Load post data only if not loaded previously
@@ -23,7 +22,7 @@ export const PostPreviewService = ({ children }) => {
     if (postsSingleGet.data.postId === postId || postsSingleGet.status === 'loading') {
       return
     }
-    dispatch(postsActions.postsSingleGetRequest({ postId, userId }))
+    dispatch(postsActions.postsSingleGetRequest({ postId }))
   }, [postId])
 
   /**

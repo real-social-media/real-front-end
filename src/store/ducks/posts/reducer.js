@@ -9,6 +9,12 @@ export const initialState = {
     payload: {},
     meta: {},
   },
+  postsSimilar: {
+    data: [],
+    status: 'idle',
+    payload: {},
+    meta: {},
+  },
   postsGetUnreadComments: {
     data: [],
     status: 'idle',
@@ -1032,6 +1038,59 @@ const commentsFlagIdle = (state) => update(state, {
   },
 })
 
+/**
+ *
+ */
+const postsSimilarRequest = (state, action) => update(state, {
+  postsSimilar: {
+    status: { $set: 'loading' },
+    payload: { $set: action.payload },
+  },
+})
+
+const postsSimilarSuccess = (state, action) => update(state, {
+  postsSimilar: {
+    data: { $set: action.payload.data },
+    status: { $set: 'success' },
+    meta: { $set: action.payload.meta },
+  },
+})
+
+const postsSimilarFailure = (state) => update(state, {
+  postsSimilar: {
+    status: { $set: 'failure' },
+  },
+})
+
+const postsSimilarIdle = (state) => update(state, {
+  postsSimilar: {
+    $set: initialState.postsSimilar,
+  },
+})
+
+/**
+ *
+ */
+const postsSimilarMoreRequest = (state) => update(state, {
+  postsSimilar: {
+    status: { $set: 'loading' },
+  },
+})
+
+const postsSimilarMoreSuccess = (state, action) => update(state, {
+  postsSimilar: {
+    data: { $push: action.payload.data },
+    status: { $set: 'success' },
+    meta: { $set: action.payload.meta },
+  },
+})
+
+const postsSimilarMoreFailure = (state) => update(state, {
+  postsSimilar: {
+    status: { $set: 'failure' },
+  },
+})
+
 export default handleActions({
   [constants.POSTS_GET_REQUEST]: postsGetRequest,
   [constants.POSTS_GET_SUCCESS]: postsGetSuccess,
@@ -1151,4 +1210,13 @@ export default handleActions({
   [constants.COMMENTS_FLAG_SUCCESS]: commentsFlagSuccess,
   [constants.COMMENTS_FLAG_FAILURE]: commentsFlagFailure,
   [constants.COMMENTS_FLAG_IDLE]: commentsFlagIdle,
+
+  [constants.POSTS_SIMILAR_IDLE]: postsSimilarIdle,
+  [constants.POSTS_SIMILAR_REQUEST]: postsSimilarRequest,
+  [constants.POSTS_SIMILAR_SUCCESS]: postsSimilarSuccess,
+  [constants.POSTS_SIMILAR_FAILURE]: postsSimilarFailure,
+
+  [constants.POSTS_SIMILAR_MORE_REQUEST]: postsSimilarMoreRequest,
+  [constants.POSTS_SIMILAR_MORE_SUCCESS]: postsSimilarMoreSuccess,
+  [constants.POSTS_SIMILAR_MORE_FAILURE]: postsSimilarMoreFailure,
 }, initialState)

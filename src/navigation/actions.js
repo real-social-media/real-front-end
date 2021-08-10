@@ -40,6 +40,7 @@ const withDatingValidation = (callback) => {
  */
 export const navigateProfile = pushToPath('Profile')
 export const navigatePostMedia = pushToPath('PostMedia')
+export const navigatePostExplore = pushToPath('PostExplore')
 export const navigateProfileFollowed = pushToPath('ProfileFollowed')
 export const navigateProfileFollower = pushToPath('ProfileFollower')
 export const navigatePostViews = pushToPath('PostViews')

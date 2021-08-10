@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as postsActions from 'store/ducks/posts/actions'
 import * as postsSelector from 'store/ducks/posts/selectors'
@@ -7,7 +7,7 @@ import * as navigationActions from 'navigation/actions'
 import { useEffectWhenFocused } from 'services/hooks'
 import useFeed from 'services/hooks/useFeed'
 
-const PostMediaService = ({ children }) => {
+const PostExploreService = ({ children }) => {
   const dispatch = useDispatch()
   const navigation = useNavigation()
   const route = useRoute()
@@ -15,27 +15,36 @@ const PostMediaService = ({ children }) => {
 
   const postsFlag = useSelector((state) => state.posts.postsFlag)
   const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector)
+  const postsSimilar = useSelector(postsSelector.postsSimilarSelector)
   const postsDelete = useSelector((state) => state.posts.postsDelete)
   const postsArchive = useSelector((state) => state.posts.postsArchive)
-  const username = postsSingleGet.data?.postedBy?.username
 
-  const postsSingleGetRequest = () => dispatch(postsActions.postsSingleGetRequest({ postId }))
+  const {
+    feedRef,
+    handleScrollPrev,
+    handleScrollNext,
+    createActionSheetRef,
+    getActionSheetRef,
+    createTextPostRef,
+    getTextPostRef,
+  } = useFeed()
 
-  const { createActionSheetRef, getActionSheetRef, createTextPostRef, getTextPostRef } = useFeed()
+  // useEffectWhenFocused(() => {
+  //   if (username) {
+  //     navigation.setOptions({
+  //       title: username,
+  //     })
+  //   }
+  // }, [username])
 
-  useEffectWhenFocused(() => {
-    if (username) {
-      navigation.setOptions({
-        title: username,
-      })
-    }
-  }, [username])
-
-  useEffect(() => {
-    if (!postId) return
-
-    postsSingleGetRequest()
-  }, [])
+  const [postsSingleGetRequest, postsSimilarRequest, postsSimilarMoreRequest] = useMemo(
+    () => [
+      () => dispatch(postsActions.postsSingleGetRequest({ postId })),
+      () => dispatch(postsActions.postsSimilarRequest({ postId })),
+      ({ nextToken }) => dispatch(postsActions.postsSimilarMoreRequest({ postId, nextToken })),
+    ],
+    [postId],
+  )
 
   useEffectWhenFocused(() => {
     if (postsDelete.status === 'loading') {
@@ -47,9 +56,15 @@ const PostMediaService = ({ children }) => {
   }, [postsDelete.status, postsArchive.status])
 
   return children({
+    feedRef,
+    handleScrollPrev,
+    handleScrollNext,
     postsFlag,
+    postsSimilar,
     postsSingleGet,
     postsSingleGetRequest,
+    postsSimilarRequest,
+    postsSimilarMoreRequest,
     createActionSheetRef,
     getActionSheetRef,
     createTextPostRef,
@@ -57,4 +72,4 @@ const PostMediaService = ({ children }) => {
   })
 }
 
-export default PostMediaService
+export default PostExploreService

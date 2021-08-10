@@ -18,14 +18,13 @@ const CommentsService = ({ children }) => {
   const dispatch = useDispatch()
   const route = useRoute()
   const postId = route.params.postId
-  const postUserId = route.params.userId
   const actionId = route.params.actionId
   const user = useSelector(authSelector.authUser)
   const commentsAdd = useSelector(state => state.posts.commentsAdd)
   const commentsDelete = useSelector(state => state.posts.commentsDelete)
   const commentsFlag = useSelector(state => state.posts.commentsFlag)
   const postsCommentsGet = useSelector(postsSelector.postsCommentsGetSelector(postId))
-  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector(postId))
+  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector)
 
   const commentsRef = useRef()
   const formRef = useRef()
@@ -50,8 +49,8 @@ const CommentsService = ({ children }) => {
   }, [postsCommentsGet.status])
 
   useEffect(() => {
-    dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
-    dispatch(postsActions.postsCommentsGetRequest({ postId, userId: postUserId }))
+    dispatch(postsActions.postsSingleGetRequest({ postId }))
+    dispatch(postsActions.postsCommentsGetRequest({ postId }))
   }, [])
 
   useEffect(() => {
@@ -63,8 +62,8 @@ const CommentsService = ({ children }) => {
 
   useEffectWhenFocused(() => {
     if (commentsAdd.status === 'success') {
-      dispatch(postsActions.postsCommentsGetRequest({ postId, userId: postUserId }))
-      dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
+      dispatch(postsActions.postsCommentsGetRequest({ postId }))
+      dispatch(postsActions.postsSingleGetRequest({ postId }))
       dispatch(postsActions.commentsAddIdle({}))
       resetForm()
     }
@@ -72,16 +71,16 @@ const CommentsService = ({ children }) => {
 
   useEffectWhenFocused(() => {
     if (commentsDelete.status === 'success') {
-      dispatch(postsActions.postsCommentsGetRequest({ postId, userId: postUserId }))
-      dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
+      dispatch(postsActions.postsCommentsGetRequest({ postId }))
+      dispatch(postsActions.postsSingleGetRequest({ postId }))
       dispatch(postsActions.commentsDeleteIdle({}))
     }
   }, [commentsDelete.status])
 
   useEffectWhenFocused(() => {
     if (commentsFlag.status === 'success') {
-      dispatch(postsActions.postsCommentsGetRequest({ postId, userId: postUserId }))
-      dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
+      dispatch(postsActions.postsCommentsGetRequest({ postId }))
+      dispatch(postsActions.postsSingleGetRequest({ postId }))
       dispatch(postsActions.commentsFlagIdle({}))
     }
   }, [commentsFlag.status])

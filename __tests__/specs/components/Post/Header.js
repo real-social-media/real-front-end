@@ -74,7 +74,7 @@ describe('Post Header component', () => {
       expect(handlePostShare).toHaveBeenCalled()
 
       onPress(1)
-      expect(postsFlagRequest).toHaveBeenCalledWith({ postId, userId: user.userId })
+      expect(postsFlagRequest).toHaveBeenCalledWith({ postId })
     })
 
     it('user is an owner of a post', () => {
@@ -99,13 +99,11 @@ describe('Post Header component', () => {
       onPress(2)
       expect(postsArchiveRequest).toHaveBeenCalledWith({
         postId: post.postId,
-        userId: post.postedBy.userId,
       })
 
       onPress(3)
       expect(postsDeleteRequest).toHaveBeenCalledWith({
         postId: post.postId,
-        userId: post.postedBy.userId,
       })
     })
 
@@ -124,7 +122,7 @@ describe('Post Header component', () => {
       expect(cancelButtonIndex).toBe(1)
 
       onPress(0)
-      expect(postsRestoreArchivedRequest).toHaveBeenCalledWith({ postId: archived.postId, userId: user.userId })
+      expect(postsRestoreArchivedRequest).toHaveBeenCalledWith({ postId: archived.postId })
     })
 
     it('user is an owner of a verified post', () => {

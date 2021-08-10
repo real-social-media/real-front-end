@@ -12,6 +12,7 @@ import CommentComponent from 'components/Post/Comment'
 import DescriptionComponent from 'components/Post/Description'
 import HeaderComponent from 'components/Post/Header'
 import UnlockComponent from 'components/Post/Unlock'
+import PostServiceComponent from 'components/Post/index.service'
 
 import ListItemComponent from 'templates/ListItem'
 import CacheComponent from 'components/Cache'
@@ -20,12 +21,13 @@ import ReactionsPreviewTemplate from 'templates/ReactionsPreview'
 import ViewShot from 'react-native-view-shot'
 import * as navigationActions from 'navigation/actions'
 
-import { withTheme } from 'react-native-paper'
+import { useTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { unpaid } from 'services/providers/Viewable'
+import { withService } from 'services/helpers'
 
-const PostComponent = ({
-  theme,
+
+export const PostComponent = ({
   user,
   post,
   postsArchiveRequest,
@@ -43,16 +45,16 @@ const PostComponent = ({
   createTextPostRef,
   textPostRef,
 
-  feedRef,
   changeAvatarRequest,
 }) => {
+  const theme = useTheme()
   const styling = styles(theme)
   const navigation = useNavigation()
 
   const albumLength = path(['album', 'posts', 'items', 'length'])(post) || 0
 
   const onCapture = (renderUri) => {
-    navigationActions.navigatePostShare(navigation, { postId: post.postId, userId: post.postedBy.userId, renderUri })
+    navigationActions.navigatePostShare(navigation, { postId: post.postId, renderUri })
   }
 
   const handlePostShare = () => {
@@ -61,7 +63,7 @@ const PostComponent = ({
     }
 
     if (post.postType === 'IMAGE') {
-      navigationActions.navigatePostShare(navigation, { postId: post.postId, userId: post.postedBy.userId })
+      navigationActions.navigatePostShare(navigation, { postId: post.postId })
     }
   }
 
@@ -91,7 +93,6 @@ const PostComponent = ({
         {post.postType === 'IMAGE' ?
           <ListItemComponent
             post={post}
-            feedRef={feedRef}
           >
             <CacheComponent
               thread="post"
@@ -173,11 +174,6 @@ const styles = theme => StyleSheet.create({
   },
 })
 
-PostComponent.defaultProps = {
-  handleScrollPrev: null,
-  handleScrollNext: null,
-}
-
 PostComponent.propTypes = {
   theme: PropTypes.any,
   user: PropTypes.any,
@@ -199,4 +195,9 @@ PostComponent.propTypes = {
   changeAvatarRequest: PropTypes.func,
 }
 
-export default withTheme(PostComponent)
+PostComponent.defaultProps = {
+  handleScrollPrev: null,
+  handleScrollNext: null,
+}
+
+export default withService(PostServiceComponent, PostComponent)

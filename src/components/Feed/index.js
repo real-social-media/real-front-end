@@ -4,8 +4,7 @@ import { StyleSheet, View, FlatList, RefreshControl, ActivityIndicator } from 'r
 import path from 'ramda/src/path'
 import ListHeaderComponent from 'components/Feed/ListHeaderComponent'
 import BookmarkComponent from 'components/Feed/Bookmark'
-import PostComponent from 'components/Post'
-import PostServiceComponent from 'components/Post/index.service'
+import Post from 'components/Post'
 import Placeholder from 'components/Feed/Placeholder'
 import ScrollService from 'services/Scroll'
 import useViewable from 'services/providers/Viewable'
@@ -48,23 +47,16 @@ const Feed = ({
   const renderItem = useCallback(({ item: post, index }) => (
     <React.Fragment>
       {bookmarkSeparatorIndex === index ? renderBookmark() : null}
-
-      <PostServiceComponent>
-        {(postProps) => (
-          <PostComponent
-            {...postProps}
-            post={post}
-            priorityIndex={index}
-            handleScrollPrev={handleScrollPrev(index)}
-            handleScrollNext={handleScrollNext(index)}
-            createActionSheetRef={createActionSheetRef(post)}
-            actionSheetRef={getActionSheetRef(post)}
-            createTextPostRef={createTextPostRef(post)}
-            textPostRef={getTextPostRef(post)}
-            feedRef={feedRef}
-          />
-        )}
-      </PostServiceComponent>
+      <Post
+        post={post}
+        priorityIndex={index}
+        handleScrollPrev={handleScrollPrev(index)}
+        handleScrollNext={handleScrollNext(index)}
+        createActionSheetRef={createActionSheetRef(post)}
+        actionSheetRef={getActionSheetRef(post)}
+        createTextPostRef={createTextPostRef(post)}
+        textPostRef={getTextPostRef(post)}
+      />
     </React.Fragment>
   ), [data])
 
@@ -139,7 +131,7 @@ Feed.propTypes = {
   postsFeedGet: PropTypes.any,
   loadInit: PropTypes.any,
   postsFeedGetMoreRequest: PropTypes.any,
-  handleScrollPrev: PropTypes.any,
+  handleScrollPrev: PropTypes.func,
   handleScrollNext: PropTypes.any,
   bookmarkSeparatorIndex: PropTypes.any,
   createActionSheetRef: PropTypes.any,

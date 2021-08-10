@@ -10,9 +10,8 @@ const PostViewsService = ({ children }) => {
   const dispatch = useDispatch()
   const route = useRoute()
   const postId = route.params.postId
-  const userId = route.params.userId
   const postsViewsGet = useSelector(postsSelector.postsViewsGetSelector(postId))
-  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector(postId))
+  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector)
   const usersFollow = useSelector(usersSelector.usersFollow)
   const usersUnfollow = useSelector(usersSelector.usersUnfollow)
 
@@ -23,9 +22,9 @@ const PostViewsService = ({ children }) => {
     dispatch(postsActions.postsViewsGetMoreRequest(payload))
 
   useEffectWhenFocused(() => {
-    if(!postId || !userId) return
+    if(!postId) return
 
-    dispatch(postsActions.postsSingleGetRequest({ postId, userId }))
+    dispatch(postsActions.postsSingleGetRequest({ postId }))
   }, [postId])
 
   useEffectWhenFocused(() => {

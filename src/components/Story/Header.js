@@ -85,7 +85,6 @@ const Header = ({ t, post }) => {
           style={styling.headerAction}
           onPress={navigationActions.navigateComments(navigation, {
             postId: post.postId,
-            userId: post.postedBy.userId,
           })}
         >
           <BellIcon fill="red" />

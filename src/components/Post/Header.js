@@ -120,7 +120,6 @@ const Header = ({
           style={styling.headerAction}
           onPress={navigationActions.navigateComments(navigation, {
             postId: post.postId,
-            userId: post.postedBy.userId,
           })}
         >
           <BellIcon fill="red" />
@@ -147,7 +146,7 @@ const Header = ({
             },
             {
               name: t('Restore from Archived'),
-              onPress: () => postsRestoreArchivedRequest({ postId: post.postId, userId: path(['userId'])(user) }),
+              onPress: () => postsRestoreArchivedRequest({ postId: post.postId }),
               isVisible: isUserPostOwner && archived,
             },
             {
@@ -157,7 +156,7 @@ const Header = ({
             },
             {
               name: t('Report'),
-              onPress: () => postsFlagRequest({ postId: post.postId, userId: path(['userId'])(user) }),
+              onPress: () => postsFlagRequest({ postId: post.postId }),
               isVisible: !isUserPostOwner,
             },
             {
@@ -167,12 +166,12 @@ const Header = ({
             },
             {
               name: t('Archive'),
-              onPress: () => postsArchiveRequest({ postId: post.postId, userId: path(['postedBy', 'userId'])(post) }),
+              onPress: () => postsArchiveRequest({ postId: post.postId }),
               isVisible: isUserPostOwner && !archived,
             },
             {
               name: t('Delete'),
-              onPress: () => postsDeleteRequest({ postId: post.postId, userId: path(['postedBy', 'userId'])(post) }),
+              onPress: () => postsDeleteRequest({ postId: post.postId }),
               isVisible: isUserPostOwner && !archived,
               isDestructive: true,
             },

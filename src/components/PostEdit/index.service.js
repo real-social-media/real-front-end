@@ -17,7 +17,7 @@ const PostEditService = ({ children }) => {
   const user = useSelector(authSelector.authUser)
   const postId = path(['params', 'post', 'postId'])(route)
   const postUserId = path(['params', 'post', 'postedBy', 'userId'])(route)
-  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector(postId))
+  const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector)
   const postsEdit = useSelector(state => state.posts.postsEdit)
   const albumsGet = useSelector(albumsSelector.albumsGetSelector(user.userId))
 
@@ -28,7 +28,7 @@ const PostEditService = ({ children }) => {
   }, [])
 
   const postsSingleGetRequest = ({ postId }) =>
-    dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
+    dispatch(postsActions.postsSingleGetRequest({ postId }))
 
   const postsEditRequest = (payload) =>
     dispatch(postsActions.postsEditRequest({ ...payload, userId: postUserId }))
@@ -36,7 +36,7 @@ const PostEditService = ({ children }) => {
   useEffectWhenFocused(() => {
     if(!postId || !postUserId) return
 
-    dispatch(postsActions.postsSingleGetRequest({ postId, userId: postUserId }))
+    dispatch(postsActions.postsSingleGetRequest({ postId }))
   }, [postId])
 
   useEffectWhenFocused(() => {

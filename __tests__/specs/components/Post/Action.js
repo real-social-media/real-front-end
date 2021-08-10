@@ -96,7 +96,7 @@ describe('Post actions', () => {
       expect($likeBtn).toBeTruthy()
 
       fireEvent.press($likeBtn)
-      expect(postsOnymouslyLikeRequest).toHaveBeenCalledWith({ postId: post.postId, userId: post.postedBy.userId })
+      expect(postsOnymouslyLikeRequest).toHaveBeenCalledWith({ postId: post.postId })
 
       expect(queryByTestId(testIDs.action.likeBtn)).toBeFalsy()
       expect(queryByTestId(testIDs.action.dislikeBtn)).toBeTruthy()
@@ -133,7 +133,7 @@ describe('Post actions', () => {
       expect($dislikeBtn).toBeTruthy()
 
       fireEvent.press($dislikeBtn)
-      expect(postsDislikeRequest).toHaveBeenCalledWith({ postId: post.postId, userId: post.postedBy.userId })
+      expect(postsDislikeRequest).toHaveBeenCalledWith({ postId: post.postId })
 
       expect(queryByTestId(testIDs.action.dislikeBtn)).toBeFalsy()
       expect(queryByTestId(testIDs.action.likeBtn)).toBeTruthy()
@@ -169,7 +169,7 @@ describe('Post actions', () => {
       expect($commentBtn).toBeTruthy()
 
       fireEvent.press($commentBtn)
-      expect(navigation.push).toHaveBeenCalledWith('Comments', { postId: post.postId, userId: post.postedBy.userId })
+      expect(navigation.push).toHaveBeenCalledWith('Comments', { postId: post.postId })
     })
   })
 
@@ -206,7 +206,7 @@ describe('Post actions', () => {
       expect($seenByBtn).toBeTruthy()
 
       fireEvent.press($seenByBtn)
-      expect(navigation.push).toHaveBeenCalledWith('PostViews', { postId: post.postId, userId: post.postedBy.userId })
+      expect(navigation.push).toHaveBeenCalledWith('PostViews', { postId: post.postId })
     })
   })
 })
