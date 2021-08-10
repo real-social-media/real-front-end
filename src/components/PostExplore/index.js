@@ -84,11 +84,13 @@ const PostExplore = ({
     </View>
   )
 
+  const keyExtractor = (item, index) => `${item.postId}_${index}`
+
   return (
     <FlatList
       ref={feedRef}
       data={postsSimilar.data}
-      keyExtractor={(item) => item.postId}
+      keyExtractor={keyExtractor}
       renderItem={renderItem}
       refreshControl={
         <RefreshControl
