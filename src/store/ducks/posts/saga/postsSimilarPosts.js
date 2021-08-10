@@ -6,8 +6,12 @@ import * as queryService from 'services/Query'
 import * as normalizer from 'normalizer/schemas'
 import { entitiesMerge } from 'store/ducks/entities/saga'
 
-function* fetchSimilarPosts({ postId }) {
-  const response = yield call([queryService, 'apiRequest'], queries.similarPosts, { postId })
+function* fetchSimilarPosts(req) {
+  const response = yield call([queryService, 'apiRequest'], queries.similarPosts, {
+    postId: req.postId,
+    nextToken: req.nextToken,
+  })
+
   const { items, nextToken } = response.data.similarPosts
   const normalized = normalizer.normalizePostsGet(items)
 

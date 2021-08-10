@@ -1068,6 +1068,29 @@ const postsSimilarIdle = (state) => update(state, {
   },
 })
 
+/**
+ *
+ */
+const postsSimilarMoreRequest = (state) => update(state, {
+  postsSimilar: {
+    status: { $set: 'loading' },
+  },
+})
+
+const postsSimilarMoreSuccess = (state, action) => update(state, {
+  postsSimilar: {
+    data: { $push: action.payload.data },
+    status: { $set: 'success' },
+    meta: { $set: action.payload.meta },
+  },
+})
+
+const postsSimilarMoreFailure = (state) => update(state, {
+  postsSimilar: {
+    status: { $set: 'failure' },
+  },
+})
+
 export default handleActions({
   [constants.POSTS_GET_REQUEST]: postsGetRequest,
   [constants.POSTS_GET_SUCCESS]: postsGetSuccess,
@@ -1192,4 +1215,8 @@ export default handleActions({
   [constants.POSTS_SIMILAR_REQUEST]: postsSimilarRequest,
   [constants.POSTS_SIMILAR_SUCCESS]: postsSimilarSuccess,
   [constants.POSTS_SIMILAR_FAILURE]: postsSimilarFailure,
+
+  [constants.POSTS_SIMILAR_MORE_REQUEST]: postsSimilarMoreRequest,
+  [constants.POSTS_SIMILAR_MORE_SUCCESS]: postsSimilarMoreSuccess,
+  [constants.POSTS_SIMILAR_MORE_FAILURE]: postsSimilarMoreFailure,
 }, initialState)
