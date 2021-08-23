@@ -7,7 +7,7 @@ import * as constants from 'store/ducks/wallet/constants'
 function* walletGetRequest() {
   try {
     const response = yield call([API, 'post'], 'REAL_TRANSACTIONS_API', '/wallet')
-    const wallet = path(['body', 'wallet', 'REAL'], response)
+    const wallet = path(['body', 'wallet'], response)
 
     yield put(actions.walletGetSuccess(wallet))
   } catch (error) {

@@ -20,6 +20,7 @@ import { Text, Caption, Switch } from 'react-native-paper'
 import { joinTags, searchTags } from 'components/PostCreate/helpers'
 import { useHeader } from 'components/PostCreate/header'
 import FormKeywords from 'components/PostCreate/FormKeywords'
+import PickerField from 'components/Formik/PickerField'
 import * as Validation from 'services/Validation'
 
 import { withTheme } from 'react-native-paper'
@@ -28,12 +29,15 @@ import { withTranslation } from 'react-i18next'
 export const a11y = {
   payment:'Toggle Payment per view',
   keywords: 'Toggle Search Terms',
+
 }
 
 const formSchema = Yup.object().shape({
   lifetime: Yup.string().nullable(),
   text: Yup.string().nullable(),
   payment: Validation.payment,
+  paymentTicker: Validation.paymentTicker,
+  paymentTickerRequiredToView: Yup.boolean(),
 })
 
 const PostCreateForm = ({
@@ -49,8 +53,11 @@ const PostCreateForm = ({
   albumsGet,
   cameraCaptureLength,
   handleOpenVerification,
+  coinsOptions,
 }) => {
   const styling = styles(theme)
+
+  const toggleEnablePayment = () => setFieldValue('paymentTickerRequiredToView', !values.paymentTickerRequiredToView)
 
   const image = {
     url4k: values.preview[0],
@@ -160,12 +167,35 @@ const PostCreateForm = ({
         helper={t('Auto by default')}
         accessibilityLabel={a11y.payment}
       >
-        <Field
-          {...Validation.getInputTypeProps('payment')}
-          name="payment"
-          component={TextField}
-          placeholder={t('$0-100 REAL coins')}
-        />
+        <View style={styling.row}>
+          <Field
+            name="paymentTicker"
+            accessibilityLabel="paymentTicker"
+            label={t('Restrict To Coin')}
+            component={PickerField}
+            items={coinsOptions}
+          />
+        </View>
+        <View style={styling.row}>
+          <Field
+            {...Validation.getInputTypeProps('payment')}
+            name="payment"
+            component={TextField}
+            placeholder={t('$0-100 REAL coins')}
+          />
+        </View>
+        <View style={styling.row}>
+          <UserRowComponent
+            content={<Text>{t('Enable change per view')}</Text>}
+            action={
+              <Switch
+                value={values.paymentTickerRequiredToView}
+                onValueChange={toggleEnablePayment}
+                accessibilityLabel="paymentTickerRequiredToView"
+              />
+            }
+          />
+        </View>
       </CollapsableComponent>
 
       <CollapsableComponent
@@ -217,6 +247,9 @@ const styles = theme => StyleSheet.create({
   helper: {
     alignItems: 'center',
   },
+  row: {
+    marginBottom: 12,
+  },
 })
 
 PostCreateForm.propTypes = {
@@ -232,6 +265,14 @@ PostCreateForm.propTypes = {
   albumsGet: PropTypes.any,
   cameraCaptureLength: PropTypes.any,
   handleOpenVerification: PropTypes.func,
+  coinsOptions: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string,
+    value: PropTypes.string,
+  })),
+}
+
+PostCreateForm.defaultProps = {
+  coinsOptions: [],
 }
 
 const FormWrapper = ({
@@ -258,6 +299,8 @@ const FormWrapper = ({
         images: [path(['uri'])(cameraCapture)],
         takenInReal: path(['takenInReal'])(cameraCapture),
         payment: path(['payment'])(cameraCapture),
+        paymentTicker: undefined,
+        paymentTickerRequiredToView: false,
         imageFormat: path(['imageFormat'])(cameraCapture),
         originalFormat: path(['originalFormat'])(cameraCapture),
         originalMetadata: path(['originalMetadata'])(cameraCapture),

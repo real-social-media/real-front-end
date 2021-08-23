@@ -9,21 +9,33 @@ const reducer = combineReducers({ wallet })
 describe('wallet', () => {
   describe('walletGet', () => {
     it('initial state', () => {
-      testReducer(reducer).expect(selectors.walletGet, { data: { total: '0' }, status: 'idle' })
+      testReducer(reducer)
+        .expect(selectors.walletGet, { data: {}, status: 'idle' })
+        .expect(selectors.walletCoins, {})
+        .expect(selectors.walletCoinsOptions, [])
     })
 
     it('loading', () => {
-      testReducer(reducer)
-        .put(actions.walletGetRequest())
-        .expect(selectors.walletGet, { data: { total: '0' }, status: 'loading' })
+      testReducer(reducer).put(actions.walletGetRequest()).expect(selectors.walletGet, { data: {}, status: 'loading' })
     })
 
     it('success', () => {
-      const wallet = { total: '0.99' }
+      const wallet = { REAL: { a: 1, b: 2 }, ALEX: { a: 1, b: 2 } }
 
       testReducer(reducer)
         .put(actions.walletGetSuccess(wallet))
         .expect(selectors.walletGet, { data: wallet, status: 'success' })
+        .expect(selectors.walletCoins, wallet)
+        .expect(selectors.walletCoinsOptions, [
+          {
+            label: 'REAL',
+            value: 'REAL',
+          },
+          {
+            label: 'ALEX',
+            value: 'ALEX',
+          },
+        ])
     })
 
     it('failure', () => {
@@ -31,7 +43,7 @@ describe('wallet', () => {
 
       testReducer(reducer)
         .put(actions.walletGetFailure(error))
-        .expect(selectors.walletGet, { data: { total: '0' }, status: 'failure' })
+        .expect(selectors.walletGet, { data: {}, status: 'failure' })
     })
   })
 })

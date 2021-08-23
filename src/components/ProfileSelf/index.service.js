@@ -14,7 +14,8 @@ const ProfileSelfService = ({ children }) => {
   const navigation = useNavigation()
   const user = useSelector(authSelector.authUser)
   const authUser = useSelector(authSelector.authUserSelector)
-  const walletTotal = useSelector(walletSelector.walletTotal)
+  const coins = useSelector(walletSelector.walletCoins)
+  const walletTotal = coins?.REAL?.total || 0
   const username = path(['username'])(authUser)
 
   const walletGetRequest = () => dispatch(walletActions.walletGetRequest())

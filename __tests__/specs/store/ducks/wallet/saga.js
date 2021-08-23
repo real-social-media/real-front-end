@@ -21,7 +21,7 @@ describe('Wallet saga', () => {
     await expectSaga(testAsRootSaga(wallet))
       .provide([[matchers.call.fn(API.post), Promise.resolve(response)]])
       .call([API, 'post'], 'REAL_TRANSACTIONS_API', '/wallet')
-      .put(actions.walletGetSuccess(response.body.wallet.REAL))
+      .put(actions.walletGetSuccess(response.body.wallet))
 
       .dispatch(actions.walletGetRequest())
       .silentRun()

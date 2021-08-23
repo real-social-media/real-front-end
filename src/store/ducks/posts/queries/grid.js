@@ -45,6 +45,8 @@ export const gridPostFragment = `
     postType
     postedAt
     payment
+    paymentTicker
+    paymentTickerRequiredToView
     keywords
     expiresAt
     text

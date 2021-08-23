@@ -6,6 +6,8 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import path from 'ramda/src/path'
 import * as navigationActions from 'navigation/actions'
 import * as authSelector from 'store/ducks/auth/selectors'
+import * as walletActions from 'store/ducks/wallet/actions'
+import * as walletSelector from 'store/ducks/wallet/selectors'
 import * as albumsSelector from 'store/ducks/albums/selectors'
 import * as postsSelector from 'store/ducks/posts/selectors'
 import { useEffectWhenFocused } from 'services/hooks'
@@ -15,6 +17,7 @@ const PostEditService = ({ children }) => {
   const navigation = useNavigation()
   const route = useRoute()
   const user = useSelector(authSelector.authUser)
+  const coinsOptions = useSelector(walletSelector.walletCoinsOptions)
   const postId = path(['params', 'post', 'postId'])(route)
   const postUserId = path(['params', 'post', 'postedBy', 'userId'])(route)
   const postsSingleGet = useSelector(postsSelector.postsSingleGetSelector(postId))
@@ -24,6 +27,7 @@ const PostEditService = ({ children }) => {
   useEffect(() => {
     if(!user.userId) return
 
+    dispatch(walletActions.walletGetRequest())
     dispatch(albumsActions.albumsGetRequest({ userId: user.userId }))
   }, [])
 
@@ -52,6 +56,7 @@ const PostEditService = ({ children }) => {
     postsSingleGetRequest,
     postsEdit,
     postsEditRequest,
+    coinsOptions,
   })
 }
 

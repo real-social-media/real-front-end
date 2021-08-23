@@ -153,6 +153,8 @@ export const feedPostFragment = `
     postedAt
     expiresAt
     payment
+    paymentTicker
+    paymentTickerRequiredToView
     keywords
     text
     imageUploadUrl

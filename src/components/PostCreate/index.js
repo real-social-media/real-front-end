@@ -21,6 +21,7 @@ const PostCreateComponent = ({
   albumsGet,
   type,
   handleOpenVerification,
+  coinsOptions,
 }) => {
   const styling = styles(theme)
 
@@ -40,6 +41,7 @@ const PostCreateComponent = ({
               formAlbums={FormAlbums}
               albumsGet={albumsGet}
               postType={type}
+              coinsOptions={coinsOptions}
             />
           </View>
         ) : null}
@@ -58,6 +60,7 @@ const PostCreateComponent = ({
               albumsGet={albumsGet}
               postType={type}
               handleOpenVerification={handleOpenVerification}
+              coinsOptions={coinsOptions}
             />
           </View>
         ) : null}
@@ -77,6 +80,14 @@ PostCreateComponent.propTypes = {
   albumsGet: PropTypes.any,
   type: PropTypes.any,
   handleOpenVerification: PropTypes.func,
+  coinsOptions: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string,
+    value: PropTypes.string,
+  })),
+}
+
+PostCreateComponent.defaultProps = {
+  coinsOptions: [],
 }
 
 const styles = theme => StyleSheet.create({

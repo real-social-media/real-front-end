@@ -7,6 +7,8 @@ import * as albumsActions from 'store/ducks/albums/actions'
 import * as navigationActions from 'navigation/actions'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import * as postsActions from 'store/ducks/posts/actions'
+import * as walletActions from 'store/ducks/wallet/actions'
+import * as walletSelector from 'store/ducks/wallet/selectors'
 import path from 'ramda/src/path'
 import { VERIFICATION_TYPE } from 'components/Verification'
 
@@ -18,6 +20,7 @@ const PostCreateService = ({
   const route = useRoute()
 
   const user = useSelector(authSelector.authUser)
+  const coinsOptions = useSelector(walletSelector.walletCoinsOptions)
   const postsCreate = useSelector(postsSelector.postsCreate)
   const cameraCapture = useSelector(state => state.camera.cameraCapture)
   const albumsGet = useSelector(albumsSelector.albumsGetSelector(user.userId))
@@ -42,6 +45,7 @@ const PostCreateService = ({
   useEffect(() => {
     if(!user.userId) return
 
+    dispatch(walletActions.walletGetRequest())
     dispatch(albumsActions.albumsGetRequest({ userId: user.userId }))
   }, [])
 
@@ -65,6 +69,7 @@ const PostCreateService = ({
     cameraCapture: path(['data', 0])(cameraCapture),
     cameraCaptureLength,
     handleOpenVerification,
+    coinsOptions,
   })
 }
 

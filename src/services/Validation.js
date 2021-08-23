@@ -18,6 +18,7 @@ export const ERRORS = {
   dateOfBirthDay: 'Date must be selected',
   dateOfBirthYear: 'Year must be selected',
   gender: 'Gender must be selected',
+  paymentTicker: 'A coin must be selected',
   fullName: 'Name must be entered',
   displayName: 'Name must be entered',
   bio: 'Bio must be filled',
@@ -169,6 +170,11 @@ export const payment = Yup.number()
   .min(MIN_PAYMENT, ERRORS.minPayment)
   .max(MAX_PAYMENT, ERRORS.maxPayment)
   .nullable()
+
+export const paymentTicker = Yup.string()
+  .when('paymentTickerRequiredToView',  (value, schema) =>  {
+    return value ? schema.required(ERRORS.paymentTicker) : schema.nullable()
+  })
 
 export const promocode = Yup.string()
   .lowercase()

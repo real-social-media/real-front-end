@@ -70,6 +70,8 @@ export const addTextOnlyPost = `
     $sharingDisabled: Boolean,
     $verificationHidden: Boolean,
     $payment: Float,
+    $paymentTicker: String,
+    $paymentTickerRequiredToView: Boolean,
     $keywords: [String!],
   ) {
     addPost (
@@ -83,6 +85,8 @@ export const addTextOnlyPost = `
       sharingDisabled: $sharingDisabled,
       verificationHidden: $verificationHidden,
       payment: $payment,
+      paymentTicker: $paymentTicker,
+      paymentTickerRequiredToView: $paymentTickerRequiredToView,
       keywords: $keywords,
     ) {
       ...postFragment
@@ -109,6 +113,8 @@ export const addPhotoPost = `
     $verificationHidden: Boolean,
     $setAsUserPhoto: Boolean,
     $payment: Float,
+    $paymentTicker: String,
+    $paymentTickerRequiredToView: Boolean,
     $keywords: [String!],
   ) {
     addPost (
@@ -123,6 +129,8 @@ export const addPhotoPost = `
       verificationHidden: $verificationHidden,
       setAsUserPhoto: $setAsUserPhoto,
       payment: $payment,
+      paymentTicker: $paymentTicker,
+      paymentTickerRequiredToView: $paymentTickerRequiredToView,
       keywords: $keywords,
       imageInput: {
         takenInReal: $takenInReal,
@@ -174,6 +182,8 @@ export const editPost = `
     $sharingDisabled: Boolean,
     $verificationHidden: Boolean,
     $payment: Float,
+    $paymentTicker: String,
+    $paymentTickerRequiredToView: Boolean,
     $keywords: [String!],
   ) {
     editPost (
@@ -184,6 +194,8 @@ export const editPost = `
       sharingDisabled: $sharingDisabled,
       verificationHidden: $verificationHidden,
       payment: $payment,
+      paymentTicker: $paymentTicker,
+      paymentTickerRequiredToView: $paymentTickerRequiredToView,
       keywords: $keywords,
     ) {
       ...postFragment

@@ -51,6 +51,8 @@ const values = {
   originalFormat: 'originalFormat',
   originalMetadata: 'originalMetadata',
   payment: undefined,
+  paymentTicker: undefined,
+  paymentTickerRequiredToView: false,
   postType: undefined,
   preview: ['preview'],
   sharingDisabled: false,
@@ -69,15 +71,19 @@ describe('PostCreate Form', () => {
   })
 
   it('payment field', () => {
-    const { getByLabelText, queryByAccessibilityLabel } = setup()
+    const { queryByAccessibilityLabel } = setup()
 
     fireEvent.press(queryByAccessibilityLabel(a11y.payment))
 
-    testField(getByLabelText('payment'), {
+
+    testField(queryByAccessibilityLabel('payment'), {
       name: 'payment',
       value: undefined,
       ...Validation.getInputTypeProps('payment'),
     })
+
+    expect(queryByAccessibilityLabel('paymentTicker')).toBeTruthy()
+    expect(queryByAccessibilityLabel('paymentTickerRequiredToView')).toBeTruthy()
   })
 
   it('toggle keywords form', () => {
