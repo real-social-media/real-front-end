@@ -191,6 +191,7 @@ const PostEditForm = ({
             label={t('Restrict To Coin')}
             component={PickerField}
             items={coinsOptions}
+            disabled
           />
         </View>
         <View style={styling.row}>

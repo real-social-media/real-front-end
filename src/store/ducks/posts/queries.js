@@ -182,7 +182,6 @@ export const editPost = `
     $sharingDisabled: Boolean,
     $verificationHidden: Boolean,
     $payment: Float,
-    $paymentTicker: String,
     $paymentTickerRequiredToView: Boolean,
     $keywords: [String!],
   ) {
@@ -194,7 +193,6 @@ export const editPost = `
       sharingDisabled: $sharingDisabled,
       verificationHidden: $verificationHidden,
       payment: $payment,
-      paymentTicker: $paymentTicker,
       paymentTickerRequiredToView: $paymentTickerRequiredToView,
       keywords: $keywords,
     ) {
