@@ -36,7 +36,6 @@ const formSchema = Yup.object().shape({
   text: Yup.string().nullable(),
   payment: Validation.payment,
   paymentTicker: Validation.paymentTicker,
-  paymentTickerRequiredToView: Yup.boolean(),
 })
 
 const normalizeValues = values => ({
@@ -74,8 +73,6 @@ const PostEditForm = ({
   coinsOptions,
 }) => {
   const styling = styles(theme)
-
-  const toggleEnablePayment = () => setFieldValue('paymentTickerRequiredToView', !values.paymentTickerRequiredToView)
 
   const image = {
     url4k: values.uri,
@@ -202,18 +199,6 @@ const PostEditForm = ({
             placeholder={t('$0-100 REAL coins')}
           />
         </View>
-        <View style={styling.row}>
-          <UserRowComponent
-            content={<Text>{t('Enable change per view')}</Text>}
-            action={
-              <Switch
-                value={values.paymentTickerRequiredToView}
-                onValueChange={toggleEnablePayment}
-                accessibilityLabel="paymentTickerRequiredToView"
-              />
-            }
-          />
-        </View>
       </CollapsableComponent>
 
       <CollapsableComponent
@@ -298,7 +283,6 @@ export default withTranslation()(withTheme(({
         expiresAt: postsSingleGet.data.expiresAt,
         payment: String(postsSingleGet.data.payment),
         paymentTicker: postsSingleGet.data.paymentTicker,
-        paymentTickerRequiredToView: postsSingleGet.data.paymentTickerRequiredToView,
         commentsDisabled: postsSingleGet.data.commentsDisabled,
         likesDisabled: postsSingleGet.data.likesDisabled,
         sharingDisabled: postsSingleGet.data.sharingDisabled,

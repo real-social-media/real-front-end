@@ -77,7 +77,6 @@ describe('PostEdit Form', () => {
     })
 
     expect(queryByAccessibilityLabel('paymentTicker')).toBeTruthy()
-    expect(queryByAccessibilityLabel('paymentTickerRequiredToView')).toBeTruthy()
   })
 
   it('toggle keywords form', () => {

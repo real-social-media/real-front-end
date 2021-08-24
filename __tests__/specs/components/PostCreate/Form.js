@@ -52,7 +52,6 @@ const values = {
   originalMetadata: 'originalMetadata',
   payment: undefined,
   paymentTicker: undefined,
-  paymentTickerRequiredToView: false,
   postType: undefined,
   preview: ['preview'],
   sharingDisabled: false,
@@ -83,7 +82,6 @@ describe('PostCreate Form', () => {
     })
 
     expect(queryByAccessibilityLabel('paymentTicker')).toBeTruthy()
-    expect(queryByAccessibilityLabel('paymentTickerRequiredToView')).toBeTruthy()
   })
 
   it('toggle keywords form', () => {

@@ -172,9 +172,7 @@ export const payment = Yup.number()
   .nullable()
 
 export const paymentTicker = Yup.string()
-  .when('paymentTickerRequiredToView',  (value, schema) =>  {
-    return value ? schema.required(ERRORS.paymentTicker) : schema.nullable()
-  })
+  .nullable()
 
 export const promocode = Yup.string()
   .lowercase()
