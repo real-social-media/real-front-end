@@ -12,6 +12,7 @@ import Config from 'react-native-config'
 import linking from 'navigation/linking'
 import Router from 'navigation/Router'
 import FlashMessage from 'react-native-flash-message'
+import LoadingComponent from 'components/Loading'
 
 const codePushOptions = {
   checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
@@ -59,6 +60,7 @@ const WithNavigationContainer = () => {
       ref={navigationRef}
       onReady={setMounted}
       linking={linking}
+      fallback={<LoadingComponent />}
     >
       {navigationReady ?
         <Application

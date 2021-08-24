@@ -1,12 +1,11 @@
-import { put, race, take } from 'redux-saga/effects'
+import { put, race, take, call } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as navigationActions from 'navigation/actions'
 import * as NavigationService from 'services/Navigation'
 import * as constants from 'store/ducks/auth/constants'
 import * as pushActions from 'store/ducks/push/actions'
 
-function* authorize() {
-  const navigation = yield NavigationService.getNavigation()
+export function* refreshUser() {
   yield put(actions.authGetUserRequest())
 
   const { getUserFailure } = yield race({
@@ -20,7 +19,12 @@ function* authorize() {
 
   yield put(actions.authPrefetchRequest())
   yield put(pushActions.pushStartRequest())
+}
 
+function* authorize() {
+  yield call(refreshUser)
+
+  const navigation = yield NavigationService.getNavigation()
   navigationActions.navigateResetToApp(navigation)
 }
 
