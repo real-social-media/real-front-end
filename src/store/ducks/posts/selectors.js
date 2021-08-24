@@ -62,6 +62,19 @@ export const postsFeedGetSelector = createDeepEqualSelector(
 /**
  *
  */
+const postsByCoin = () => path(['posts', 'postsByCoin'])
+
+export const postsByCoinSelector = createDeepEqualSelector(
+  [postsByCoin(), entitiesSelector],
+  (postsByCoin, entities) => {
+    const denormalized = normalizer.denormalizePostsGet(postsByCoin.data, entities)
+    return assocPath(['data'], denormalized)(postsByCoin)
+  },
+)
+
+/**
+ *
+ */
 export const postsSingleGet = () => path(['posts', 'postsSingleGet'])
 
 export const postsSingleGetSelector = (postId) => createDeepEqualSelector(

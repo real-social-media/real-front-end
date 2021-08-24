@@ -58,6 +58,26 @@ export const getFeed = `
   ${feed.feedPostFragment}
 `
 
+export const postsByPaymentTicker = `
+  query PostsByPaymentTicker(
+    $paymentTicker: String!,
+    $paymentTickerRequiredToView: Boolean = true,
+    $nextToken: String
+  ) {
+    postsByPaymentTicker(
+      paymentTicker: $paymentTicker,
+      paymentTickerRequiredToView: $paymentTickerRequiredToView,
+      nextToken: $nextToken
+    ) {
+      items {
+        ...feedPostFragment
+      }
+      nextToken
+    }
+  }
+  ${feed.feedPostFragment}
+`
+
 export const addTextOnlyPost = `
   mutation AddMediaPost(
     $postId: ID!,

@@ -75,6 +75,12 @@ export const initialState = {
     payload: {},
     meta: {},
   },
+  postsByCoin: {
+    data: [],
+    status: 'idle',
+    payload: {},
+    meta: {},
+  },
   postsCreate: {
     data: {},
     status: 'idle',
@@ -444,6 +450,13 @@ const postsDeleteSuccess = (state, action) => update(state, {
   postsFeedGet: {
     data: { $postsResourceRemoveSuccess: action },
   },
+
+  /**
+   *
+   */
+  postsByCoin: {
+    data: { $postsResourceRemoveSuccess: action },
+  },
 })
 
 const postsDeleteFailure = (state) => update(state, {
@@ -479,6 +492,13 @@ const postsArchiveSuccess = (state, action) => update(state, {
    *
    */
   postsFeedGet: {
+    data: { $postsResourceRemoveSuccess: action },
+  },
+
+  /**
+   *
+   */
+  postsByCoin: {
     data: { $postsResourceRemoveSuccess: action },
   },
 })
@@ -632,6 +652,53 @@ const postsFeedGetMoreRequest = (state, action) => update(state, {
 
 const postsFeedGetMoreSuccess = (state, action) => update(state, {
   postsFeedGet: {
+    data: { $push: action.payload.data },
+    status: { $set: 'success' },
+    meta: { $set: action.payload.meta },
+  },
+})
+
+/**
+ *
+ */
+const postsByCoinRequest = (state, action) => update(state, {
+  postsByCoin: {
+    status: { $set: 'loading' },
+    payload: { $set: action.payload },
+    meta: { $set: action.meta },
+  },
+})
+
+const postsByCoinSuccess = (state, action) => update(state, {
+  postsByCoin: {
+    data: { $set: action.payload.data },
+    status: { $set: 'success' },
+    meta: { $set: action.payload.meta },
+  },
+})
+
+const postsByCoinFailure = (state) => update(state, {
+  postsByCoin: {
+    status: { $set: 'failure' },
+  },
+})
+
+const postsByCoinIdle = (state) => update(state, {
+  postsByCoin: {
+    $set: initialState.postsByCoin,
+  },
+})
+
+const postsByCoinMoreRequest = (state, action) => update(state, {
+  postsByCoin: {
+    status: { $set: 'loading' },
+    payload: { $set: action.payload },
+    meta: { $set: action.meta },
+  },
+})
+
+const postsByCoinMoreSuccess = (state, action) => update(state, {
+  postsByCoin: {
     data: { $push: action.payload.data },
     status: { $set: 'success' },
     meta: { $set: action.payload.meta },
@@ -1098,6 +1165,13 @@ export default handleActions({
   [constants.POSTS_FEED_GET_IDLE]: postsFeedGetIdle,
   [constants.POSTS_FEED_GET_MORE_REQUEST]: postsFeedGetMoreRequest,
   [constants.POSTS_FEED_GET_MORE_SUCCESS]: postsFeedGetMoreSuccess,
+
+  [constants.POSTS_BY_COIN_GET_REQUEST]: postsByCoinRequest,
+  [constants.POSTS_BY_COIN_GET_SUCCESS]: postsByCoinSuccess,
+  [constants.POSTS_BY_COIN_GET_FAILURE]: postsByCoinFailure,
+  [constants.POSTS_BY_COIN_GET_IDLE]: postsByCoinIdle,
+  [constants.POSTS_BY_COIN_GET_MORE_REQUEST]: postsByCoinMoreRequest,
+  [constants.POSTS_BY_COIN_GET_MORE_SUCCESS]: postsByCoinMoreSuccess,
 
   [constants.POSTS_CREATE_REQUEST]: postsCreateRequest,
   [constants.POSTS_CREATE_SUCCESS]: postsCreateSuccess,
