@@ -232,10 +232,10 @@ function* postsGetArchivedRequest(req) {
 /**
  *
  */
-function* handlePostsEditRequest(payload) {
-  yield call([queryService, 'apiRequest'], queries.editPostExpiresAt, payload)
-  yield call([queryService, 'apiRequest'], queries.editPostAlbum, payload)
-  return yield call([queryService, 'apiRequest'], queries.editPost, payload)
+function* handlePostsEditRequest(values) {
+  yield call([queryService, 'apiRequest'], queries.editPostExpiresAt, values)
+  yield call([queryService, 'apiRequest'], queries.editPostAlbum, values)
+  return yield call([queryService, 'apiRequest'], queries.editPost, values)
 }
 
 function* postsEditRequestData(req, api) {

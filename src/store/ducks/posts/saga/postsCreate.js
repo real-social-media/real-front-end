@@ -32,6 +32,7 @@ const postUploadDefaultValues = (post) => ({
   verificationHidden: post.verificationHidden || false,
   takenInReal: post.takenInReal || false,
   payment: parseFloat(post.payment),
+  paymentTicker: post?.paymentTicker,
   originalFormat: post.originalFormat || 'jpg',
   originalMetadata: post.originalMetadata || '',
   imageFormat: post.imageFormat || 'JPEG',

@@ -66,15 +66,15 @@ describe('PostEdit Form', () => {
   })
 
   it('payment field', () => {
-    const { getByLabelText, queryByAccessibilityLabel } = setup()
+    const { queryByAccessibilityLabel } = setup()
 
-    fireEvent.press(queryByAccessibilityLabel(a11y.payment))
-
-    testField(getByLabelText('payment'), {
+    testField(queryByAccessibilityLabel('payment'), {
       name: 'payment',
       value: String(postsSingleGet.data.payment),
       ...Validation.getInputTypeProps('payment'),
     })
+
+    expect(queryByAccessibilityLabel('paymentTicker')).toBeTruthy()
   })
 
   it('toggle keywords form', () => {

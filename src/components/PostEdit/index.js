@@ -19,6 +19,7 @@ const PostEditComponent = ({
   handlePostPress,
   postsSingleGet,
   albumsGet,
+  coinsOptions,
 }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
@@ -36,6 +37,7 @@ const PostEditComponent = ({
             formAlbums={FormAlbums}
             albumsGet={albumsGet}
             handlePostPress={handlePostPress}
+            coinsOptions={coinsOptions}
           />
         </View>
       </KeyboardAwareScrollView>
@@ -50,6 +52,14 @@ PostEditComponent.propTypes = {
   postsSingleGet: PropTypes.any,
   handlePostPress: PropTypes.any,
   albumsGet: PropTypes.any,
+  coinsOptions: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string,
+    value: PropTypes.string,
+  })),
+}
+
+PostEditComponent.defaultProps = {
+  coinsOptions: [],
 }
 
 const styles = theme => StyleSheet.create({

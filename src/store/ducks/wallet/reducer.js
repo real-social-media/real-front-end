@@ -7,9 +7,7 @@ export const initialState = {
    *
    */
   walletGet: {
-    data: {
-      total: '0',
-    },
+    data: {},
     status: 'idle',
   },
 }

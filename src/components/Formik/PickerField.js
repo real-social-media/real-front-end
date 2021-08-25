@@ -19,6 +19,7 @@ const PickerField = ({
   items,
   label,
   accessibilityLabel,
+  disabled,
   ...props
 }) => {
   const onFocus = () => {
@@ -45,12 +46,14 @@ const PickerField = ({
         onClose={onBlur}
         onDonePress={onBlur}
         value={field.value}
+        disabled={disabled}
       >
         <TextInput
           label={label}
           value={getDisplayValue(field.value, items)}
           editable={false}
           accessibilityLabel={accessibilityLabel}
+          disabled={disabled}
         />
       </RNPickerSelect>
 
@@ -72,7 +75,7 @@ PickerField.propTypes = {
   form: PropTypes.any,
   placeholder: PropTypes.any,
   meta: PropTypes.any,
-  disabled: PropTypes.any,
+  disabled: PropTypes.bool,
   hideError: PropTypes.any,
   testID: PropTypes.any,
   handleFieldFocus: PropTypes.func,

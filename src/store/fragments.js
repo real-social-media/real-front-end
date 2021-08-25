@@ -163,6 +163,8 @@ export const postFragment = `
     viewedByCount
     viewedStatus
     payment
+    paymentTicker
+    paymentTickerRequiredToView
     keywords
   }
 

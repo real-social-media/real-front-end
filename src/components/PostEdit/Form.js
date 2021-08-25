@@ -21,6 +21,7 @@ import dayjs from 'dayjs'
 import { joinTags, searchTags } from 'components/PostCreate/helpers'
 import { useHeader } from 'components/PostEdit/header'
 import FormKeywords from 'components/PostCreate/FormKeywords'
+import PickerField from 'components/Formik/PickerField'
 import * as Validation from 'services/Validation'
 
 import { withTheme } from 'react-native-paper'
@@ -34,6 +35,12 @@ export const a11y = {
 const formSchema = Yup.object().shape({
   text: Yup.string().nullable(),
   payment: Validation.payment,
+  paymentTicker: Validation.paymentTicker,
+})
+
+const normalizeValues = values => ({
+  ...values,
+  payment: parseFloat(values.payment),
 })
 
 const getInitialLifetime = (expiresAt) => {
@@ -63,6 +70,7 @@ const PostEditForm = ({
   formLifetime: FormLifetime,
   formAlbums: FormAlbums,
   albumsGet,
+  coinsOptions,
 }) => {
   const styling = styles(theme)
 
@@ -172,13 +180,26 @@ const PostEditForm = ({
         title={t('Payment per view')}
         helper={t('Auto by default')}
         accessibilityLabel={a11y.payment}
+        active
       >
-        <Field
-          {...Validation.getInputTypeProps('payment')}
-          name="payment"
-          component={TextField}
-          placeholder={t('$0-100 REAL coins')}
-        />
+        <View style={styling.row}>
+          <Field
+            name="paymentTicker"
+            accessibilityLabel="paymentTicker"
+            label={t('Restrict To Coin')}
+            component={PickerField}
+            items={coinsOptions}
+            disabled
+          />
+        </View>
+        <View style={styling.row}>
+          <Field
+            {...Validation.getInputTypeProps('payment')}
+            name="payment"
+            component={TextField}
+            placeholder={t('$0-100 REAL coins')}
+          />
+        </View>
       </CollapsableComponent>
 
       <CollapsableComponent
@@ -215,6 +236,9 @@ const styles = theme => StyleSheet.create({
   title: {
     marginBottom: theme.spacing.base,
   },
+  row: {
+    marginBottom: 12,
+  },
 })
 
 PostEditForm.propTypes = {
@@ -229,6 +253,14 @@ PostEditForm.propTypes = {
   formLifetime: PropTypes.any,
   formAlbums: PropTypes.any,
   albumsGet: PropTypes.any,
+  coinsOptions: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string,
+    value: PropTypes.string,
+  })),
+}
+
+PostEditForm.defaultProps = {
+  coinsOptions: [],
 }
 
 export default withTranslation()(withTheme(({
@@ -239,7 +271,7 @@ export default withTranslation()(withTheme(({
 }) => {
   const handleSubmit = (values) => {
     const keywords = joinTags(searchTags(values.text), values.keywords)
-    postsEditRequest({ ...values, keywords })
+    postsEditRequest(normalizeValues({ ...values, keywords }))
   }
 
   return (
@@ -251,6 +283,7 @@ export default withTranslation()(withTheme(({
         text: postsSingleGet.data.text,
         expiresAt: postsSingleGet.data.expiresAt,
         payment: String(postsSingleGet.data.payment),
+        paymentTicker: postsSingleGet.data.paymentTicker,
         commentsDisabled: postsSingleGet.data.commentsDisabled,
         likesDisabled: postsSingleGet.data.likesDisabled,
         sharingDisabled: postsSingleGet.data.sharingDisabled,
