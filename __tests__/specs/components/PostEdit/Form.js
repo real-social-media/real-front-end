@@ -68,8 +68,6 @@ describe('PostEdit Form', () => {
   it('payment field', () => {
     const { queryByAccessibilityLabel } = setup()
 
-    fireEvent.press(queryByAccessibilityLabel(a11y.payment))
-
     testField(queryByAccessibilityLabel('payment'), {
       name: 'payment',
       value: String(postsSingleGet.data.payment),

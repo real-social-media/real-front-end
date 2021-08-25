@@ -180,6 +180,7 @@ const PostEditForm = ({
         title={t('Payment per view')}
         helper={t('Auto by default')}
         accessibilityLabel={a11y.payment}
+        active
       >
         <View style={styling.row}>
           <Field
