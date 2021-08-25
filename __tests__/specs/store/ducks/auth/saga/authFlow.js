@@ -3,7 +3,7 @@ import { expectSaga } from 'redux-saga-test-plan'
 import * as actions from 'store/ducks/auth/actions'
 import authFlow from 'store/ducks/auth/saga/authFlow'
 import { testAsRootSaga } from 'tests/utils/helpers'
-import authorize from 'store/ducks/auth/saga/authorize'
+import { refreshUser } from 'store/ducks/auth/saga/authorize'
 
 /**
  * Mock Function
@@ -29,7 +29,7 @@ describe('Auth flow', () => {
 
   it('authorized', async () => {
     await setupSaga()
-      .call(authorize)
+      .call(refreshUser)
       .put(actions.authFlowSuccess())
 
       .dispatch(actions.authFlowRequest())

@@ -1,7 +1,7 @@
 import { put, takeEvery, getContext, call } from 'redux-saga/effects'
 import * as actions from 'store/ducks/auth/actions'
 import * as constants from 'store/ducks/auth/constants'
-import authorize from 'store/ducks/auth/saga/authorize'
+import { refreshUser } from 'store/ducks/auth/saga/authorize'
 
 /**
  * The currentUserCredentials method will automatically refresh the accessToken
@@ -14,7 +14,7 @@ function* refreshTokens() {
 
 function* handleAuthFlowRequest() {
   yield call(refreshTokens)
-  yield call(authorize)
+  yield call(refreshUser)
 }
 
 function* authFlowRequest() {

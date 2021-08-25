@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AuthNavigator from 'navigation/AuthNavigator'
 import AppNavigator from 'navigation/AppNavigator'
 import * as navigationOptions from 'navigation/options'
@@ -7,24 +7,25 @@ import NetworkComponent from 'components/Network'
 import PinchZoomComponent from 'components/Feed/PinchZoom'
 import FeedContextComponent from 'components/Feed/Context'
 import { SearchFeedProvider } from 'components/Search/Context'
-import AppLoader from 'components/AppLoader'
+import { useDispatch } from 'react-redux'
+import * as appActions from 'store/ducks/appState/actions'
 
 const Stack = createStackNavigator()
 
 const Router = () => {
   const [draggedImage, setDraggedImage] = useState({})
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(appActions.appStateLaunched())
+  }, [])
 
   return (
     <FeedContextComponent.Provider value={{ draggedImage, setDraggedImage }}>
       <SearchFeedProvider>
         <PinchZoomComponent />
         <NetworkComponent />
-        <Stack.Navigator initialRouteName="Loading">
-          <Stack.Screen
-            name="Loading"
-            component={AppLoader}
-            {...navigationOptions.stackScreenStaleStaticProps}
-          />
+        <Stack.Navigator>
           <Stack.Screen
             name="App"
             component={AppNavigator}
