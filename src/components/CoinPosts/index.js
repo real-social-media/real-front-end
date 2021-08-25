@@ -4,10 +4,9 @@ import { StyleSheet, View, FlatList, RefreshControl, ActivityIndicator } from 'r
 import path from 'ramda/src/path'
 import PostComponent from 'components/Post'
 import PostServiceComponent from 'components/Post/index.service'
-import Placeholder from 'components/Feed/Placeholder'
+import Placeholder from 'components/CoinPosts/Placeholder'
 import ScrollService from 'services/Scroll'
 import useViewable from 'services/providers/Viewable'
-
 import { withTheme } from 'react-native-paper'
 
 const CoinPosts = ({
@@ -72,21 +71,12 @@ const CoinPosts = ({
 
   const renderLoader = useCallback(() => (scroll.refreshing ? renderActivityIndicator() : null), [scroll.refreshing])
 
-  const renderEmpty = useCallback(
-    () =>
-      isEmpty ? (
-        <View>
-          <Placeholder />
-        </View>
-      ) : (
-        renderLoader()
-      ),
-    [isEmpty, scroll.refreshing],
-  )
+  const renderEmpty = useCallback(() => (isEmpty ? <Placeholder /> : renderLoader()), [isEmpty, scroll.refreshing])
 
   return (
     <View style={styling.root}>
       <FlatList
+        contentContainerStyle={isEmpty ? styling.list : null}
         ref={feedRef}
         keyExtractor={(item) => item.postId}
         data={data}
@@ -115,6 +105,9 @@ const styles = (theme) =>
     root: {
       flex: 1,
       backgroundColor: theme.colors.backgroundPrimary,
+    },
+    list: {
+      flex: 1,
     },
     loading: {
       paddingVertical: 16,
