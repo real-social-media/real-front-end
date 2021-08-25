@@ -68,8 +68,6 @@ describe('PostEdit Form', () => {
   it('payment field', () => {
     const { queryByAccessibilityLabel } = setup()
 
-    fireEvent.press(queryByAccessibilityLabel(a11y.payment))
-
     testField(queryByAccessibilityLabel('payment'), {
       name: 'payment',
       value: String(postsSingleGet.data.payment),
@@ -77,7 +75,6 @@ describe('PostEdit Form', () => {
     })
 
     expect(queryByAccessibilityLabel('paymentTicker')).toBeTruthy()
-    expect(queryByAccessibilityLabel('paymentTickerRequiredToView')).toBeTruthy()
   })
 
   it('toggle keywords form', () => {

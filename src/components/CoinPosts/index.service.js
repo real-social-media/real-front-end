@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import * as postsActions from 'store/ducks/posts/actions'
 import { useScrollToTop } from '@react-navigation/native'
 import * as postsSelector from 'store/ducks/posts/selectors'
-import { useRoute, useNavigation } from '@react-navigation/native'
-import { useEffectWhenFocused } from 'services/hooks'
+import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native'
 
 const CoinPostsService = ({ children }) => {
   const dispatch = useDispatch()
@@ -21,15 +20,15 @@ const CoinPostsService = ({ children }) => {
     dispatch(postsActions.postsByCoinMoreRequest(payload))
   }, [])
 
-  useEffectWhenFocused(() => {
-    navigation.setOptions({ title: `${paymentTicker} Coin` })
-  }, [paymentTicker])
+  useFocusEffect(
+    useCallback(() => {
+      navigation.setOptions({ title: `${paymentTicker} Coin` })
+      loadInit({ paymentTicker })
 
-  useEffectWhenFocused(() => {
-    loadInit({ paymentTicker })
-
-    return () => dispatch(postsActions.postsByCoinIdle())
-  }, [])
+      return () => dispatch(postsActions.postsByCoinIdle())
+    }, []),
+    [],
+  )
 
   const handleScrollPrev = useCallback(
     (index) => () => {

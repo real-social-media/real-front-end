@@ -91,7 +91,7 @@ export const addTextOnlyPost = `
     $verificationHidden: Boolean,
     $payment: Float,
     $paymentTicker: String,
-    $paymentTickerRequiredToView: Boolean,
+    $paymentTickerRequiredToView: Boolean = true,
     $keywords: [String!],
   ) {
     addPost (
@@ -134,7 +134,7 @@ export const addPhotoPost = `
     $setAsUserPhoto: Boolean,
     $payment: Float,
     $paymentTicker: String,
-    $paymentTickerRequiredToView: Boolean,
+    $paymentTickerRequiredToView: Boolean = true,
     $keywords: [String!],
   ) {
     addPost (
@@ -202,7 +202,7 @@ export const editPost = `
     $sharingDisabled: Boolean,
     $verificationHidden: Boolean,
     $payment: Float,
-    $paymentTickerRequiredToView: Boolean,
+    $paymentTickerRequiredToView: Boolean = true,
     $keywords: [String!],
   ) {
     editPost (
