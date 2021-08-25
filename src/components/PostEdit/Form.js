@@ -107,6 +107,33 @@ const PostEditForm = ({
 
       <CollapsableComponent
         style={styling.input}
+        title={t('Payment per view')}
+        helper={t('Auto by default')}
+        accessibilityLabel={a11y.payment}
+        active
+      >
+        <View style={styling.row}>
+          <Field
+            name="paymentTicker"
+            accessibilityLabel="paymentTicker"
+            label={t('Restrict To Coin')}
+            component={PickerField}
+            items={coinsOptions}
+            disabled
+          />
+        </View>
+        <View style={styling.row}>
+          <Field
+            {...Validation.getInputTypeProps('payment')}
+            name="payment"
+            component={TextField}
+            placeholder={t('$0-100 REAL coins')}
+          />
+        </View>
+      </CollapsableComponent>
+
+      <CollapsableComponent
+        style={styling.input}
         title={t('Lifetime')}
         helper={t('Change post expiry, set expiry to 1 day to post story')}
         active
@@ -173,33 +200,6 @@ const PostEditForm = ({
             </RowsItemComponent>
           )}
         </RowsComponent>
-      </CollapsableComponent>
-
-      <CollapsableComponent
-        style={styling.input}
-        title={t('Payment per view')}
-        helper={t('Auto by default')}
-        accessibilityLabel={a11y.payment}
-        active
-      >
-        <View style={styling.row}>
-          <Field
-            name="paymentTicker"
-            accessibilityLabel="paymentTicker"
-            label={t('Restrict To Coin')}
-            component={PickerField}
-            items={coinsOptions}
-            disabled
-          />
-        </View>
-        <View style={styling.row}>
-          <Field
-            {...Validation.getInputTypeProps('payment')}
-            name="payment"
-            component={TextField}
-            placeholder={t('$0-100 REAL coins')}
-          />
-        </View>
       </CollapsableComponent>
 
       <CollapsableComponent
