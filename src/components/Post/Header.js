@@ -85,8 +85,8 @@ const Header = ({
         {repostVisiblity ? (
           <TouchableOpacity
             testID={testIDs.header.repostBtn}
-            style={styling.verification}
             onPress={() => navigationActions.navigateProfile(navigation, { userId: path(['originalPost', 'postedBy', 'userId'], post) })}
+            style={styling.subtitle}
           >
             <Caption style={styling.headerStatus}>
               {t('Reposted from {{ username }}', { username: path(['originalPost', 'postedBy', 'username'], post) })}
@@ -95,7 +95,7 @@ const Header = ({
         ) : null}
 
         {expiryVisiblity ? (
-          <View testID={testIDs.header.expiry} style={styling.verification}>
+          <View testID={testIDs.header.expiry} style={styling.subtitle}>
             <Caption style={styling.headerStatus}>
               {t('Expires {{expiry}}', { expiry: dayjs(post.expiresAt).from(dayjs()) })}
             </Caption>
@@ -108,9 +108,20 @@ const Header = ({
           <TouchableOpacity
             testID={testIDs.header.verificationStatus}
             onPress={navigationActions.navigateVerification(navigation, { actionType: 'BACK', urlEla: post.image?.urlEla })}
-            style={styling.verification}
+            style={styling.subtitle}
           >
             <Caption style={styling.statusLabel}>{t('unauthenticated')}</Caption>
+          </TouchableOpacity>
+        ) : null}
+
+        {post.paymentTickerRequiredToView ? (
+          <TouchableOpacity
+            onPress={() => navigationActions.navigateCoinPosts(navigation, { paymentTicker: post.paymentTicker })}
+            style={styling.subtitle}
+          >
+            <Caption style={styling.statusLabel}>
+              {t('View {{paymentTicker}} coin', { paymentTicker: post.paymentTicker })}
+            </Caption>
           </TouchableOpacity>
         ) : null}
       </View>
@@ -213,7 +224,7 @@ const styles = (theme) =>
     statusLabel: {
       marginRight: 4,
     },
-    verification: {
+    subtitle: {
       flexDirection: 'row',
       alignItems: 'center',
     },

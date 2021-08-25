@@ -1,5 +1,6 @@
 import React from 'react'
 import PostMediaScreen from 'screens/PostMediaScreen'
+import CoinPostsScreen from 'screens/CoinPostsScreen'
 import PostLikesScreen from 'screens/PostLikesScreen'
 import PostViewsScreen from 'screens/PostViewsScreen'
 import PostShareScreen from 'screens/PostShareScreen'
@@ -34,6 +35,12 @@ export const media = ({
         name="PostMedia"
         component={PostMediaScreen}
         {...stackScreenPageProps({ options: { title: 'Post' } })}
+      />
+
+      <Stack.Screen
+        name="CoinPosts"
+        component={CoinPostsScreen}
+        {...stackScreenPageProps({ options: { title: 'Coin Posts' } })}
       />
 
       <Stack.Screen

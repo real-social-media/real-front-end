@@ -71,7 +71,6 @@ describe('PostCreate Form', () => {
 
   it('payment field', () => {
     const { queryByAccessibilityLabel } = setup()
-
     testField(queryByAccessibilityLabel('payment'), {
       name: 'payment',
       value: undefined,

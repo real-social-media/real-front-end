@@ -188,3 +188,16 @@ export const commentsFlagFailure = createFailureAction(constants.COMMENTS_FLAG_F
 export const postsPayRequest = createAction(constants.POSTS_PAY_REQUEST)
 export const postsPaySuccess = createAction(constants.POSTS_PAY_SUCCESS)
 export const postsPayFailure = createFailureAction(constants.POSTS_PAY_FAILURE)
+
+/**
+ *
+ */
+export const postsByCoinIdle = createAction(constants.POSTS_BY_COIN_GET_IDLE)
+export const postsByCoinRequest = createAction(constants.POSTS_BY_COIN_GET_REQUEST)
+export const postsByCoinSuccess = createAction(constants.POSTS_BY_COIN_GET_SUCCESS)
+export const postsByCoinFailure = createFailureAction(constants.POSTS_BY_COIN_GET_FAILURE)
+
+export const postsByCoinMoreIdle = createAction(constants.POSTS_BY_COIN_GET_MORE_IDLE)
+export const postsByCoinMoreRequest = createAction(constants.POSTS_BY_COIN_GET_MORE_REQUEST)
+export const postsByCoinMoreSuccess = createAction(constants.POSTS_BY_COIN_GET_MORE_SUCCESS)
+export const postsByCoinMoreFailure = createFailureAction(constants.POSTS_BY_COIN_GET_MORE_FAILURE)

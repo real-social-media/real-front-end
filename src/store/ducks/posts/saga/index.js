@@ -10,6 +10,7 @@ import * as normalizer from 'normalizer/schemas'
 import usersCheckPermissions from 'store/ducks/users/saga/usersCheckPermissions'
 import { entitiesMerge } from 'store/ducks/entities/saga'
 import postsPay from 'store/ducks/posts/saga/postsPay'
+import postsByCoin from 'store/ducks/posts/saga/postsByCoin'
 
 /**
  *
@@ -642,3 +643,4 @@ export default () => [
   takeLatest(constants.POSTS_FLAG_SUCCESS, postsFlagSuccess),
 ]
 .concat(postsPay())
+.concat(postsByCoin())

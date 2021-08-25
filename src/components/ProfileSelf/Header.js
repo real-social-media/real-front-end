@@ -34,7 +34,7 @@ const styles = (theme) =>
 HeaderRight.propTypes = {
   theme: PropTypes.any,
   navigation: PropTypes.any,
-  walletTotal: PropTypes.string,
+  walletTotal: PropTypes.any,
 }
 
 HeaderRight.defaultProps = {
