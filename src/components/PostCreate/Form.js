@@ -21,7 +21,9 @@ import { joinTags, searchTags } from 'components/PostCreate/helpers'
 import { useHeader } from 'components/PostCreate/header'
 import FormKeywords from 'components/PostCreate/FormKeywords'
 import PickerField from 'components/Formik/PickerField'
+import SliderField from 'components/Formik/SliderField'
 import * as Validation from 'services/Validation'
+import * as lifetime from 'services/helpers/lifetime'
 
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
@@ -29,7 +31,6 @@ import { withTranslation } from 'react-i18next'
 export const a11y = {
   payment:'Toggle Payment per view',
   keywords: 'Toggle Search Terms',
-
 }
 
 const formSchema = Yup.object().shape({
@@ -47,7 +48,6 @@ const PostCreateForm = ({
   loading,
   handlePostPress,
   setFieldValue,
-  formLifetime: FormLifetime,
   formAlbums: FormAlbums,
   albumsGet,
   cameraCaptureLength,
@@ -120,9 +120,13 @@ const PostCreateForm = ({
         helper={t('Change post expiry, set expiry to 1 day to post story')}
         active
       >
-        <FormLifetime
-          values={values}
-          setFieldValue={setFieldValue}
+        <Field
+          name="lifetime"
+          accessibilityLabel="lifetime"
+          label={t('Post will be available {{lifetime}}', { lifetime: lifetime.getLabel(values.lifetime) })}
+          desc="All posts become stories when they are 24 hours from expiring"
+          options={lifetime.options}
+          component={SliderField}
         />
       </CollapsableComponent>
 
@@ -246,7 +250,6 @@ PostCreateForm.propTypes = {
   loading: PropTypes.any,
   handlePostPress: PropTypes.any,
   setFieldValue: PropTypes.any,
-  formLifetime: PropTypes.any,
   formAlbums: PropTypes.any,
   albumsGet: PropTypes.any,
   cameraCaptureLength: PropTypes.any,
