@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native'
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
 
-const Placeholder = ({ t, theme }) => {
+const Placeholder = ({ t, theme, paymentTicker }) => {
   const styling = styles(theme)
   const navigation = useNavigation()
   const navigateSearch = () => navigationActions.navigateSearch(navigation)
@@ -17,7 +17,7 @@ const Placeholder = ({ t, theme }) => {
   return (
     <View style={styling.root} accessibilityLabel="Empty State">
       <View style={styling.header}>
-        <Text style={styling.title}>{t('We couldn\'t find any posts in coin')}</Text>
+        <Text style={styling.title}>{t('The {{paymentTicker}} Coin is currently empty', {paymentTicker})}</Text>
         <Text style={styling.subtitle}>{t('Check back later')}</Text>
       </View>
       <View style={styling.actions}>
@@ -68,6 +68,7 @@ const styles = (theme) =>
 Placeholder.propTypes = {
   t: PropTypes.any,
   theme: PropTypes.any,
+  paymentTicker: PropTypes.string,
 }
 
 export default withTranslation()(withTheme(Placeholder))

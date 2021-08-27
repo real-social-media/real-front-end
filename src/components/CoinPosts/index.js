@@ -71,7 +71,7 @@ const CoinPosts = ({
 
   const renderLoader = useCallback(() => (scroll.refreshing ? renderActivityIndicator() : null), [scroll.refreshing])
 
-  const renderEmpty = useCallback(() => (isEmpty ? <Placeholder /> : renderLoader()), [isEmpty, scroll.refreshing])
+  const renderEmpty = useCallback(() => (isEmpty ? <Placeholder paymentTicker={paymentTicker} /> : renderLoader()), [isEmpty, scroll.refreshing])
 
   return (
     <View style={styling.root}>
