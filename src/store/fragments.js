@@ -164,7 +164,6 @@ export const postFragment = `
     viewedStatus
     payment
     paymentTicker
-    paymentTickerRequiredToView
     keywords
   }
 

@@ -289,18 +289,18 @@ describe('Post Header component', () => {
   describe('View coin link', () => {
     it('visible', () => {
       const navigation = { push: jest.fn() }
-      const paidPost = { ...post, paymentTickerRequiredToView: true, paymentTicker: 'REAL' }
+      const paidPost = { ...post, paymentTicker: 'ALEXO' }
       const { queryByText } = setup({ post: paidPost, navigation })
-      const $coinLink = queryByText('View REAL coin')
+      const $coinLink = queryByText('View ALEXO coin')
 
       expect($coinLink).toBeTruthy()
 
       fireEvent.press($coinLink)
-      expect(navigation.push).toHaveBeenCalledWith('CoinPosts', { paymentTicker: 'REAL' })
+      expect(navigation.push).toHaveBeenCalledWith('CoinPosts', { paymentTicker: 'ALEXO' })
     })
 
     it('hidden', () => {
-      const post = { ...post, paymentTickerRequiredToView: false, paymentTicker: 'REAL' }
+      const post = { ...post, paymentTicker: 'REAL' }
       const { queryByText } = setup({ post })
 
       expect(queryByText('View REAL coin')).toBeFalsy()
