@@ -179,28 +179,6 @@ describe('Posts sagas', () => {
     })
   })
 
-  describe('postsEditRequest', () => {
-    it('success', async () => {
-      const payload = { postId: 'id123' }
-      const response = { data: { editPost: { postId: 1 } } }
-
-      queryService.apiRequest.mockResolvedValue(response)
-
-      await saga()
-        .call(entitiesMerge, normalizer.normalizePostGet(response.data.editPost))
-        .put(postsActions.postsEditSuccess({ data: 1, payload, meta: {} }))
-
-        .dispatch(postsActions.postsEditRequest(payload))
-        .silentRun()
-
-      expect(queryService.apiRequest).toHaveBeenCalledWith(queries.editPostExpiresAt, payload)
-      expect(queryService.apiRequest).toHaveBeenCalledWith(queries.editPostAlbum, payload)
-      expect(queryService.apiRequest).toHaveBeenCalledWith(queries.editPost, payload)
-
-      queryService.apiRequest.mockResolvedValue(true)
-    })
-  })
-
   describe('postsDeleteRequest', () => {
     it('success', async () => {
       const payload = { postId: 'id123', userId: 'id434' }

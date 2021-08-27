@@ -17,15 +17,16 @@ import RowsItemComponent from 'templates/RowsItem'
 import UserRowComponent from 'templates/UserRow'
 import CollapsableComponent from 'templates/Collapsable'
 import { Text, Caption, Switch } from 'react-native-paper'
-import dayjs from 'dayjs'
 import { joinTags, searchTags } from 'components/PostCreate/helpers'
 import { useHeader } from 'components/PostEdit/header'
 import FormKeywords from 'components/PostCreate/FormKeywords'
 import PickerField from 'components/Formik/PickerField'
+import SliderField from 'components/Formik/SliderField'
 import * as Validation from 'services/Validation'
-
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
+import * as lifetime from 'services/helpers/lifetime'
+import * as paymentHelpers from 'services/helpers/payment'
 
 export const a11y = {
   payment:'Toggle Payment per view',
@@ -40,24 +41,8 @@ const formSchema = Yup.object().shape({
 
 const normalizeValues = values => ({
   ...values,
-  payment: parseFloat(values.payment),
+  payment: values.paymentSlider === 'custom' ? values.payment : values.paymentSlider,
 })
-
-const getInitialLifetime = (expiresAt) => {
-  if (!expiresAt) {
-    return null
-  }
-
-  if (dayjs(expiresAt).isBefore(dayjs().add(1, 'day'))) {
-    return 'P1D'
-  } else if (dayjs(expiresAt).isBefore(dayjs().add(7, 'day'))) {
-    return 'P7D'
-  } else if (dayjs(expiresAt).isBefore(dayjs().add(1, 'month'))) {
-    return 'P1M'
-  } else if (dayjs(expiresAt).isBefore(dayjs().add(1, 'year'))) {
-    return 'P1Y'
-  }
-}
 
 const PostEditForm = ({
   t,
@@ -67,7 +52,6 @@ const PostEditForm = ({
   loading,
   handlePostPress,
   setFieldValue,
-  formLifetime: FormLifetime,
   formAlbums: FormAlbums,
   albumsGet,
   coinsOptions,
@@ -124,12 +108,24 @@ const PostEditForm = ({
         </View>
         <View style={styling.row}>
           <Field
-            {...Validation.getInputTypeProps('payment')}
-            name="payment"
-            component={TextField}
-            placeholder={t('$0-100 REAL coins')}
+            name="paymentSlider"
+            accessibilityLabel="paymentSlider"
+            label={t('Select price')}
+            desc={t('Values other than "auto" will display a paywall')}
+            options={paymentHelpers.paymentOptions}
+            component={SliderField}
           />
         </View>
+        {values.paymentSlider === 'custom' &&
+          <View style={styling.row}>
+            <Field
+              {...Validation.getInputTypeProps('payment')}
+              name="payment"
+              component={TextField}
+              placeholder={t('$ USD')}
+              />
+          </View>
+        }
       </CollapsableComponent>
 
       <CollapsableComponent
@@ -138,9 +134,13 @@ const PostEditForm = ({
         helper={t('Change post expiry, set expiry to 1 day to post story')}
         active
       >
-        <FormLifetime
-          values={values}
-          setFieldValue={setFieldValue}
+        <Field
+          name="lifetime"
+          accessibilityLabel="lifetime"
+          label={t('Post will be available {{lifetime}}', { lifetime: lifetime.getLabel(values.lifetime) })}
+          desc="All posts become stories when they are 24 hours from expiring"
+          options={lifetime.options}
+          component={SliderField}
         />
       </CollapsableComponent>
 
@@ -250,7 +250,6 @@ PostEditForm.propTypes = {
   loading: PropTypes.any,
   handlePostPress: PropTypes.any,
   setFieldValue: PropTypes.any,
-  formLifetime: PropTypes.any,
   formAlbums: PropTypes.any,
   albumsGet: PropTypes.any,
   coinsOptions: PropTypes.arrayOf(PropTypes.shape({
@@ -281,13 +280,13 @@ export default withTranslation()(withTheme(({
         postId: postsSingleGet.data.postId,
         uri: path(['image', 'url1080p'])(postsSingleGet.data),
         text: postsSingleGet.data.text,
-        expiresAt: postsSingleGet.data.expiresAt,
         payment: String(postsSingleGet.data.payment),
         paymentTicker: postsSingleGet.data.paymentTicker,
+        paymentSlider: paymentHelpers.sliderValueByPayment(postsSingleGet.data.payment),
         commentsDisabled: postsSingleGet.data.commentsDisabled,
         likesDisabled: postsSingleGet.data.likesDisabled,
         sharingDisabled: postsSingleGet.data.sharingDisabled,
-        lifetime: getInitialLifetime(postsSingleGet.data.expiresAt),
+        lifetime: lifetime.getValueByDate(postsSingleGet.data.expiresAt),
         albumId: path(['album', 'albumId'])(postsSingleGet.data),
         keywords: postsSingleGet.data.keywords,
       }}

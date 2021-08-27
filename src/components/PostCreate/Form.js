@@ -21,7 +21,10 @@ import { joinTags, searchTags } from 'components/PostCreate/helpers'
 import { useHeader } from 'components/PostCreate/header'
 import FormKeywords from 'components/PostCreate/FormKeywords'
 import PickerField from 'components/Formik/PickerField'
+import SliderField from 'components/Formik/SliderField'
 import * as Validation from 'services/Validation'
+import * as lifetime from 'services/helpers/lifetime'
+import * as paymentHelpers from 'services/helpers/payment'
 
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
@@ -29,7 +32,6 @@ import { withTranslation } from 'react-i18next'
 export const a11y = {
   payment:'Toggle Payment per view',
   keywords: 'Toggle Search Terms',
-
 }
 
 const formSchema = Yup.object().shape({
@@ -37,6 +39,11 @@ const formSchema = Yup.object().shape({
   text: Yup.string().nullable(),
   payment: Validation.payment,
   paymentTicker: Validation.paymentTicker,
+})
+
+const normalizeValues = values => ({
+  ...values,
+  payment: values.paymentSlider === 'custom' ? values.payment : values.paymentSlider,
 })
 
 const PostCreateForm = ({
@@ -47,7 +54,6 @@ const PostCreateForm = ({
   loading,
   handlePostPress,
   setFieldValue,
-  formLifetime: FormLifetime,
   formAlbums: FormAlbums,
   albumsGet,
   cameraCaptureLength,
@@ -106,12 +112,24 @@ const PostCreateForm = ({
         </View>
         <View style={styling.row}>
           <Field
-            {...Validation.getInputTypeProps('payment')}
-            name="payment"
-            component={TextField}
-            placeholder={t('$0-100 REAL coins')}
+            name="paymentSlider"
+            accessibilityLabel="paymentSlider"
+            label={t('Select price')}
+            desc={t('Values other than "auto" will display a paywall')}
+            options={paymentHelpers.paymentOptions}
+            component={SliderField}
           />
         </View>
+        {values.paymentSlider === 'custom' &&
+          <View style={styling.row}>
+            <Field
+              {...Validation.getInputTypeProps('payment')}
+              name="payment"
+              component={TextField}
+              placeholder={t('$ USD')}
+              />
+          </View>
+        }
       </CollapsableComponent>
 
       <CollapsableComponent
@@ -120,9 +138,13 @@ const PostCreateForm = ({
         helper={t('Change post expiry, set expiry to 1 day to post story')}
         active
       >
-        <FormLifetime
-          values={values}
-          setFieldValue={setFieldValue}
+        <Field
+          name="lifetime"
+          accessibilityLabel="lifetime"
+          label={t('Post will be available {{lifetime}}', { lifetime: lifetime.getLabel(values.lifetime) })}
+          desc="All posts become stories when they are 24 hours from expiring"
+          options={lifetime.options}
+          component={SliderField}
         />
       </CollapsableComponent>
 
@@ -246,7 +268,6 @@ PostCreateForm.propTypes = {
   loading: PropTypes.any,
   handlePostPress: PropTypes.any,
   setFieldValue: PropTypes.any,
-  formLifetime: PropTypes.any,
   formAlbums: PropTypes.any,
   albumsGet: PropTypes.any,
   cameraCaptureLength: PropTypes.any,
@@ -268,7 +289,7 @@ const FormWrapper = ({
 }) => {
   const handleSubmit = (values) => {
     const keywords = joinTags(searchTags(values.text), values.keywords)
-    postsCreateRequest({ ...values, keywords })
+    postsCreateRequest(normalizeValues({ ...values, keywords }))
   }
 
   return (

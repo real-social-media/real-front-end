@@ -6,7 +6,6 @@ import {
   StyleSheet,
 } from 'react-native'
 import PostCreateForm from 'components/PostCreate/Form'
-import FormLifetime from 'components/PostCreate/FormLifetime'
 import FormAlbums from 'components/PostCreate/FormAlbums'
 import { withTheme } from 'react-native-paper'
 
@@ -37,7 +36,6 @@ const PostCreateComponent = ({
               cameraCapture={{ data: {} }}
               cameraCaptureLength={cameraCaptureLength}
               handlePostPress={handlePostPress}
-              formLifetime={FormLifetime}
               formAlbums={FormAlbums}
               albumsGet={albumsGet}
               postType={type}
@@ -55,7 +53,6 @@ const PostCreateComponent = ({
               cameraCapture={cameraCapture}
               cameraCaptureLength={cameraCaptureLength}
               handlePostPress={handlePostPress}
-              formLifetime={FormLifetime}
               formAlbums={FormAlbums}
               albumsGet={albumsGet}
               postType={type}

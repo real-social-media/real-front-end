@@ -2,8 +2,6 @@ import React from 'react'
 import PostEditForm, { a11y } from 'components/PostEdit/Form'
 import { useNavigation } from '@react-navigation/native'
 import { renderWithProviders, fireEvent } from 'tests/utils'
-import { testField } from 'tests/utils/helpers'
-import * as Validation from 'services/Validation'
 import FormKeywords from 'components/PostCreate/FormKeywords'
 
 jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn() }))
@@ -44,11 +42,12 @@ const postsSingleGet = {
 const values = {
   albumId: undefined,
   commentsDisabled: undefined,
-  expiresAt: undefined,
   keywords: [],
   lifetime: null,
   likesDisabled: undefined,
   payment: '1.1',
+  paymentSlider: 'custom',
+  paymentTicker: undefined,
   postId: undefined,
   postType: undefined,
   sharingDisabled: undefined,
@@ -63,18 +62,6 @@ const setup = () => renderWithProviders(<PostEditForm {...requiredProps} />)
 describe('PostEdit Form', () => {
   afterEach(() => {
     FormKeywords.mockClear()
-  })
-
-  it('payment field', () => {
-    const { queryByAccessibilityLabel } = setup()
-
-    testField(queryByAccessibilityLabel('payment'), {
-      name: 'payment',
-      value: String(postsSingleGet.data.payment),
-      ...Validation.getInputTypeProps('payment'),
-    })
-
-    expect(queryByAccessibilityLabel('paymentTicker')).toBeTruthy()
   })
 
   it('toggle keywords form', () => {
