@@ -11,6 +11,7 @@ import usersCheckPermissions from 'store/ducks/users/saga/usersCheckPermissions'
 import { entitiesMerge } from 'store/ducks/entities/saga'
 import postsPay from 'store/ducks/posts/saga/postsPay'
 import postsByCoin from 'store/ducks/posts/saga/postsByCoin'
+import postsEdit from 'store/ducks/posts/saga/postsEdit'
 
 /**
  *
@@ -227,42 +228,6 @@ function* postsGetArchivedRequest(req) {
     yield put(actions.postsGetArchivedSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
   } catch (error) {
     yield put(actions.postsGetArchivedFailure(error, req.payload))
-  }
-}
-
-/**
- *
- */
-function* handlePostsEditRequest(values) {
-  yield call([queryService, 'apiRequest'], queries.editPostExpiresAt, values)
-  yield call([queryService, 'apiRequest'], queries.editPostAlbum, values)
-  return yield call([queryService, 'apiRequest'], queries.editPost, values)
-}
-
-function* postsEditRequestData(req, api) {
-  const dataSelector = path(['data', 'editPost'])
-
-  const data = dataSelector(api)
-  const meta = {}
-  const payload = req.payload
-
-  const normalized = normalizer.normalizePostGet(data)
-  yield call(entitiesMerge, normalized)
-
-  return {
-    data: normalized.result,
-    meta,
-    payload,
-  }
-}
-
-function* postsEditRequest(req) {
-  try {
-    const data = yield handlePostsEditRequest(req.payload)
-    const next = yield postsEditRequestData(req, data)
-    yield put(actions.postsEditSuccess({ data: next.data, payload: next.payload, meta: next.meta }))
-  } catch (error) {
-    yield put(actions.postsEditFailure(error, req.payload))
   }
 }
 
@@ -587,7 +552,6 @@ function* commentsFlagRequest(req) {
 /**
  *
  */
-
 function* postsDeleteSuccess(req) {
   yield put(actions.postsDeleteIdle({}))
   yield put(actions.postsGetRequest({ userId: req.payload.payload.userId }))
@@ -620,7 +584,6 @@ export default () => [
 
   takeLatest(constants.POSTS_LIKES_GET_REQUEST, postsLikesGetRequest),
   takeLatest(constants.POSTS_GET_ARCHIVED_REQUEST, postsGetArchivedRequest),
-  takeLatest(constants.POSTS_EDIT_REQUEST, postsEditRequest),
   takeLatest(constants.POSTS_DELETE_REQUEST, postsDeleteRequest),
 
   takeLatest(constants.POSTS_ARCHIVE_REQUEST, postsArchiveRequest),
@@ -644,3 +607,4 @@ export default () => [
 ]
 .concat(postsPay())
 .concat(postsByCoin())
+.concat(postsEdit())

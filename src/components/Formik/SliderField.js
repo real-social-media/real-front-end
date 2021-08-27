@@ -34,7 +34,7 @@ SliderField.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
-      value: PropTypes.any.isRequired,
+      value: PropTypes.any,
     }),
   ),
 }

@@ -34,3 +34,17 @@ export const getValueByDate = (expiresAt) => {
     return 'P1Y'
   }
 }
+
+export const getExpiredDate = (lifetime) => {
+  if (lifetime === 'P1D') {
+    return dayjs().add(1, 'day').toJSON()
+  } else if (lifetime === 'P7D') {
+    return dayjs().add(7, 'day').toJSON()
+  } else if (lifetime === 'P1M') {
+    return dayjs().add(1, 'month').toJSON()
+  } else if (lifetime === 'P1Y') {
+    return dayjs().add(1, 'year').toJSON()
+  } else {
+    return null
+  }
+}
