@@ -24,6 +24,7 @@ import PickerField from 'components/Formik/PickerField'
 import SliderField from 'components/Formik/SliderField'
 import * as Validation from 'services/Validation'
 import * as lifetime from 'services/helpers/lifetime'
+import * as paymentHelpers from 'services/helpers/payment'
 
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
@@ -38,6 +39,11 @@ const formSchema = Yup.object().shape({
   text: Yup.string().nullable(),
   payment: Validation.payment,
   paymentTicker: Validation.paymentTicker,
+})
+
+const normalizeValues = values => ({
+  ...values,
+  payment: values.paymentSlider === 'custom' ? values.payment : values.paymentSlider,
 })
 
 const PostCreateForm = ({
@@ -106,12 +112,24 @@ const PostCreateForm = ({
         </View>
         <View style={styling.row}>
           <Field
-            {...Validation.getInputTypeProps('payment')}
-            name="payment"
-            component={TextField}
-            placeholder={t('$ USD')}
+            name="paymentSlider"
+            accessibilityLabel="paymentSlider"
+            label={t('Select price')}
+            desc={t('Values other than "auto" will display a paywall')}
+            options={paymentHelpers.paymentOptions}
+            component={SliderField}
           />
         </View>
+        {values.paymentSlider === 'custom' &&
+          <View style={styling.row}>
+            <Field
+              {...Validation.getInputTypeProps('payment')}
+              name="payment"
+              component={TextField}
+              placeholder={t('$ USD')}
+              />
+          </View>
+        }
       </CollapsableComponent>
 
       <CollapsableComponent
@@ -271,7 +289,7 @@ const FormWrapper = ({
 }) => {
   const handleSubmit = (values) => {
     const keywords = joinTags(searchTags(values.text), values.keywords)
-    postsCreateRequest({ ...values, keywords })
+    postsCreateRequest(normalizeValues({ ...values, keywords }))
   }
 
   return (

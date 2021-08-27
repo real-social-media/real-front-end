@@ -26,6 +26,7 @@ import * as Validation from 'services/Validation'
 import { withTheme } from 'react-native-paper'
 import { withTranslation } from 'react-i18next'
 import * as lifetime from 'services/helpers/lifetime'
+import * as paymentHelpers from 'services/helpers/payment'
 
 export const a11y = {
   payment:'Toggle Payment per view',
@@ -40,7 +41,7 @@ const formSchema = Yup.object().shape({
 
 const normalizeValues = values => ({
   ...values,
-  payment: parseFloat(values.payment),
+  payment: values.paymentSlider === 'custom' ? values.payment : values.paymentSlider,
 })
 
 const PostEditForm = ({
@@ -107,12 +108,24 @@ const PostEditForm = ({
         </View>
         <View style={styling.row}>
           <Field
-            {...Validation.getInputTypeProps('payment')}
-            name="payment"
-            component={TextField}
-            placeholder={t('$ USD')}
+            name="paymentSlider"
+            accessibilityLabel="paymentSlider"
+            label={t('Select price')}
+            desc={t('Values other than "auto" will display a paywall')}
+            options={paymentHelpers.paymentOptions}
+            component={SliderField}
           />
         </View>
+        {values.paymentSlider === 'custom' &&
+          <View style={styling.row}>
+            <Field
+              {...Validation.getInputTypeProps('payment')}
+              name="payment"
+              component={TextField}
+              placeholder={t('$ USD')}
+              />
+          </View>
+        }
       </CollapsableComponent>
 
       <CollapsableComponent
@@ -269,6 +282,7 @@ export default withTranslation()(withTheme(({
         text: postsSingleGet.data.text,
         payment: String(postsSingleGet.data.payment),
         paymentTicker: postsSingleGet.data.paymentTicker,
+        paymentSlider: paymentHelpers.sliderValueByPayment(postsSingleGet.data.payment),
         commentsDisabled: postsSingleGet.data.commentsDisabled,
         likesDisabled: postsSingleGet.data.likesDisabled,
         sharingDisabled: postsSingleGet.data.sharingDisabled,

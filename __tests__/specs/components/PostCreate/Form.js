@@ -2,8 +2,6 @@ import React from 'react'
 import PostCreateForm, { a11y } from 'components/PostCreate/Form'
 import { useNavigation } from '@react-navigation/native'
 import { renderWithProviders, fireEvent } from 'tests/utils'
-import { testField } from 'tests/utils/helpers'
-import * as Validation from 'services/Validation'
 import FormKeywords from 'components/PostCreate/FormKeywords'
 
 jest.mock('@react-navigation/native', () => ({ useNavigation: jest.fn() }))
@@ -67,17 +65,6 @@ const setup = () => renderWithProviders(<PostCreateForm {...requiredProps} />)
 describe('PostCreate Form', () => {
   afterEach(() => {
     FormKeywords.mockClear()
-  })
-
-  it('payment field', () => {
-    const { queryByAccessibilityLabel } = setup()
-    testField(queryByAccessibilityLabel('payment'), {
-      name: 'payment',
-      value: undefined,
-      ...Validation.getInputTypeProps('payment'),
-    })
-
-    expect(queryByAccessibilityLabel('paymentTicker')).toBeTruthy()
   })
 
   it('toggle keywords form', () => {
