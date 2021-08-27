@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { View, StyleSheet, TouchableOpacity, Modal, SafeAreaView, Text } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Modal, SafeAreaView, Text, Platform } from 'react-native'
 import { withTranslation } from 'react-i18next'
 import TagsCloud from 'templates/TagsCloud'
 import TagsList from 'templates/TagsList'
 import TextInput from 'components/TextInput'
-import { joinTags, replaceAll, searchTags } from 'components/PostCreate/helpers'
 import * as keywordsAPI from 'store/ducks/keywords/api'
 import useAutocomplete from 'services/hooks/useAutocomplete'
 
@@ -27,7 +26,6 @@ const FormKeywords = ({ t, values, setFieldValue }) => {
   const handleCloseModal = () => setIsModalOpen(false)
 
   const autocomplete = useAutocomplete(keywordsAPI.searchKeywords)
-  const keywords = joinTags(searchTags(values.text), values.keywords)
 
   const handleAdd = (option) => {
     setFieldValue('keywords', [...values.keywords, option])
@@ -36,7 +34,6 @@ const FormKeywords = ({ t, values, setFieldValue }) => {
   const handleRemove = (option) => {
     const value = values.keywords.filter((item) => item !== option)
 
-    setFieldValue('text', replaceAll(`#${option}`, option, values.text))
     setFieldValue('keywords', value)
   }
 
@@ -73,7 +70,7 @@ const FormKeywords = ({ t, values, setFieldValue }) => {
           pointerEvents="none"
         />
       </TouchableOpacity>
-      <TagsCloud options={keywords} onPress={handleRemove} />
+      <TagsCloud options={values.keywords} onPress={handleRemove} />
 
       <Modal accessibilityLabel={a11y.modal} presentationStyle="formSheet" animationType="slide" visible={isModalOpen}>
         <SafeAreaView style={styles.modal}>
@@ -95,6 +92,7 @@ const FormKeywords = ({ t, values, setFieldValue }) => {
               onChangeText={autocomplete.handleSearch}
               onSubmitEditing={handleSubmit}
               value={autocomplete.search}
+              keyboardType={Platform.OS === 'android' ? 'default' : 'ascii-capable'}
               placeholder={t('Type keywords')}
               clearButtonMode="while-editing"
               blurOnSubmit={false}
@@ -102,12 +100,12 @@ const FormKeywords = ({ t, values, setFieldValue }) => {
               enablesReturnKeyAutomatically
               autoFocus
             />
-            <TagsCloud accessibilityLabel={a11y.autocomplete.tagsCloud} options={keywords} onPress={handleRemove} />
+            <TagsCloud accessibilityLabel={a11y.autocomplete.tagsCloud} options={values.keywords} onPress={handleRemove} />
           </View>
           <View style={styles.inner}>
             <TagsList
               options={autocomplete.state.data}
-              value={keywords}
+              value={values.keywords}
               onPress={handleToggle}
               loading={autocomplete.state.status === 'loading'}
             />

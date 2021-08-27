@@ -3,7 +3,6 @@ import { renderWithProviders, act, fireEvent, within } from 'tests/utils'
 import FormKeywords, { a11y } from 'components/PostCreate/FormKeywords'
 import * as keywordsAPI from 'store/ducks/keywords/api'
 import * as TagsList from 'templates/TagsList'
-import * as TagsCloud from 'templates/TagsCloud'
 
 jest.useFakeTimers()
 
@@ -65,31 +64,6 @@ describe('FormKeywords', () => {
 
     await act(async () => fireEvent.press(queryByAccessibilityLabel(a11y.closeBtn)))
     expect(queryByAccessibilityLabel(a11y.modal)).toHaveProp('visible', false)
-  })
-
-  it('parse tags from text and join them with keywords', async () => {
-    const props = { values: { keywords, text: '#c dfdsf #d' } }
-    const { queryByAccessibilityLabel } = setup(props)
-    const $tagsCloud = queryByAccessibilityLabel(a11y.autocomplete.tagsCloud)
-    const $keywords = within($tagsCloud).queryAllByAccessibilityLabel(TagsCloud.a11y.option)
-
-    expect($keywords).toHaveLength(4)
-
-    expect(within($keywords[0]).queryByText('#c')).toBeTruthy()
-    expect(within($keywords[1]).queryByText('#d')).toBeTruthy()
-    expect(within($keywords[2]).queryByText('#a')).toBeTruthy()
-    expect(within($keywords[3]).queryByText('#b')).toBeTruthy()
-  })
-
-  it('remove hashtag from text', async () => {
-    const props = { values: { keywords, text: '#c ccc c #cc #csdfd #gdc #d' } }
-    const { queryByAccessibilityLabel } = setup(props)
-    const $tagsCloud = queryByAccessibilityLabel(a11y.autocomplete.tagsCloud)
-    const $keywords = within($tagsCloud).queryAllByAccessibilityLabel(TagsCloud.a11y.option)
-
-    await act(async () => fireEvent.press(within($keywords[0]).queryByAccessibilityLabel(TagsCloud.a11y.deleteBtn)))
-    expect(setFieldValue).toHaveBeenCalledWith('text', 'c ccc c #cc #csdfd #gdc #d')
-    expect(setFieldValue).toHaveBeenCalledWith('keywords', keywords)
   })
 
   it('close modal and submit value on done button press', async () => {
