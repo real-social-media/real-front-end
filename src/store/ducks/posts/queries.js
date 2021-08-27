@@ -61,7 +61,7 @@ export const getFeed = `
 export const postsByPaymentTicker = `
   query PostsByPaymentTicker(
     $paymentTicker: String!,
-    $paymentTickerRequiredToView: Boolean = true,
+    $paymentTickerRequiredToView: Boolean = false,
     $nextToken: String
   ) {
     postsByPaymentTicker(
@@ -91,7 +91,7 @@ export const addTextOnlyPost = `
     $verificationHidden: Boolean,
     $payment: Float,
     $paymentTicker: String,
-    $paymentTickerRequiredToView: Boolean = true,
+    $paymentTickerRequiredToView: Boolean = false,
     $keywords: [String!],
   ) {
     addPost (
@@ -134,7 +134,7 @@ export const addPhotoPost = `
     $setAsUserPhoto: Boolean,
     $payment: Float,
     $paymentTicker: String,
-    $paymentTickerRequiredToView: Boolean = true,
+    $paymentTickerRequiredToView: Boolean = false,
     $keywords: [String!],
   ) {
     addPost (
@@ -202,7 +202,6 @@ export const editPost = `
     $sharingDisabled: Boolean,
     $verificationHidden: Boolean,
     $payment: Float,
-    $paymentTickerRequiredToView: Boolean = true,
     $keywords: [String!],
   ) {
     editPost (
@@ -213,7 +212,6 @@ export const editPost = `
       sharingDisabled: $sharingDisabled,
       verificationHidden: $verificationHidden,
       payment: $payment,
-      paymentTickerRequiredToView: $paymentTickerRequiredToView,
       keywords: $keywords,
     ) {
       ...postFragment

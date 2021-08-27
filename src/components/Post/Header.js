@@ -114,7 +114,7 @@ const Header = ({
           </TouchableOpacity>
         ) : null}
 
-        {post.paymentTickerRequiredToView ? (
+        {(post.paymentTicker && post.paymentTicker !== 'REAL') ? (
           <TouchableOpacity
             onPress={() => navigationActions.navigateCoinPosts(navigation, { paymentTicker: post.paymentTicker })}
             style={styling.subtitle}

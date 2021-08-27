@@ -26,8 +26,8 @@ const CoinPostsService = ({ children }) => {
       loadInit({ paymentTicker })
 
       return () => dispatch(postsActions.postsByCoinIdle())
-    }, []),
-    [],
+    }, [paymentTicker]),
+    [paymentTicker],
   )
 
   const handleScrollPrev = useCallback(

@@ -18,7 +18,7 @@ const SearchNavigator = () => {
   const stackScreenPageProps = navigationOptions.stackScreenPageProps({ theme })
 
   return (
-    <Stack.Navigator {...stackNavigatorDefaultProps}>
+    <Stack.Navigator {...stackNavigatorDefaultProps} initialRouteName="Search">
       <Stack.Screen
         name="Search"
         component={SearchScreen}
