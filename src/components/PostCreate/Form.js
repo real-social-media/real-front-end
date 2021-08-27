@@ -109,7 +109,7 @@ const PostCreateForm = ({
             {...Validation.getInputTypeProps('payment')}
             name="payment"
             component={TextField}
-            placeholder={t('$0-100 REAL coins')}
+            placeholder={t('$ USD')}
           />
         </View>
       </CollapsableComponent>
