@@ -17,7 +17,7 @@ const Placeholder = ({ t, theme, paymentTicker }) => {
   return (
     <View style={styling.root} accessibilityLabel="Empty State">
       <View style={styling.header}>
-        <Text style={styling.title}>{t('The {{paymentTicker}} Coin is currently empty', {paymentTicker})}</Text>
+        <Text style={styling.title}>{t('The {{paymentTicker}} Coin is currently empty', { paymentTicker })}</Text>
         <Text style={styling.subtitle}>{t('Check back later')}</Text>
       </View>
       <View style={styling.actions}>
