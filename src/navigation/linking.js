@@ -9,6 +9,7 @@ export default {
               Home: {
                 screens: {
                   Search: {
+                    initialRouteName: 'Search',
                     screens: {
                       CoinPosts: 'coin/:paymentTicker',
                     },
